@@ -136,11 +136,11 @@ public class FileUtils {
     }
 
     public String getPhotoSavedPath() {
-        return BASE_PATH + "stickercamera";
+        return BASE_PATH + "pictures";
     }
 
     public String getPhotoTempPath() {
-        return BASE_PATH + "stickercamera";
+        return BASE_PATH + "temp";
     }
 
     public String getSystemPhotoPath() {
@@ -153,7 +153,7 @@ public class FileUtils {
         //如果没SD卡则放缓存
         if (Environment.MEDIA_MOUNTED.equals(sdcardState)) {
             BASE_PATH = Environment.getExternalStorageDirectory().getAbsolutePath()
-                        + "/stickercamera/";
+                        + "/yeah/";
         } else {
             BASE_PATH = App.getApp().getCacheDirPath();
         }
