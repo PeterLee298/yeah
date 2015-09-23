@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="@dimen/height_100px"
     android:gravity="center_vertical"
-    android:background="@color/pink">
+    android:background="@color/app_base">
 
     <LinearLayout
         android:id="@+id/title_left_area"

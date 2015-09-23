@@ -18,9 +18,9 @@
 
 
     <style name="RedTheme" parent="AppTheme">
-        <item name="colorPrimary">@color/pink</item>
-        <item name="colorPrimaryDark">@color/dark_red</item>
-        <item name="colorAccent">@color/accent_red</item>
+        <item name="colorPrimary">@color/app_base</item>
+        <item name="colorPrimaryDark">@color/app_base</item>
+        <item name="colorAccent">@color/app_base</item>
     </style>
 
     <style name="head_default">
