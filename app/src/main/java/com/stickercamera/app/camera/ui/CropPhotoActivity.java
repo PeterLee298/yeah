@@ -37,9 +37,9 @@ import butterknife.InjectView;
 
 /**
  * 裁剪图片界面
- * Created by sky on 2015/7/8.
- * Weibo: http://weibo.com/2030683111
- * Email: 1132234509@qq.com
+ * on 2015/7/8.
+ *
+ *
  */
 public class CropPhotoActivity extends CameraBaseActivity {
 

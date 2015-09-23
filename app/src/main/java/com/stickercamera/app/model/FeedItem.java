@@ -4,7 +4,7 @@ import java.util.List;
 
 /**
  * 图片Module
- * Created by sky on 15/7/18.
+ * on 15/7/18.
  */
 public class FeedItem {
 

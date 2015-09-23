@@ -4,10 +4,9 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
 import com.customview.CommonTitleBar;
-import com.yeah.stickercamera.R;
 
 /**
- * Created by sky on 15/7/6.
+ * on 15/7/6.
  */
 public class BaseFragmentActivity extends FragmentActivity {
 

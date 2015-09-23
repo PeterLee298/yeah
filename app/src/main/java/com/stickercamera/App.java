@@ -15,7 +15,7 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 
 /**
- * Created by sky on 2015/7/6.
+ * on 2015/7/6.
  */
 public class App extends Application {
 

@@ -1,24 +1,20 @@
 package com.stickercamera.base;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.TypedValue;
-import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
 
-import com.yeah.stickercamera.R;
 import com.customview.CommonTitleBar;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
-
-import butterknife.ButterKnife;
+import com.yeah.stickercamera.R;
 
 /**
- * Created by sky on 15/7/6.
+ * on 15/7/6.
  */
 public class BaseActivity extends AppCompatActivity implements ActivityResponsable {
 

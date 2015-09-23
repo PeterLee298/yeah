@@ -57,7 +57,7 @@ import butterknife.InjectView;
 
 /**
  * 相机界面
- * Created by sky on 15/7/6.
+ * on 15/7/6.
  */
 public class CameraActivity extends CameraBaseActivity {
 

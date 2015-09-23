@@ -3,7 +3,7 @@ package com.stickercamera;
 import android.os.Environment;
 
 /**
- * Created by sky on 2015/7/6.
+ * on 2015/7/6.
  */
 public class AppConstants {
 

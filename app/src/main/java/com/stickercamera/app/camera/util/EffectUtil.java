@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * Created by sky on 15/7/6.
+ * on 15/7/6.
  */
 public class EffectUtil {
 

@@ -9,7 +9,7 @@ import android.view.View;
 
 /**
  * 照相机井字线
- * Created by sky on 2015/7/7.
+ * on 2015/7/7.
  */
 public class CameraGrid extends View {
 
