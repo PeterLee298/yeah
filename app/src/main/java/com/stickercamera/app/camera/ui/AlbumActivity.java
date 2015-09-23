@@ -11,7 +11,7 @@ import com.common.util.FileUtils;
 import com.common.util.ImageUtils;
 import com.common.util.StringUtils;
 import com.customview.PagerSlidingTabStrip;
-import com.github.skykai.stickercamera.R;
+import com.yeah.stickercamera.R;
 import com.stickercamera.AppConstants;
 import com.stickercamera.app.camera.CameraBaseActivity;
 import com.stickercamera.app.camera.fragment.AlbumFragment;

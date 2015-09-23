@@ -12,7 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.common.util.StringUtils;
-import com.github.skykai.stickercamera.R;
+import com.yeah.stickercamera.R;
 import com.stickercamera.AppConstants;
 import com.stickercamera.base.BaseActivity;
 

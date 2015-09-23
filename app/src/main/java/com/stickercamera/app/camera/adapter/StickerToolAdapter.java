@@ -9,7 +9,7 @@ import android.widget.ImageView;
 
 
 import com.common.util.ImageLoaderUtils;
-import com.github.skykai.stickercamera.R;
+import com.yeah.stickercamera.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.stickercamera.app.model.Addon;
 

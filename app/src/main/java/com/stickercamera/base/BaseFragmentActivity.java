@@ -4,7 +4,7 @@ import android.support.v4.app.FragmentActivity;
 import android.view.View;
 
 import com.customview.CommonTitleBar;
-import com.github.skykai.stickercamera.R;
+import com.yeah.stickercamera.R;
 
 /**
  * Created by sky on 15/7/6.

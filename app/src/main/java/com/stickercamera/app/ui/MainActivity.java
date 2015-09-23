@@ -23,7 +23,7 @@ import com.common.util.DataUtils;
 import com.common.util.FileUtils;
 import com.common.util.StringUtils;
 import com.customview.LabelView;
-import com.github.skykai.stickercamera.R;
+import com.yeah.stickercamera.R;
 import com.melnykov.fab.FloatingActionButton;
 import com.stickercamera.App;
 import com.stickercamera.AppConstants;

@@ -34,7 +34,7 @@ import com.common.util.ImageLoaderUtils;
 import com.common.util.ImageUtils;
 import com.common.util.StringUtils;
 import com.customview.CameraGrid;
-import com.github.skykai.stickercamera.R;
+import com.yeah.stickercamera.R;
 import com.stickercamera.App;
 import com.stickercamera.AppConstants;
 import com.stickercamera.app.camera.CameraBaseActivity;
