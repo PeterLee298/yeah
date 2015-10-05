@@ -22,6 +22,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.common.util.DataUtils;
 import com.common.util.FileUtils;
+import com.common.util.LogUtil;
 import com.common.util.StringUtils;
 import com.common.util.network.HttpClientUtil;
 import com.customview.LabelView;
@@ -88,34 +89,34 @@ public class MainActivity extends BaseActivity {
         }
 
         RequestParams requestParams = new RequestParams();
-        requestParams.put("stickerId", 201507171);
+        requestParams.put("stickerId", 20150717);
 
-        StickerHttpClient.get("/sticker/info", requestParams,
-                new TypeReference<ResponseData<StickerInfo>>(){}.getType(),
+        StickerHttpClient.post("/sticker/info", requestParams,
+                new TypeReference<ResponseData<StickerInfo>>() {}.getType(),
                 new StickerHttpResponseHandler<StickerInfo>() {
 
-            @Override
-            public void onStart() {
+                    @Override
+                    public void onStart() {
 
-            }
+                    }
 
-            @Override
-            public void onSuccess(StickerInfo response) {
+                    @Override
+                    public void onSuccess(StickerInfo response) {
 
-                Log.e("onSuccess", response.getDescription());
+                        LogUtil.e("onSuccess", response.getDescription());
 
-            }
+                    }
 
-            @Override
-            public void onFailure(String message) {
-                Log.e("onFailure", message);
-            }
+                    @Override
+                    public void onFailure(String message) {
+                        LogUtil.e("onFailure", message);
+                    }
 
-            @Override
-            public void onFinish() {
+                    @Override
+                    public void onFinish() {
 
-            }
-        });
+                    }
+                });
 
 //        HttpClientUtil.getHttpClient().get("http://101.201.169.77/YouryeahApi/sticker/info",
 //                requestParams, new AsyncHttpResponseHandler() {
