@@ -88,7 +88,7 @@ public class MainActivity extends BaseActivity {
         }
 
         RequestParams requestParams = new RequestParams();
-        requestParams.put("stickerId", 20150717);
+        requestParams.put("stickerId", 201507171);
 
         StickerHttpClient.get("/sticker/info", requestParams,
                 new TypeReference<ResponseData<StickerInfo>>(){}.getType(),
