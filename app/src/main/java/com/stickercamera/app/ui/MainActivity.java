@@ -19,10 +19,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.common.util.DataUtils;
 import com.common.util.FileUtils;
 import com.common.util.StringUtils;
+import com.common.util.network.HttpClientUtil;
 import com.customview.LabelView;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+import com.stickercamera.app.http.StickerHttpClient;
+import com.stickercamera.app.http.StickerHttpResponseHandler;
+import com.stickercamera.app.personal.model.ResponseData;
+import com.stickercamera.app.sticker.StickerInfo;
 import com.yeah.stickercamera.R;
 import com.melnykov.fab.FloatingActionButton;
 import com.stickercamera.App;
@@ -33,12 +41,15 @@ import com.stickercamera.app.model.TagItem;
 import com.stickercamera.base.BaseActivity;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import cz.msebera.android.httpclient.Header;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -75,6 +86,67 @@ public class MainActivity extends BaseActivity {
         } else {
             mAdapter.setList(feedList);
         }
+
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("stickerId", 20150717);
+
+        StickerHttpClient.get("/sticker/info", requestParams,
+                new TypeReference<ResponseData<StickerInfo>>(){}.getType(),
+                new StickerHttpResponseHandler<StickerInfo>() {
+
+            @Override
+            public void onStart() {
+
+            }
+
+            @Override
+            public void onSuccess(StickerInfo response) {
+
+                Log.e("onSuccess", response.getDescription());
+
+            }
+
+            @Override
+            public void onFailure(String message) {
+                Log.e("onFailure", message);
+            }
+
+            @Override
+            public void onFinish() {
+
+            }
+        });
+
+//        HttpClientUtil.getHttpClient().get("http://101.201.169.77/YouryeahApi/sticker/info",
+//                requestParams, new AsyncHttpResponseHandler() {
+//
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
+//                String responseString;
+//                try {
+//                    responseString = new String(responseBody, "UTF-8");
+//                } catch (UnsupportedEncodingException e) {
+//                    e.printStackTrace();
+//                    return;
+//                }
+//
+//                ResponseData<StickerInfo> responseData = JSON.parseObject(responseString,
+//                        new TypeReference<ResponseData<StickerInfo>>(){}.getType());
+//
+//                if(responseData == null) {
+//                    return;
+//                }
+//
+//                if(!responseData.isResult()) {
+//                    return;
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+//
+//            }
+//        });
 
     }
 

@@ -115,4 +115,21 @@ public class NetWorkUtils {
                 return false;
         }
     }
+
+    /**
+     * Whether is network available
+     * @param context
+     * @return
+     */
+    public static boolean isNetworkAvailable(Context context){
+
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = cm.getActiveNetworkInfo();
+        if (info == null || !info.isConnected()
+                || info.getState() != NetworkInfo.State.CONNECTED) {
+            return false;
+        }
+
+        return true;
+    }
 }
