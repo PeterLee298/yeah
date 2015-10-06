@@ -2,13 +2,11 @@ package com.stickercamera.app.http;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
-import com.alibaba.fastjson.TypeReference;
 import com.common.util.LogUtil;
 import com.common.util.network.HttpClientUtil;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
-import com.stickercamera.app.personal.model.ResponseData;
-import com.stickercamera.app.sticker.StickerInfo;
+import com.stickercamera.app.model.common.ResponseData;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;

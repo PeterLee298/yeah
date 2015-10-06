@@ -1,4 +1,4 @@
-package com.stickercamera.app.personal.model;
+package com.stickercamera.app.model.common;
 
 /**
  * Created by litingchang on 15-9-25.

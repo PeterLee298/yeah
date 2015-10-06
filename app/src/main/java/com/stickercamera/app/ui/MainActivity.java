@@ -1,37 +1,28 @@
 package com.stickercamera.app.ui;
 
 import android.graphics.BitmapFactory;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.common.util.DataUtils;
-import com.common.util.FileUtils;
 import com.common.util.LogUtil;
 import com.common.util.StringUtils;
-import com.common.util.network.HttpClientUtil;
 import com.customview.LabelView;
-import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.stickercamera.app.http.StickerHttpClient;
 import com.stickercamera.app.http.StickerHttpResponseHandler;
-import com.stickercamera.app.personal.model.ResponseData;
-import com.stickercamera.app.sticker.StickerInfo;
+import com.stickercamera.app.model.common.ResponseData;
+import com.stickercamera.app.model.sticker.StickerInfo;
 import com.yeah.stickercamera.R;
 import com.melnykov.fab.FloatingActionButton;
 import com.stickercamera.App;
@@ -41,16 +32,11 @@ import com.stickercamera.app.model.FeedItem;
 import com.stickercamera.app.model.TagItem;
 import com.stickercamera.base.BaseActivity;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import cz.msebera.android.httpclient.Header;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -88,9 +74,9 @@ public class MainActivity extends BaseActivity {
             mAdapter.setList(feedList);
         }
 
+        LogUtil.e("main", "tid");
         RequestParams requestParams = new RequestParams();
         requestParams.put("stickerId", 20150717);
-
         StickerHttpClient.post("/sticker/info", requestParams,
                 new TypeReference<ResponseData<StickerInfo>>() {}.getType(),
                 new StickerHttpResponseHandler<StickerInfo>() {
@@ -117,37 +103,6 @@ public class MainActivity extends BaseActivity {
 
                     }
                 });
-
-//        HttpClientUtil.getHttpClient().get("http://101.201.169.77/YouryeahApi/sticker/info",
-//                requestParams, new AsyncHttpResponseHandler() {
-//
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-//                String responseString;
-//                try {
-//                    responseString = new String(responseBody, "UTF-8");
-//                } catch (UnsupportedEncodingException e) {
-//                    e.printStackTrace();
-//                    return;
-//                }
-//
-//                ResponseData<StickerInfo> responseData = JSON.parseObject(responseString,
-//                        new TypeReference<ResponseData<StickerInfo>>(){}.getType());
-//
-//                if(responseData == null) {
-//                    return;
-//                }
-//
-//                if(!responseData.isResult()) {
-//                    return;
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-//
-//            }
-//        });
 
     }
 
