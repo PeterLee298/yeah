@@ -72,6 +72,9 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
 
+
+        <meta-data android:value="561520e667e58eb1c000226e" android:name="UMENG_APPKEY"></meta-data>
+        <meta-data android:value="debug" android:name="UMENG_CHANNEL"/>
     </application>
 
 </manifest>

@@ -76,38 +76,6 @@ public class MainActivity extends BaseActivity {
         } else {
             mAdapter.setList(feedList);
         }
-
-        LogUtil.e("main", "tid");
-        RequestParams requestParams = new RequestParams();
-        requestParams.put("stickerId", 20150717);
-        StickerHttpClient.post("/sticker/info", requestParams,
-                new TypeReference<ResponseData<StickerInfo>>() {
-                }.getType(),
-                new StickerHttpResponseHandler<StickerInfo>() {
-
-                    @Override
-                    public void onStart() {
-
-                    }
-
-                    @Override
-                    public void onSuccess(StickerInfo response) {
-
-                        LogUtil.e("onSuccess", response.getDescription());
-
-                    }
-
-                    @Override
-                    public void onFailure(String message) {
-                        LogUtil.e("onFailure", message);
-                    }
-
-                    @Override
-                    public void onFinish() {
-
-                    }
-                });
-
     }
 
 

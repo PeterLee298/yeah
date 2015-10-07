@@ -11,6 +11,7 @@ import android.view.WindowManager;
 
 import com.customview.CommonTitleBar;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.umeng.analytics.MobclickAgent;
 import com.yeah.stickercamera.R;
 
 /**
@@ -29,6 +30,18 @@ public class BaseActivity extends AppCompatActivity implements ActivityResponsab
         mActivityHelper = new ActivityHelper(this);
         initWindow();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @TargetApi(19)
