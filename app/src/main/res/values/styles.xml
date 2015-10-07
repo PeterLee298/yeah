@@ -16,6 +16,11 @@
         <item name="colorPrimary">@color/transparent</item>
     </style>
 
+    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen.Translucent" parent="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowBackground">@color/transparent</item>
+    </style>
+
 
     <style name="RedTheme" parent="AppTheme">
         <item name="colorPrimary">@color/app_base</item>

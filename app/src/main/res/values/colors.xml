@@ -36,6 +36,7 @@
     <color name="light_grey">#ffbebebe</color>
 
 
-
     <color name="splash_btn_text_color">@color/gray</color>
+    <color name="login_bg">#CC000000</color>
+
 </resources>

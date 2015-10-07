@@ -55,6 +55,10 @@ public class LoginActivity extends BaseActivity {
                 LoginActivity.this.finish();
             }
         });
+
+        // TODO
+        loginInputName.setText("15615236548");
+        loginInputPassword.setText("Com2uscn");
     }
 
     @OnClick(R.id.login_btn_login)

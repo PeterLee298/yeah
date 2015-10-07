@@ -60,7 +60,7 @@
 
         <activity android:name="com.stickercamera.app.ui.user.LoginActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen.Translucent"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
 
     </application>
