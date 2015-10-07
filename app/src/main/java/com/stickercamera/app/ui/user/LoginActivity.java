@@ -108,6 +108,7 @@ public class LoginActivity extends BaseActivity {
                     @Override
                     public void onFailure(String message) {
                         LogUtil.e("onFailure", message);
+                        ToastUtil.shortToast(LoginActivity.this, "登录失败：" + message);
                     }
 
                     @Override

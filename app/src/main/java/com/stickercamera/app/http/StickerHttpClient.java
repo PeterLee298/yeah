@@ -45,6 +45,10 @@ public class StickerHttpClient {
                             LogUtil.e(TAG, "onSuccess -> " + e.toString());
                             responseHandler.onFailure("服务器未响应");
                             return;
+                        } catch (NullPointerException e) {
+                            LogUtil.e(TAG, "onFailure -> " + e.toString());
+                            responseHandler.onFailure("服务器异常，请稍候重试");
+                            return;
                         }
 
                         LogUtil.d(TAG, "onSuccess -> " + "response:" + responseString);
@@ -87,6 +91,10 @@ public class StickerHttpClient {
                             LogUtil.e(TAG, "onFailure -> " + e.toString());
                             responseHandler.onFailure("服务器未响应");
                             return;
+                        } catch (NullPointerException e) {
+                            LogUtil.e(TAG, "onFailure -> " + e.toString());
+                            responseHandler.onFailure("服务器异常，请稍候重试");
+                            return;
                         }
 
                         responseHandler.onFailure("code:" + statusCode + "msg:" + responseString);
@@ -122,6 +130,10 @@ public class StickerHttpClient {
                         } catch (UnsupportedEncodingException e) {
                             LogUtil.e(TAG, "onSuccess -> " + e.toString());
                             responseHandler.onFailure("服务器未响应");
+                            return;
+                        } catch (NullPointerException e) {
+                            LogUtil.e(TAG, "onFailure -> " + e.toString());
+                            responseHandler.onFailure("服务器异常，请稍候重试");
                             return;
                         }
 
@@ -163,7 +175,11 @@ public class StickerHttpClient {
                             responseString = new String(responseBody, "UTF-8");
                         } catch (UnsupportedEncodingException e) {
                             LogUtil.e(TAG, "onFailure -> " + e.toString());
-                            responseHandler.onFailure("服务器未响应");
+                            responseHandler.onFailure("服务器异常，请稍候重试");
+                            return;
+                        } catch (NullPointerException e) {
+                            LogUtil.e(TAG, "onFailure -> " + e.toString());
+                            responseHandler.onFailure("服务器异常，请稍候重试");
                             return;
                         }
 
