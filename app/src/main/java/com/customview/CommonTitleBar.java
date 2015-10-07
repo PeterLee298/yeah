@@ -24,6 +24,7 @@ public class CommonTitleBar extends RelativeLayout {
     // 防重复点击时间
     private static final int BTN_LIMIT_TIME = 500;
 
+    private View             bg;
     private TextView         leftButton;
     private ImageView        leftButtonImg;
     private TextView         middleButton;
@@ -35,6 +36,7 @@ public class CommonTitleBar extends RelativeLayout {
     private String           titleTxtStr;
     private String           rightBtnStr;
     private int              rightBtnIconId;
+    private int              bgColorId;
 
     private String           bgStyle;             //RED,WHITE 默认RED.红底与白底的
 
@@ -52,13 +54,13 @@ public class CommonTitleBar extends RelativeLayout {
         rightBtnStr = arr.getString(R.styleable.CommonTitleBar_rightBtnTxt);
         rightBtnIconId = arr.getResourceId(R.styleable.CommonTitleBar_rightBtnIcon, 0);
         bgStyle = arr.getString(R.styleable.CommonTitleBar_baseStyle);
+        bgColorId = arr.getResourceId(R.styleable.CommonTitleBar_bgColor, R.color.app_base);
         if (isInEditMode()) {
             LayoutInflater.from(context).inflate(R.layout.view_title_bar, this);
             return;
         }
 
         LayoutInflater.from(context).inflate(R.layout.view_title_bar, this);
-//        findViewById(R.id.title_out_frame).setBackgroundResource(R.color.pink);
         arr.recycle();
     }
 
@@ -66,11 +68,14 @@ public class CommonTitleBar extends RelativeLayout {
         if (isInEditMode()) {
             return;
         }
+        bg = findViewById(R.id.title_out_frame);
         leftButtonImg = (ImageView) findViewById(R.id.title_left_btn);
         leftButton = (TextView) findViewById(R.id.title_left);
         middleButton = (TextView) findViewById(R.id.title_middle);
         rightButtonImg = (ImageView) findViewById(R.id.title_right_btn);
         rightButton = (TextView) findViewById(R.id.title_right);
+
+        bg.setBackgroundColor(getResources().getColor(bgColorId));
 
         if (leftBtnIconId != 0) {
             leftButtonImg.setImageResource(leftBtnIconId);

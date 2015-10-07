@@ -1,5 +1,7 @@
 package com.stickercamera.app.ui;
 
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -23,6 +25,7 @@ import com.stickercamera.app.http.StickerHttpClient;
 import com.stickercamera.app.http.StickerHttpResponseHandler;
 import com.stickercamera.app.model.common.ResponseData;
 import com.stickercamera.app.model.sticker.StickerInfo;
+import com.stickercamera.app.ui.user.LoginActivity;
 import com.yeah.stickercamera.R;
 import com.melnykov.fab.FloatingActionButton;
 import com.stickercamera.App;
@@ -78,7 +81,8 @@ public class MainActivity extends BaseActivity {
         RequestParams requestParams = new RequestParams();
         requestParams.put("stickerId", 20150717);
         StickerHttpClient.post("/sticker/info", requestParams,
-                new TypeReference<ResponseData<StickerInfo>>() {}.getType(),
+                new TypeReference<ResponseData<StickerInfo>>() {
+                }.getType(),
                 new StickerHttpResponseHandler<StickerInfo>() {
 
                     @Override
@@ -236,6 +240,11 @@ public class MainActivity extends BaseActivity {
             super(itemView);
             ButterKnife.inject(this, itemView);
         }
+    }
+
+    public static void launch(Context context) {
+        Intent intent = new Intent(context, MainActivity.class);
+        context.startActivity(intent);
     }
 
 }

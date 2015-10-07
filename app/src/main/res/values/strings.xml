@@ -2,4 +2,8 @@
     <string name="app_name">Yeah</string>
 
     <string name="action_settings">设置</string>
+
+
+    <string name="login_forget_password"><u>忘记密码</u></string>
+
 </resources>

@@ -42,7 +42,7 @@
         android:layout_marginRight="@dimen/margin_20px"
         android:layout_marginTop="@dimen/margin_20px"
         android:gravity="center"
-        android:text="贴纸相机"
+        android:text="Yeah"
         android:textColor="@color/white"
         android:textSize="@dimen/txt_size_36px" />
 

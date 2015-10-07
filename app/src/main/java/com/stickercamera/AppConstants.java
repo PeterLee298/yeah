@@ -29,4 +29,7 @@ public class AppConstants {
     public static final int REQUEST_PICK = 9162;
     public static final int RESULT_ERROR = 404;
 
+    public static final String APP_KEY = "7cf0536ee029c2d30ab730a067eb5703";
+    public static final String APP_ID = "20111104";
+
 }
