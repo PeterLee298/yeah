@@ -60,7 +60,8 @@ public class RegistActivity extends BaseActivity {
             return;
         }
 
-        String passwordConfirm = StringUtils.deleteWhitespace(registerInputPasswordConfirm.getText().toString());
+        String passwordConfirm = StringUtils.deleteWhitespace(
+                registerInputPasswordConfirm.getText().toString());
         if(StringUtils.isEmpty(passwordConfirm)) {
             ToastUtil.shortToast(this, "请输再次入登录密码，不可包含空格");
             return;
