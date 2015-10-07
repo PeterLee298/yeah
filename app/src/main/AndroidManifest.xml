@@ -63,6 +63,15 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen.Translucent"
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
 
+        <activity android:name="com.stickercamera.app.ui.user.RegistActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen.Translucent"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+
+        <activity android:name="com.stickercamera.app.ui.user.BindActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+
     </application>
 
 </manifest>

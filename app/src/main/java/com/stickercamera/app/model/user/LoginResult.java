@@ -2,6 +2,8 @@ package com.stickercamera.app.model.user;
 
 /**
  * Created by litingchang on 15-10-7.
+ * 适用 登录、注册返回结果
+ *
  */
 public class LoginResult {
 

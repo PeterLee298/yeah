@@ -1,10 +1,8 @@
 package com.stickercamera.app.ui.user;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -18,7 +16,6 @@ import com.stickercamera.app.http.StickerHttpClient;
 import com.stickercamera.app.http.StickerHttpResponseHandler;
 import com.stickercamera.app.manager.UserInfoManager;
 import com.stickercamera.app.model.common.ResponseData;
-import com.stickercamera.app.model.sticker.StickerInfo;
 import com.stickercamera.app.model.user.LoginResult;
 import com.stickercamera.app.ui.MainActivity;
 import com.stickercamera.base.BaseActivity;
@@ -26,52 +23,51 @@ import com.yeah.stickercamera.R;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 
 /**
- * Created by litingchang on 15-10-6.
+ * Created by litingchang on 15-10-7.
  */
-public class LoginActivity extends BaseActivity {
+public class RegistActivity extends BaseActivity {
 
-    @InjectView(R.id.login_input_name)
-    EditText loginInputName;
-    @InjectView(R.id.login_input_password)
-    EditText loginInputPassword;
-    @InjectView(R.id.login_btn_login)
-    TextView loginBtnLogin;
-    @InjectView(R.id.login_forget_password)
-    TextView loginForgetPassword;
+    @InjectView(R.id.register_input_name)
+    EditText registerInputName;
+    @InjectView(R.id.register_input_password)
+    EditText registerInputPassword;
+    @InjectView(R.id.register_input_password_confirm)
+    EditText registerInputPasswordConfirm;
+    @InjectView(R.id.register_btn_register)
+    TextView registerBtnRegister;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_regist);
         ButterKnife.inject(this);
-
-        titleBar.setLeftBtnOnclickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LoginActivity.this.finish();
-            }
-        });
-
-        // TODO
-        loginInputName.setText("15615236548");
-        loginInputPassword.setText("Com2uscn");
     }
 
-    @OnClick(R.id.login_btn_login)
-    public void login() {
-        String phoneNumber = StringUtils.deleteWhitespace(loginInputName.getText().toString());
+    @OnClick(R.id.register_btn_register)
+    public void register() {
+        String phoneNumber = StringUtils.deleteWhitespace(registerInputName.getText().toString());
         if(StringUtils.isEmpty(phoneNumber)) {
-            ToastUtil.shortToast(this, "请输入用户名，不可包含空格");
+            ToastUtil.shortToast(this, "请输入手机号，不可包含空格");
             return;
         }
 
-        String password = StringUtils.deleteWhitespace(loginInputPassword.getText().toString());
+        String password = StringUtils.deleteWhitespace(registerInputPassword.getText().toString());
         if(StringUtils.isEmpty(password)) {
             ToastUtil.shortToast(this, "请输入登录密码，不可包含空格");
+            return;
+        }
+
+        String passwordConfirm = StringUtils.deleteWhitespace(registerInputPasswordConfirm.getText().toString());
+        if(StringUtils.isEmpty(passwordConfirm)) {
+            ToastUtil.shortToast(this, "请输再次入登录密码，不可包含空格");
+            return;
+        }
+
+        if(!StringUtils.equals(password, passwordConfirm)) {
+            ToastUtil.shortToast(this, "密码不一致，请确认！");
             return;
         }
 
@@ -80,14 +76,15 @@ public class LoginActivity extends BaseActivity {
         requestParams.put("appKey", AppConstants.APP_KEY);
         requestParams.put("phone", phoneNumber);
         requestParams.put("password", password);
-        StickerHttpClient.post("/account/user/login", requestParams,
+        requestParams.put("confirmPassword", passwordConfirm);
+        StickerHttpClient.post("/account/user/register", requestParams,
                 new TypeReference<ResponseData<LoginResult>>() {
                 }.getType(),
                 new StickerHttpResponseHandler<LoginResult>() {
 
                     @Override
                     public void onStart() {
-                        showProgressDialog("登录中...");
+                        showProgressDialog("注册中...");
                     }
 
                     @Override
@@ -99,15 +96,17 @@ public class LoginActivity extends BaseActivity {
                         UserInfoManager.saveUserId(loginResult.getUserId());
 
                         // TODO 登录成功后的处理
-                        ToastUtil.shortToast(LoginActivity.this, "登录成功");
-                        MainActivity.launch(LoginActivity.this);
+                        ToastUtil.shortToast(RegistActivity.this, "注册成功");
+                        MainActivity.launch(RegistActivity.this);
 
-                        LoginActivity.this.finish();
+                        RegistActivity.this.finish();
                     }
 
                     @Override
                     public void onFailure(String message) {
                         LogUtil.e("onFailure", message);
+                        ToastUtil.shortToast(RegistActivity.this, "注册失败：" + message
+                            + "\n请稍候重试");
                     }
 
                     @Override
@@ -115,16 +114,10 @@ public class LoginActivity extends BaseActivity {
                         dismissProgressDialog();
                     }
                 });
-
-    }
-
-    @OnClick(R.id.login_forget_password)
-    public void resetPassword() {
-
     }
 
     public static void launch(Context context) {
-        Intent intent = new Intent(context, LoginActivity.class);
+        Intent intent = new Intent(context, RegistActivity.class);
         context.startActivity(intent);
     }
 }

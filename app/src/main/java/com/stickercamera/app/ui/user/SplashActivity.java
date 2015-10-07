@@ -54,13 +54,11 @@ public class SplashActivity extends BaseActivity {
 
     @OnClick(R.id.splash_bind)
     public void bind() {
-
+        BindActivity.launch(SplashActivity.this);
     }
 
     @OnClick(R.id.splash_regist)
     public void regist() {
-
+        RegistActivity.launch(SplashActivity.this);
     }
-
-
 }

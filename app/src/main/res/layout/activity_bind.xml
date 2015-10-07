@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bind_bg">
+
+
+    <!--<com.customview.CommonTitleBar
+        android:id="@+id/title_layout"
+        style="@style/head_default"
+        app:bgColor="@color/transparent"
+        app:leftBtnIcon="@drawable/back"
+        app:titleTxt="绑定" />
+
+    <View style="@style/line_horizontal_style" />-->
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerInParent="true">
+
+        <TextView android:id="@+id/bind_weibo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="微博"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:drawableTop="@drawable/ic_bind_weibo"
+            android:drawablePadding="4dp"/>
+
+        <TextView android:id="@+id/bind_weixin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="67.7dp"
+            android:layout_marginRight="67.7dp"
+            android:gravity="center"
+            android:text="微信"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:drawableTop="@drawable/ic_bind_weixin"
+            android:drawablePadding="4dp"/>
+
+        <TextView android:id="@+id/bind_qq"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="QQ"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:drawableTop="@drawable/ic_bind_qq"
+            android:drawablePadding="4dp"/>
+
+    </LinearLayout>
+
+</RelativeLayout>
