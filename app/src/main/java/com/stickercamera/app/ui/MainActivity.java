@@ -3,6 +3,7 @@ package com.stickercamera.app.ui;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,8 @@ import android.widget.RelativeLayout;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
+import com.alibaba.fastjson.serializer.SerializeConfig;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.common.util.DataUtils;
 import com.common.util.LogUtil;
 import com.common.util.StringUtils;
@@ -35,6 +38,7 @@ import com.stickercamera.app.model.FeedItem;
 import com.stickercamera.app.model.TagItem;
 import com.stickercamera.base.BaseActivity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -75,6 +79,31 @@ public class MainActivity extends BaseActivity {
             CameraManager.getInst().openCamera(MainActivity.this);
         } else {
             mAdapter.setList(feedList);
+        }
+
+
+        List<A> strings = new ArrayList<A>();
+        strings.add(new A(1, "a"));
+        strings.add(new A(2, "b"));
+        strings.add(new A(3, "c"));
+        strings.add(new A(4, "d"));
+
+        SerializeConfig mapping = new SerializeConfig();
+//        mapping.put()
+//        mapping.setAsmEnable(false);
+//
+//        LogUtil.e("aaaaaa", JSON.toJSONString(strings, mapping, SerializerFeature.WriteMapNullValue));
+
+        String jsonString = JSON.toJSONString(strings)
+        LogUtil.e("aaaaaa", );
+    }
+
+    class A {
+        public int i;
+        public String s;
+        public A(int i, String s) {
+            this.i = i;
+            this.s = s;
         }
     }
 

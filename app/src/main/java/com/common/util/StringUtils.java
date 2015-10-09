@@ -2139,7 +2139,7 @@ public class StringUtils {
      * @since 1.5.1
      */
     public static String quoteAndEscape(String source, char quoteChar) {
-        return quoteAndEscape(source, quoteChar, new char[] { quoteChar }, new char[] { ' ' },
+        return quoteAndEscape(source, quoteChar, new char[]{quoteChar}, new char[]{' '},
                 '\\', false);
     }
 
@@ -2406,5 +2406,9 @@ public class StringUtils {
         Matcher m = p.matcher(mobiles);
 
         return m.matches();
+    }
+
+    public static String makeSafe(String s) {
+        return s == null ? "" : s;
     }
 }

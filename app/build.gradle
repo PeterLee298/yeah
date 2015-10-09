@@ -30,6 +30,7 @@ dependencies {
     compile project(":Gpu-Image")
     compile project(":ImageViewTouch")
     compile files('libs/fastjson-1.2.5.jar')
+    compile 'com.facebook.fresco:fresco:0.6.0+'
     compile files('universal-image-loader-1.9.4.jar')
     compile 'com.android.support:appcompat-v7:22.2.+'
     compile 'com.android.support:recyclerview-v7:22.2.+'
