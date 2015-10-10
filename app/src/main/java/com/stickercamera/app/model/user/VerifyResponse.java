@@ -1,10 +1,12 @@
 package com.stickercamera.app.model.user;
 
+import java.io.Serializable;
+
 /**
  * Created by litingchang on 15-10-10.
  * 验证码返回结果
  */
-public class VerifyResponse {
+public class VerifyResponse implements Serializable{
     /**
      * id : 158
      * code : 501665

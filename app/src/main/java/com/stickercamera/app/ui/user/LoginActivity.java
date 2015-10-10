@@ -20,9 +20,12 @@ import com.stickercamera.app.manager.UserInfoManager;
 import com.stickercamera.app.model.common.ResponseData;
 import com.stickercamera.app.model.sticker.StickerInfo;
 import com.stickercamera.app.model.user.LoginResult;
+import com.stickercamera.app.model.user.VerifyResponse;
 import com.stickercamera.app.ui.MainActivity;
 import com.stickercamera.base.BaseActivity;
 import com.yeah.stickercamera.R;
+
+import org.apache.commons.logging.Log;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -33,6 +36,9 @@ import butterknife.OnClick;
  * Created by litingchang on 15-10-6.
  */
 public class LoginActivity extends BaseActivity {
+
+    private VerifyResponse mVerifyResponse;
+
 
     @InjectView(R.id.login_input_name)
     EditText loginInputName;
@@ -57,8 +63,8 @@ public class LoginActivity extends BaseActivity {
         });
 
         // TODO
-        loginInputName.setText("15615236548");
-        loginInputPassword.setText("Com2uscn");
+        loginInputName.setText("17091088678");
+        loginInputPassword.setText("000321");
     }
 
     @OnClick(R.id.login_btn_login)
@@ -121,7 +127,47 @@ public class LoginActivity extends BaseActivity {
 
     @OnClick(R.id.login_forget_password)
     public void resetPassword() {
+        String phoneNumber = StringUtils.deleteWhitespace(loginInputName.getText().toString());
+        if(StringUtils.isEmpty(phoneNumber)) {
+            ToastUtil.shortToast(this, "请输入用户名，不可包含空格");
+            return;
+        }
 
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("appId", AppConstants.APP_ID);
+        requestParams.put("appKey", AppConstants.APP_KEY);
+        requestParams.put("phone", phoneNumber);
+        StickerHttpClient.post("/account/verify/request", requestParams,
+                new TypeReference<ResponseData<VerifyResponse>>() {
+                }.getType(),
+                new StickerHttpResponseHandler<VerifyResponse>() {
+
+                    @Override
+                    public void onStart() {
+                        showProgressDialog("验证码发送中...");
+                    }
+
+                    @Override
+                    public void onSuccess(VerifyResponse verifyResponse) {
+                        // TODO 验证码
+                        mVerifyResponse = verifyResponse;
+                        ToastUtil.longToast(LoginActivity.this, "验证码发送成功:" + verifyResponse.getCode());
+
+                        VerifyActivity.launch(LoginActivity.this, phoneNumber, mVerifyResponse);
+                    }
+
+                    @Override
+                    public void onFailure(String message) {
+                        LogUtil.e("onFailure", message);
+                        ToastUtil.shortToast(LoginActivity.this, "验证码发送失败：" + message
+                                + "\n请稍候重试");
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        dismissProgressDialog();
+                    }
+                });
     }
 
     public static void launch(Context context) {

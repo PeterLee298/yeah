@@ -72,6 +72,10 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
 
+        <activity android:name="com.stickercamera.app.ui.user.VerifyActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen.Translucent"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
 
         <!-- umeng -->
         <meta-data android:value="561520e667e58eb1c000226e" android:name="UMENG_APPKEY"></meta-data>
