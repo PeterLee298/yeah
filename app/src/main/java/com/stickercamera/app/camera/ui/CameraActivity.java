@@ -13,6 +13,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.widget.DrawerLayout;
 import android.util.FloatMath;
 import android.util.Log;
 import android.view.Gravity;
@@ -34,13 +35,13 @@ import com.common.util.ImageLoaderUtils;
 import com.common.util.ImageUtils;
 import com.common.util.StringUtils;
 import com.customview.CameraGrid;
-import com.yeah.stickercamera.R;
 import com.stickercamera.App;
 import com.stickercamera.AppConstants;
 import com.stickercamera.app.camera.CameraBaseActivity;
 import com.stickercamera.app.camera.CameraManager;
 import com.stickercamera.app.camera.util.CameraHelper;
 import com.stickercamera.app.model.PhotoItem;
+import com.yeah.stickercamera.R;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -61,6 +62,8 @@ import butterknife.InjectView;
  */
 public class CameraActivity extends CameraBaseActivity {
 
+
+
     private CameraHelper mCameraHelper;
     private Camera.Parameters parameters = null;
     private Camera cameraInst = null;
@@ -79,8 +82,8 @@ public class CameraActivity extends CameraBaseActivity {
 
     @InjectView(R.id.masking)
     CameraGrid cameraGrid;
-    @InjectView(R.id.photo_area)
-    LinearLayout photoArea;
+//    @InjectView(R.id.photo_area)
+//    LinearLayout photoArea;
     @InjectView(R.id.panel_take_photo)
     View takePhotoPanel;
     @InjectView(R.id.takepicture)
@@ -97,6 +100,10 @@ public class CameraActivity extends CameraBaseActivity {
     View focusIndex;
     @InjectView(R.id.surfaceView)
     SurfaceView surfaceView;
+    @InjectView(R.id.drawer_layout)
+    DrawerLayout drawerLayout;
+    @InjectView(R.id.drawerBtn)
+    ImageView drawerBtn;
 
 
     @Override
@@ -118,55 +125,60 @@ public class CameraActivity extends CameraBaseActivity {
         surfaceView.getHolder().addCallback(new SurfaceCallback());//为SurfaceView的句柄添加一个回调函数
 
         //设置相机界面,照片列表,以及拍照布局的高度(保证相机预览为正方形)
-        ViewGroup.LayoutParams layout = cameraGrid.getLayoutParams();
-        layout.height = App.getApp().getScreenWidth();
-        layout = photoArea.getLayoutParams();
-        layout.height = DistanceUtil.getCameraPhotoAreaHeight();
-        layout = takePhotoPanel.getLayoutParams();
-        layout.height = App.getApp().getScreenHeight()
-                - App.getApp().getScreenWidth()
-                - DistanceUtil.getCameraPhotoAreaHeight();
+//        ViewGroup.LayoutParams layout = cameraGrid.getLayoutParams();
+//        layout.height = App.getApp().getScreenWidth();
+//        layout = photoArea.getLayoutParams();
+//        layout.height = DistanceUtil.getCameraPhotoAreaHeight();
+//        layout = takePhotoPanel.getLayoutParams();
+//        layout.height = App.getApp().getScreenHeight()
+//                - App.getApp().getScreenWidth()
+//                - DistanceUtil.getCameraPhotoAreaHeight();
 
         //添加系统相册内的图片
-        ArrayList<PhotoItem> sysPhotos = FileUtils.getInst().findPicsInDir(
-                FileUtils.getInst().getSystemPhotoPath());
-        int showNumber = sysPhotos.size() > photoNumber ? photoNumber
-                : sysPhotos.size();
-        for (int i = 0; i < showNumber; i++) {
-            addPhoto(sysPhotos.get(showNumber - 1 - i));
-        }
+//        ArrayList<PhotoItem> sysPhotos = FileUtils.getInst().findPicsInDir(
+//                FileUtils.getInst().getSystemPhotoPath());
+//        int showNumber = sysPhotos.size() > photoNumber ? photoNumber
+//                : sysPhotos.size();
+//        for (int i = 0; i < showNumber; i++) {
+//            addPhoto(sysPhotos.get(showNumber - 1 - i));
+//        }
     }
 
-    private void addPhoto(PhotoItem photoItem) {
-        ImageView photo = new ImageView(this);
-        if (StringUtils.isNotBlank(photoItem.getImageUri())) {
-            ImageLoaderUtils.displayLocalImage(photoItem.getImageUri(), photo, null);
-        } else {
-            photo.setImageResource(R.drawable.default_img);
-        }
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                photoWidth, photoWidth);
-        params.leftMargin = photoMargin;
-        params.rightMargin = photoMargin;
-        params.gravity = Gravity.CENTER;
-        photo.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        photo.setTag(photoItem.getImageUri());
-
-        if (photoArea.getChildCount() >= photoNumber) {
-            photoArea.removeViewAt(photoArea.getChildCount() - 1);
-            photoArea.addView(photo, 0, params);
-        } else {
-            photoArea.addView(photo, 0, params);
-        }
-        photo.setOnClickListener(v -> {
-            if (v instanceof ImageView && v.getTag() instanceof String) {
-                CameraManager.getInst().processPhotoItem(CameraActivity.this,
-                        new PhotoItem((String) v.getTag(), System.currentTimeMillis()));
-            }
-        });
-    }
+//    private void addPhoto(PhotoItem photoItem) {
+//        ImageView photo = new ImageView(this);
+//        if (StringUtils.isNotBlank(photoItem.getImageUri())) {
+//            ImageLoaderUtils.displayLocalImage(photoItem.getImageUri(), photo, null);
+//        } else {
+//            photo.setImageResource(R.drawable.default_img);
+//        }
+//        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+//                photoWidth, photoWidth);
+//        params.leftMargin = photoMargin;
+//        params.rightMargin = photoMargin;
+//        params.gravity = Gravity.CENTER;
+//        photo.setScaleType(ImageView.ScaleType.CENTER_CROP);
+//        photo.setTag(photoItem.getImageUri());
+//
+//        if (photoArea.getChildCount() >= photoNumber) {
+//            photoArea.removeViewAt(photoArea.getChildCount() - 1);
+//            photoArea.addView(photo, 0, params);
+//        } else {
+//            photoArea.addView(photo, 0, params);
+//        }
+//        photo.setOnClickListener(v -> {
+//            if (v instanceof ImageView && v.getTag() instanceof String) {
+//                CameraManager.getInst().processPhotoItem(CameraActivity.this,
+//                        new PhotoItem((String) v.getTag(), System.currentTimeMillis()));
+//            }
+//        });
+//    }
 
     private void initEvent() {
+
+        drawerBtn.setOnClickListener(v -> {
+            drawerLayout.openDrawer(Gravity.LEFT);
+        });
+
         //拍照
         takePicture.setOnClickListener(v -> {
             try {
@@ -389,8 +401,8 @@ public class CameraActivity extends CameraBaseActivity {
 
             if (StringUtils.isNotEmpty(result)) {
                 dismissProgressDialog();
-                    CameraManager.getInst().processPhotoItem(CameraActivity.this,
-                            new PhotoItem(result, System.currentTimeMillis()));
+                CameraManager.getInst().processPhotoItem(CameraActivity.this,
+                        new PhotoItem(result, System.currentTimeMillis()));
             } else {
                 toast("拍照失败，请稍后重试！", Toast.LENGTH_LONG);
             }
