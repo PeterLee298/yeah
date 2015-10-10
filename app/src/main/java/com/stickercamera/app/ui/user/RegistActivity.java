@@ -17,6 +17,7 @@ import com.stickercamera.app.http.StickerHttpResponseHandler;
 import com.stickercamera.app.manager.UserInfoManager;
 import com.stickercamera.app.model.common.ResponseData;
 import com.stickercamera.app.model.user.LoginResult;
+import com.stickercamera.app.model.user.VerifyResponse;
 import com.stickercamera.app.ui.MainActivity;
 import com.stickercamera.base.BaseActivity;
 import com.yeah.stickercamera.R;
@@ -38,6 +39,13 @@ public class RegistActivity extends BaseActivity {
     EditText registerInputPasswordConfirm;
     @InjectView(R.id.register_btn_register)
     TextView registerBtnRegister;
+    @InjectView(R.id.register_input_verify)
+    EditText registerInputVerify;
+    @InjectView(R.id.register_btn_verify)
+    TextView registerBtnVerify;
+
+    private VerifyResponse mVerifyResponse;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,28 +54,85 @@ public class RegistActivity extends BaseActivity {
         ButterKnife.inject(this);
     }
 
-    @OnClick(R.id.register_btn_register)
-    public void register() {
+    @OnClick(R.id.register_btn_verify)
+    public void verify() {
         String phoneNumber = StringUtils.deleteWhitespace(registerInputName.getText().toString());
-        if(StringUtils.isEmpty(phoneNumber)) {
+        if (StringUtils.isEmpty(phoneNumber)) {
             ToastUtil.shortToast(this, "请输入手机号，不可包含空格");
             return;
         }
 
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("appId", AppConstants.APP_ID);
+        requestParams.put("appKey", AppConstants.APP_KEY);
+        requestParams.put("phone", phoneNumber);
+        StickerHttpClient.post("/account/verify/request/register", requestParams,
+                new TypeReference<ResponseData<VerifyResponse>>() {
+                }.getType(),
+                new StickerHttpResponseHandler<VerifyResponse>() {
+
+                    @Override
+                    public void onStart() {
+                        showProgressDialog("验证码发送中...");
+                    }
+
+                    @Override
+                    public void onSuccess(VerifyResponse verifyResponse) {
+                        // TODO 验证码
+                        mVerifyResponse = verifyResponse;
+                        ToastUtil.longToast(RegistActivity.this, "验证码发送成功:" + verifyResponse.getCode());
+                    }
+
+                    @Override
+                    public void onFailure(String message) {
+                        LogUtil.e("onFailure", message);
+                        ToastUtil.shortToast(RegistActivity.this, "验证码发送失败：" + message
+                                + "\n请稍候重试");
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        dismissProgressDialog();
+                    }
+                });
+
+    }
+
+    @OnClick(R.id.register_btn_register)
+    public void register() {
+        String phoneNumber = StringUtils.deleteWhitespace(registerInputName.getText().toString());
+        if (StringUtils.isEmpty(phoneNumber)) {
+            ToastUtil.shortToast(this, "请输入手机号，不可包含空格");
+            return;
+        }
+
+        if(mVerifyResponse == null) {
+            ToastUtil.shortToast(this, "尚未进行手机验证，请点击获取验证码");
+            return;
+        }
+
+        String verifyCode = StringUtils.deleteWhitespace(registerInputVerify.getText().toString());
+        if (StringUtils.isEmpty(verifyCode)) {
+            ToastUtil.shortToast(this, "请输入验证码，不可包含空格");
+            return;
+        }
+
+
+
         String password = StringUtils.deleteWhitespace(registerInputPassword.getText().toString());
-        if(StringUtils.isEmpty(password)) {
+        if (StringUtils.isEmpty(password)) {
             ToastUtil.shortToast(this, "请输入登录密码，不可包含空格");
             return;
         }
 
         String passwordConfirm = StringUtils.deleteWhitespace(
                 registerInputPasswordConfirm.getText().toString());
-        if(StringUtils.isEmpty(passwordConfirm)) {
+        if (StringUtils.isEmpty(passwordConfirm)) {
             ToastUtil.shortToast(this, "请输再次入登录密码，不可包含空格");
             return;
         }
 
-        if(!StringUtils.equals(password, passwordConfirm)) {
+        if (!StringUtils.equals(password, passwordConfirm)) {
             ToastUtil.shortToast(this, "密码不一致，请确认！");
             return;
         }
@@ -78,6 +143,9 @@ public class RegistActivity extends BaseActivity {
         requestParams.put("phone", phoneNumber);
         requestParams.put("password", password);
         requestParams.put("confirmPassword", passwordConfirm);
+        requestParams.put("verifyCode", verifyCode);
+        requestParams.put("verifyId", mVerifyResponse.getId());
+
         StickerHttpClient.post("/account/user/register", requestParams,
                 new TypeReference<ResponseData<LoginResult>>() {
                 }.getType(),
@@ -107,7 +175,7 @@ public class RegistActivity extends BaseActivity {
                     public void onFailure(String message) {
                         LogUtil.e("onFailure", message);
                         ToastUtil.shortToast(RegistActivity.this, "注册失败：" + message
-                            + "\n请稍候重试");
+                                + "\n请确认后重试");
                     }
 
                     @Override
