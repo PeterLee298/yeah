@@ -9,15 +9,17 @@ public class UserInfo {
     /**
      * id : 20111106
      * phone : 15615236548
-     * email : asdf
-     * name : sssss
-     * nickname : aaaaa
-     * avatar : asfdasdfa
+     * email : 11111111
+     * name : 1111111
+     * nickname : 1111111111
+     * avatar : 1111111
+     * birthday : 1440465912000
+     * horoscope : 23
      * deviceId : 0
      * ownerId : 5
      * state : 0
      * createdAt : 1442845040000
-     * updatedAt : 1444219879000
+     * updatedAt : 1444405217000
      */
 
     private int id;
@@ -26,6 +28,8 @@ public class UserInfo {
     private String name;
     private String nickname;
     private String avatar;
+    private long birthday;
+    private int horoscope;
     private int deviceId;
     private int ownerId;
     private int state;
@@ -54,6 +58,14 @@ public class UserInfo {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public void setBirthday(long birthday) {
+        this.birthday = birthday;
+    }
+
+    public void setHoroscope(int horoscope) {
+        this.horoscope = horoscope;
     }
 
     public void setDeviceId(int deviceId) {
@@ -98,6 +110,14 @@ public class UserInfo {
 
     public String getAvatar() {
         return avatar;
+    }
+
+    public long getBirthday() {
+        return birthday;
+    }
+
+    public int getHoroscope() {
+        return horoscope;
     }
 
     public int getDeviceId() {

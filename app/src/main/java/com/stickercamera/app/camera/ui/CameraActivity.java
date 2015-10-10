@@ -21,17 +21,16 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.common.util.DistanceUtil;
 import com.common.util.FileUtils;
 import com.common.util.IOUtil;
-import com.common.util.ImageLoaderUtils;
 import com.common.util.ImageUtils;
 import com.common.util.StringUtils;
 import com.customview.CameraGrid;
@@ -40,7 +39,9 @@ import com.stickercamera.AppConstants;
 import com.stickercamera.app.camera.CameraBaseActivity;
 import com.stickercamera.app.camera.CameraManager;
 import com.stickercamera.app.camera.util.CameraHelper;
+import com.stickercamera.app.manager.UserInfoManager;
 import com.stickercamera.app.model.PhotoItem;
+import com.stickercamera.app.ui.user.UserInfoActivity;
 import com.yeah.stickercamera.R;
 
 import java.io.ByteArrayInputStream;
@@ -55,6 +56,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 /**
  * 相机界面
@@ -82,7 +84,7 @@ public class CameraActivity extends CameraBaseActivity {
 
     @InjectView(R.id.masking)
     CameraGrid cameraGrid;
-//    @InjectView(R.id.photo_area)
+    //    @InjectView(R.id.photo_area)
 //    LinearLayout photoArea;
     @InjectView(R.id.panel_take_photo)
     View takePhotoPanel;
@@ -105,6 +107,17 @@ public class CameraActivity extends CameraBaseActivity {
     @InjectView(R.id.drawerBtn)
     ImageView drawerBtn;
 
+    //
+    @InjectView(R.id.drawer_camera)
+    LinearLayout drawerCamera;
+    @InjectView(R.id.drawer_user_home)
+    LinearLayout drawerUserHome;
+    @InjectView(R.id.drawer_message)
+    LinearLayout drawerMessage;
+    @InjectView(R.id.drawer_setting)
+    LinearLayout drawerSetting;
+    @InjectView(R.id.userNickName)
+    TextView userNickName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,6 +127,7 @@ public class CameraActivity extends CameraBaseActivity {
         ButterKnife.inject(this);
         initView();
         initEvent();
+        initData();
     }
 
     private void initView() {
@@ -272,6 +286,34 @@ public class CameraActivity extends CameraBaseActivity {
             //doNothing 防止聚焦框出现在拍照区域
         });
 
+    }
+
+    private void initData() {
+        if(UserInfoManager.isLogin()) {
+            userNickName.setText(UserInfoManager.getName());
+        }
+    }
+
+
+    @OnClick(R.id.drawer_camera)
+    public void drawerCamera() {
+        drawerLayout.closeDrawer(Gravity.LEFT);
+    }
+
+    @OnClick(R.id.drawer_user_home)
+    public void drawerUserHome() {
+        UserInfoActivity.launch(CameraActivity.this);
+        drawerLayout.closeDrawer(Gravity.LEFT);
+    }
+
+    @OnClick(R.id.drawer_message)
+    public void drawerMessage() {
+        drawerLayout.closeDrawer(Gravity.LEFT);
+    }
+
+    @OnClick(R.id.drawer_setting)
+    public void drawerSeting() {
+        drawerLayout.closeDrawer(Gravity.LEFT);
     }
 
     @Override

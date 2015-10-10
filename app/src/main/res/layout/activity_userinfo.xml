@@ -3,14 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/login_bg"
+    android:background="@drawable/bind_bg"
     android:orientation="vertical">
 
 
     <com.customview.CommonTitleBar
         android:id="@+id/title_layout"
         style="@style/head_default"
-        app:bgColor="@color/login_bg"
+        app:bgColor="@color/transparent"
         app:leftBtnIcon="@drawable/back"
         app:rightBtnTxt="保存"
         app:titleTxt="完善资料" />
@@ -25,8 +25,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:orientation="vertical"
-            android:background="@color/login_bg">
+            android:orientation="vertical" >
 
             <!--<com.facebook.drawee.view.SimpleDraweeView
                 xmlns:fresco="http://schemas.android.com/apk/res-auto"
@@ -36,6 +35,11 @@
                 fresco:roundedCornerRadius="5dp"
                 fresco:actualImageScaleType="focusCrop"
                 android:src="@drawable/ic_launcher"/>-->
+
+            <ImageView android:id="@+id/userAvatar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_default_avatar"/>
 
             <LinearLayout
                 android:layout_width="280dp"
@@ -130,7 +134,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="17.33dp"
-                        android:text="昵称"
+                        android:text="生日"
                         android:textSize="18sp"
                         android:textColor="@color/gray"/>
 

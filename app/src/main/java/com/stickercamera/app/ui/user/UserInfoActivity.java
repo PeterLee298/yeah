@@ -1,6 +1,9 @@
 package com.stickercamera.app.ui.user;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -62,7 +65,12 @@ public class UserInfoActivity extends BaseActivity {
             ToastUtil.shortToast(UserInfoActivity.this, "您尚未登录");
         }
 
-
+        titleBar.setLeftBtnOnclickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                updateUserInfo();
+            }
+        });
     }
 
 
@@ -72,7 +80,7 @@ public class UserInfoActivity extends BaseActivity {
         requestParams.put("appKey", AppConstants.APP_KEY);
         requestParams.put("loginId", loginId);
         requestParams.put("loginToken", token);
-        StickerHttpClient.post("/account/user/login", requestParams,
+        StickerHttpClient.post("/account/user/info", requestParams,
                 new TypeReference<ResponseData<UserInfo>>() {
                 }.getType(),
                 new StickerHttpResponseHandler<UserInfo>() {
@@ -88,9 +96,9 @@ public class UserInfoActivity extends BaseActivity {
                         mUserInfo = userInfo;
 
                         nickname.setText(StringUtils.makeSafe(userInfo.getNickname()));
-//                        sex.setText(StringUtils.makeSafe(userInfo.get()));
-//                        nickname.setText(StringUtils.makeSafe(userInfo.getNickname()));
-//                        nickname.setText(StringUtils.makeSafe(userInfo.getNickname()));
+//                        sex.setText(StringUtils.makeSafe(userInfo.get));
+//                        birthday.setText(StringUtils.makeSafe(userInfo.getNickname()));
+//                        constellation.setText(StringUtils.makeSafe(userInfo.getNickname()));
                     }
 
                     @Override
@@ -108,5 +116,10 @@ public class UserInfoActivity extends BaseActivity {
 
     private void updateUserInfo() {
 
+    }
+
+    public static void launch(Context context) {
+        Intent intent = new Intent(context, UserInfoActivity.class);
+        context.startActivity(intent);
     }
 }
