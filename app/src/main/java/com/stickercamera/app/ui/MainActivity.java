@@ -81,32 +81,7 @@ public class MainActivity extends BaseActivity {
             mAdapter.setList(feedList);
         }
 
-
-        List<A> strings = new ArrayList<A>();
-        strings.add(new A(1, "a"));
-        strings.add(new A(2, "b"));
-        strings.add(new A(3, "c"));
-        strings.add(new A(4, "d"));
-
-        SerializeConfig mapping = new SerializeConfig();
-//        mapping.put()
-//        mapping.setAsmEnable(false);
-//
-//        LogUtil.e("aaaaaa", JSON.toJSONString(strings, mapping, SerializerFeature.WriteMapNullValue));
-
-        String jsonString = JSON.toJSONString(strings)
-        LogUtil.e("aaaaaa", );
     }
-
-    class A {
-        public int i;
-        public String s;
-        public A(int i, String s) {
-            this.i = i;
-            this.s = s;
-        }
-    }
-
 
     public void onEventMainThread(FeedItem feedItem) {
         if (feedList == null) {
