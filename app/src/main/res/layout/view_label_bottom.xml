@@ -22,7 +22,7 @@
         android:layout_marginBottom="2dp"
         android:background="#9b6b6c" />
 
-    <com.customview.FlowLayout
+    <com.yeah.android.view.FlowLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="start|top">
@@ -55,6 +55,6 @@
             style="@style/text_default"
             android:text="你好,夏天"/>
 
-    </com.customview.FlowLayout>
+    </com.yeah.android.view.FlowLayout>
 
 </LinearLayout>

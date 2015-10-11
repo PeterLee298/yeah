@@ -6,14 +6,6 @@
     android:background="@drawable/bind_bg">
 
 
-    <!--<com.customview.CommonTitleBar
-        android:id="@+id/title_layout"
-        style="@style/head_default"
-        app:bgColor="@color/transparent"
-        app:leftBtnIcon="@drawable/back"
-        app:titleTxt="绑定" />
-
-    <View style="@style/line_horizontal_style" />-->
 
 
     <LinearLayout

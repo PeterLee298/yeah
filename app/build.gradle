@@ -4,9 +4,8 @@ apply plugin: 'me.tatarka.retrolambda'
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
-
     defaultConfig {
-        applicationId "com.yeah.stickercamera"
+        applicationId 'com.yeah.android'
         minSdkVersion 15
         targetSdkVersion 21
         versionCode 1
@@ -18,17 +17,18 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    productFlavors {
     }
 }
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(":Gpu-Image")
-    compile project(":ImageViewTouch")
+    compile project(':Gpu-Image')
+    compile project(':ImageViewTouch')
     compile files('libs/fastjson-1.2.5.jar')
     compile 'com.facebook.fresco:fresco:0.6.0+'
     compile files('universal-image-loader-1.9.4.jar')

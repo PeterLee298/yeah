@@ -5,13 +5,13 @@
     android:layout_height="fill_parent"
     android:background="#ffffff" >
 
-    <com.customview.CommonTitleBar
+    <com.yeah.android.view.CommonTitleBar
         android:id="@+id/title_layout"
         style="@style/head_default"
         app:leftBtnIcon="@drawable/back"
         app:titleTxt="我的图库" />
 
-    <com.customview.PagerSlidingTabStrip
+    <com.yeah.android.view.PagerSlidingTabStrip
         android:id="@+id/indicator"
         android:layout_width="fill_parent"
         android:layout_height="48dp"

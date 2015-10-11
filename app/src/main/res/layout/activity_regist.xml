@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
 
-    <com.customview.CommonTitleBar
+    <com.yeah.android.view.CommonTitleBar
         android:id="@+id/title_layout"
         style="@style/head_default"
         app:bgColor="@color/transparent"

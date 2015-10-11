@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.yeah.stickercamera">
+    package="com.yeah.android">
 
     <uses-feature android:name="android.hardware.camera"/>
     <uses-feature android:name="android.hardware.camera.autofocus"/>
@@ -11,13 +11,13 @@
     <uses-permission android:name="android.permission.CAMERA"/>
 
     <application
-        android:name="com.stickercamera.App"
+        android:name="com.yeah.android.YeahApp"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/RedTheme">
         <activity
-            android:name="com.stickercamera.app.ui.MainActivity"
+            android:name="com.yeah.android.activity.MainActivity"
             android:label="@string/app_name">
             <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,27 +27,27 @@
         </activity>
 
         <activity
-            android:name="com.stickercamera.app.camera.ui.CameraActivity"
+            android:name="com.yeah.android.activity.camera.ui.CameraActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
         <activity
-            android:name="com.stickercamera.app.camera.ui.CropPhotoActivity"
+            android:name="com.yeah.android.activity.camera.ui.CropPhotoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
         <activity
-            android:name="com.stickercamera.app.camera.ui.AlbumActivity"
+            android:name="com.yeah.android.activity.camera.ui.AlbumActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
         <activity
-            android:name="com.stickercamera.app.camera.ui.PhotoProcessActivity"
+            android:name="com.yeah.android.activity.camera.ui.PhotoProcessActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
-        <activity android:name="com.stickercamera.app.ui.EditTextActivity"
+        <activity android:name="com.yeah.android.activity.EditTextActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
 
 
-        <activity android:name="com.stickercamera.app.ui.user.SplashActivity"
+        <activity android:name="com.yeah.android.activity.user.SplashActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" >
 
@@ -58,26 +58,26 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.stickercamera.app.ui.user.LoginActivity"
+        <activity android:name="com.yeah.android.activity.user.LoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen.Translucent"
             android:windowSoftInputMode="adjustPan|stateHidden" />
 
-        <activity android:name="com.stickercamera.app.ui.user.RegistActivity"
+        <activity android:name="com.yeah.android.activity.user.RegistActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen.Translucent"
             android:windowSoftInputMode="adjustPan|stateHidden" />
 
-        <activity android:name="com.stickercamera.app.ui.user.BindActivity"
+        <activity android:name="com.yeah.android.activity.user.BindActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
 
-        <activity android:name="com.stickercamera.app.ui.user.VerifyActivity"
+        <activity android:name="com.yeah.android.activity.user.VerifyActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen.Translucent"
             android:windowSoftInputMode="adjustPan|stateHidden"/>
 
-        <activity android:name="com.stickercamera.app.ui.user.UserInfoActivity"
+        <activity android:name="com.yeah.android.activity.user.UserInfoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
 
