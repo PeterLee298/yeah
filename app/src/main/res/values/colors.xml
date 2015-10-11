@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- 主题颜色 -->
     <color name="app_base">#41D09E</color>
+    <!-- 文案颜色 -->
+    <color name="text_gray">#666666</color>
+
+    <color name="splash_btn_text_color">@color/text_gray</color>
+    <color name="login_bg">#CC000000</color>
+
 
     <color name="transparent">#00000000</color>
     <color name="black">#ff000000</color>
@@ -36,7 +43,6 @@
     <color name="light_grey">#ffbebebe</color>
 
 
-    <color name="splash_btn_text_color">@color/gray</color>
-    <color name="login_bg">#CC000000</color>
+
 
 </resources>
