@@ -113,7 +113,7 @@
                     android:background="@drawable/login_btn_bg"
                     android:gravity="center"
                     android:text="登录"
-                    android:textColor="@color/gray"
+                    android:textColor="@color/text_gray"
                     android:textSize="18sp" />
 
                 <TextView

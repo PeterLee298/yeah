@@ -2,11 +2,10 @@
 <resources>
 
     <!-- 主题颜色 -->
-    <color name="app_base">#41D09E</color>
+    <color name="app_base">#76dca3</color>
     <!-- 文案颜色 -->
-    <color name="text_gray">#666666</color>
+    <color name="text_gray">#535353</color>
 
-    <color name="splash_btn_text_color">@color/text_gray</color>
     <color name="login_bg">#CC000000</color>
 
 

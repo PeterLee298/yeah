@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="直接登录Yeah星球"
-                android:textColor="@color/splash_btn_text_color"
+                android:textColor="@color/text_gray"
                 android:drawableLeft="@drawable/ic_splash_login"
                 android:drawablePadding="2dp"/>
 
@@ -52,7 +52,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="帐号绑定"
-                    android:textColor="@color/splash_btn_text_color"
+                    android:textColor="@color/text_gray"
                     android:drawableLeft="@drawable/ic_splash_bind"
                     android:drawablePadding="2dp"/>
 
@@ -70,7 +70,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="手机注册"
-                    android:textColor="@color/splash_btn_text_color"
+                    android:textColor="@color/text_gray"
                     android:drawableLeft="@drawable/ic_splash_regist"
                     android:drawablePadding="2dp"/>
 

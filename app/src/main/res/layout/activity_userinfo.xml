@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bind_bg"
@@ -27,19 +28,18 @@
             android:gravity="center"
             android:orientation="vertical" >
 
-            <!--<com.facebook.drawee.view.SimpleDraweeView
-                xmlns:fresco="http://schemas.android.com/apk/res-auto"
-                android:layout_width="52dp"
-                android:layout_height="52dp"
+            <com.facebook.drawee.view.SimpleDraweeView
+                android:id="@+id/userAvatar"
+                android:layout_width="72dp"
+                android:layout_height="72dp"
                 fresco:roundAsCircle="true"
-                fresco:roundedCornerRadius="5dp"
                 fresco:actualImageScaleType="focusCrop"
-                android:src="@drawable/ic_launcher"/>-->
+                fresco:placeholderImage="@drawable/ic_default_avatar"/>
 
-            <ImageView android:id="@+id/userAvatar"
+            <!--<ImageView android:id="@+id/userAvatar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_default_avatar"/>
+                android:src="@drawable/ic_default_avatar"/>-->
 
             <LinearLayout
                 android:layout_width="280dp"
@@ -60,7 +60,7 @@
                         android:layout_marginLeft="17.33dp"
                         android:text="昵称"
                         android:textSize="18sp"
-                        android:textColor="@color/gray"/>
+                        android:textColor="@color/text_gray"/>
 
                     <ImageView android:id="@+id/nickname_arrow"
                         android:layout_width="wrap_content"
@@ -82,7 +82,7 @@
                         android:layout_toLeftOf="@+id/nickname_arrow"
                         android:text="妮妮妮妮妮妮"
                         android:textSize="18sp"
-                        android:textColor="@color/gray"/>
+                        android:textColor="@color/text_gray"/>
 
                 </RelativeLayout>
 
@@ -96,9 +96,9 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="17.33dp"
-                        android:text="昵称"
+                        android:text="性别"
                         android:textSize="18sp"
-                        android:textColor="@color/gray"/>
+                        android:textColor="@color/text_gray"/>
 
                     <ImageView android:id="@+id/sex_arrow"
                         android:layout_width="wrap_content"
@@ -120,7 +120,7 @@
                         android:layout_toLeftOf="@+id/sex_arrow"
                         android:text="女"
                         android:textSize="18sp"
-                        android:textColor="@color/gray"/>
+                        android:textColor="@color/text_gray"/>
 
                 </RelativeLayout>
 
@@ -136,7 +136,7 @@
                         android:layout_marginLeft="17.33dp"
                         android:text="生日"
                         android:textSize="18sp"
-                        android:textColor="@color/gray"/>
+                        android:textColor="@color/text_gray"/>
 
                     <ImageView android:id="@+id/birthday_arrow"
                         android:layout_width="wrap_content"
@@ -158,7 +158,7 @@
                         android:layout_toLeftOf="@+id/birthday_arrow"
                         android:text="1990/01/01"
                         android:textSize="18sp"
-                        android:textColor="@color/gray"/>
+                        android:textColor="@color/text_gray"/>
 
                 </RelativeLayout>
 
@@ -174,7 +174,7 @@
                         android:layout_marginLeft="17.33dp"
                         android:text="星座"
                         android:textSize="18sp"
-                        android:textColor="@color/gray"/>
+                        android:textColor="@color/text_gray"/>
 
                     <ImageView android:id="@+id/constellation_arrow"
                         android:layout_width="wrap_content"
@@ -196,7 +196,7 @@
                         android:layout_toLeftOf="@+id/constellation_arrow"
                         android:text="天秤"
                         android:textSize="18sp"
-                        android:textColor="@color/gray"/>
+                        android:textColor="@color/text_gray"/>
 
                 </RelativeLayout>
 

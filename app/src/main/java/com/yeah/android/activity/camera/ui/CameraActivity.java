@@ -290,7 +290,7 @@ public class CameraActivity extends CameraBaseActivity {
 
     private void initData() {
         if(UserInfoManager.isLogin()) {
-            userNickName.setText(UserInfoManager.getName());
+            userNickName.setText(UserInfoManager.getUserInfo().getNickname());
         }
     }
 

@@ -24,6 +24,7 @@ public class LoginResult {
     private int state;
     private long createdAt;
     private long updatedAt;
+    private LoginResultExt extra;
 
     public void setId(int id) {
         this.id = id;
@@ -79,5 +80,13 @@ public class LoginResult {
 
     public long getUpdatedAt() {
         return updatedAt;
+    }
+
+    public LoginResultExt getExtra() {
+        return extra;
+    }
+
+    public void setExtra(LoginResultExt extra) {
+        this.extra = extra;
     }
 }

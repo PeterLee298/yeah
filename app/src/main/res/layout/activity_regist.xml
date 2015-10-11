@@ -98,7 +98,7 @@
                         android:background="@drawable/login_btn_bg"
                         android:gravity="center"
                         android:text="获取验证码"
-                        android:textColor="@color/gray"
+                        android:textColor="@color/text_gray"
                         android:textSize="12sp" />
 
 
@@ -189,7 +189,7 @@
                     android:background="@drawable/login_btn_bg"
                     android:gravity="center"
                     android:text="注册"
-                    android:textColor="@color/gray"
+                    android:textColor="@color/text_gray"
                     android:textSize="18sp" />
 
             </RelativeLayout>

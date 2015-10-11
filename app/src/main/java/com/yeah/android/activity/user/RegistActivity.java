@@ -158,11 +158,8 @@ public class RegistActivity extends BaseActivity {
 
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        UserInfoManager.saveName(phoneNumber);
                         UserInfoManager.savePassword(password);
-                        UserInfoManager.saveToken(loginResult.getTokenKey());
-                        UserInfoManager.saveId(loginResult.getId());
-                        UserInfoManager.saveUserId(loginResult.getUserId());
+                        UserInfoManager.login(loginResult);
 
                         // TODO 登录成功后的处理
                         ToastUtil.shortToast(RegistActivity.this, "注册成功");

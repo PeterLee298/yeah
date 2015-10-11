@@ -7,5 +7,5 @@ import com.yeah.android.activity.BaseActivity;
  *
  * 个人主页
  */
-public class UserHome extends BaseActivity {
+public class UserHomeActivity extends BaseActivity {
 }

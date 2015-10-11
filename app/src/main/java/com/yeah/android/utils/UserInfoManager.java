@@ -1,71 +1,120 @@
 package com.yeah.android.utils;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.yeah.android.YeahApp;
+import com.yeah.android.model.common.ResponseData;
+import com.yeah.android.model.user.LoginResult;
+import com.yeah.android.model.user.LoginResultExt;
+import com.yeah.android.model.user.UserInfo;
 
 /**
  * Created by litingchang on 15-10-7.
  */
 public class UserInfoManager {
 
-    private static final String TOKEN = "yeah_token";
-    private static final String NAME = "yeah_name";
+    private static final String TAG = UserInfoManager.class.getSimpleName();
+
     private static final String PASSWORD = "yeah_password";
 
-    private static String mToken;
+    private static final String USER_INFO = "yeah_user_info";
+
+    private static LoginResult mLoginResult;
+
+    public static void login(LoginResult loginResult) {
+        if(loginResult == null) {
+            LogUtil.e(TAG, "save error : loginResult is null");
+        }
+        mLoginResult = loginResult;
+        String infoStr = JSON.toJSONString(loginResult);
+        PreferencesUtils.putString(YeahApp.getApp(), USER_INFO, infoStr);
+    }
+
+    public static void logout() {
+        mLoginResult = null;
+        PreferencesUtils.putString(YeahApp.getApp(), USER_INFO, "");
+
+    }
+
+    public static LoginResult getLoginResult() {
+
+        if(mLoginResult != null) {
+            return mLoginResult;
+        }
+
+        String infoStr = PreferencesUtils.getString(YeahApp.getApp(), USER_INFO);
+        if(StringUtils.isEmpty(infoStr)) {
+            return null;
+        }
+
+        try {
+            mLoginResult = JSON.parseObject(infoStr, new TypeReference<LoginResult>(){}.getType());
+        } catch (Exception e) {
+            return null;
+        }
+
+        return mLoginResult;
+    }
 
     public static boolean isLogin() {
-        mToken = PreferencesUtils.getString(YeahApp.getApp(), TOKEN);
-        if(StringUtils.isEmpty(mToken)) {
+
+        if(mLoginResult != null && StringUtils.isEmpty(mLoginResult.getTokenKey())) {
+            return true;
+        }
+
+        mLoginResult = getLoginResult();
+        if(mLoginResult == null) {
             return false;
         }
+
+        if(StringUtils.isEmpty(mLoginResult.getTokenKey())) {
+            return false;
+        }
+
         return true;
     }
 
-    public static void saveToken(final String token) {
-        mToken = token;
-        PreferencesUtils.putString(YeahApp.getApp(), TOKEN, token);
+    public static void updateUserInfo(UserInfo userInfo) {
+        if(userInfo == null) {
+            LogUtil.e(TAG, "save error : userInfo is null");
+        }
+
+        if(mLoginResult == null) {
+            mLoginResult = getLoginResult();
+        }
+
+        LoginResultExt ext = new LoginResultExt();
+        ext.setUser(userInfo);
+        mLoginResult.setExtra(ext);
+        String infoStr = JSON.toJSONString(mLoginResult);
+        PreferencesUtils.putString(YeahApp.getApp(), USER_INFO, infoStr);
     }
+
+    public static UserInfo getUserInfo() {
+
+        if(mLoginResult == null) {
+            return null;
+        }
+
+        return mLoginResult.getExtra().getUser();
+    }
+
+
 
     public static String getToken() {
-        mToken = PreferencesUtils.getString(YeahApp.getApp(), TOKEN);
-        return mToken;
+        if(isLogin()) {
+            return mLoginResult.getTokenKey();
+        }
+
+        return null;
     }
 
-    public static void saveName(final String name) {
-        PreferencesUtils.putString(YeahApp.getApp(), NAME, name);
-    }
-
-    public static String getName() {
-        return  PreferencesUtils.getString(YeahApp.getApp(), NAME, "");
-    }
 
     public static void savePassword(final String password) {
-        PreferencesUtils.putString(YeahApp.getApp(), NAME, password);
+        PreferencesUtils.putString(YeahApp.getApp(), PASSWORD, password);
     }
 
     public static String getPassword() {
-        return  PreferencesUtils.getString(YeahApp.getApp(), PASSWORD, "");
-    }
-
-    public static void loginOut() {
-        mToken = "";
-        PreferencesUtils.putString(YeahApp.getApp(), TOKEN, "");
-        PreferencesUtils.putString(YeahApp.getApp(), PASSWORD, "");
-    }
-
-    public static void saveId(final int id) {
-        PreferencesUtils.putInt(YeahApp.getApp(), "yeah_id", id);
-    }
-
-    public static int getId() {
-        return  PreferencesUtils.getInt(YeahApp.getApp(), "yeah_id", 0);
-    }
-
-    public static void saveUserId(final int id) {
-        PreferencesUtils.putInt(YeahApp.getApp(), "yeah_user_id", id);
-    }
-
-    public static int getUserId() {
-        return  PreferencesUtils.getInt(YeahApp.getApp(), "yeah_user_id", 0);
+        return PreferencesUtils.getString(YeahApp.getApp(), PASSWORD, "");
     }
 }

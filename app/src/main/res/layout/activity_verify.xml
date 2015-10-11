@@ -102,7 +102,7 @@
                 android:background="@drawable/login_btn_bg"
                 android:gravity="center"
                 android:text="下一步"
-                android:textColor="@color/gray"
+                android:textColor="@color/text_gray"
                 android:textSize="18sp" />
 
         </LinearLayout>

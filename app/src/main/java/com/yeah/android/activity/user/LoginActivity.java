@@ -93,11 +93,9 @@ public class LoginActivity extends BaseActivity {
 
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        UserInfoManager.saveName(phoneNumber);
-                        UserInfoManager.savePassword(password);
-                        UserInfoManager.saveToken(loginResult.getTokenKey());
-                        UserInfoManager.saveId(loginResult.getId());
-                        UserInfoManager.saveUserId(loginResult.getUserId());
+                        UserInfoManager.savePassword(password)  ;
+
+                        UserInfoManager.login(loginResult);
 
                         // TODO 登录成功后的处理
                         ToastUtil.shortToast(LoginActivity.this, "登录成功");
