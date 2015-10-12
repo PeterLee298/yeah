@@ -1,28 +1,37 @@
 package com.yeah.android.activity.user;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.ArrayMap;
+import android.support.v7.app.AlertDialog;
+import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.TypeReference;
+import com.facebook.drawee.view.SimpleDraweeView;
+import com.loopj.android.http.RequestParams;
+import com.yeah.android.R;
+import com.yeah.android.activity.BaseActivity;
+import com.yeah.android.model.common.ResponseData;
+import com.yeah.android.model.user.UserInfo;
+import com.yeah.android.net.http.StickerHttpClient;
+import com.yeah.android.net.http.StickerHttpResponseHandler;
+import com.yeah.android.utils.Constants;
+import com.yeah.android.utils.DataUtils;
 import com.yeah.android.utils.LogUtil;
 import com.yeah.android.utils.StringUtils;
 import com.yeah.android.utils.ToastUtil;
-import com.loopj.android.http.RequestParams;
-import com.yeah.android.utils.Constants;
-import com.yeah.android.net.http.StickerHttpClient;
-import com.yeah.android.net.http.StickerHttpResponseHandler;
 import com.yeah.android.utils.UserInfoManager;
-import com.yeah.android.model.common.ResponseData;
-import com.yeah.android.model.user.UserInfo;
-import com.yeah.android.activity.BaseActivity;
-import com.yeah.android.R;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -30,6 +39,7 @@ import java.util.Set;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 /**
  * Created by litingchang on 15-10-8.
@@ -38,22 +48,29 @@ import butterknife.InjectView;
  */
 public class UserInfoActivity extends BaseActivity {
 
+    @InjectView(R.id.userAvatar)
+    SimpleDraweeView userAvatar;
     @InjectView(R.id.nickname)
-    TextView nickname;
+    TextView nicknameTV;
     @InjectView(R.id.info_nickname_root)
     RelativeLayout infoNicknameRoot;
     @InjectView(R.id.sex)
-    TextView sex;
+    TextView sexTV;
     @InjectView(R.id.info_sex_root)
     RelativeLayout infoSexRoot;
     @InjectView(R.id.birthday)
-    TextView birthday;
+    TextView birthdayTV;
     @InjectView(R.id.info_birthday_root)
     RelativeLayout infoBirthdayRoot;
     @InjectView(R.id.constellation)
-    TextView constellation;
+    TextView constellationTV;
     @InjectView(R.id.info_constellation_root)
     RelativeLayout infoConstellationRoot;
+
+    private final String[] sex = {"男", "女"};
+
+    private final String[] constellations = {"白羊座", "金牛座", "双子座",
+            "巨蟹座", "狮子座", "处女座", "天秤座", "天蝎座", "射手座", "摩羯座", "水瓶座", "双鱼座"};
 
     private UserInfo mUserInfo;
     private Map<String, String> updateInfo = new HashMap<>();
@@ -65,13 +82,13 @@ public class UserInfoActivity extends BaseActivity {
         ButterKnife.inject(this);
 
 
-        if(UserInfoManager.isLogin()) {
+        if (UserInfoManager.isLogin()) {
             setUserInfo();
         } else {
             ToastUtil.shortToast(UserInfoActivity.this, "您尚未登录");
         }
 
-        titleBar.setRightBtnOnclickListener(new View.OnClickListener(){
+        titleBar.setRightBtnOnclickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 updateUserInfo();
@@ -79,72 +96,219 @@ public class UserInfoActivity extends BaseActivity {
         });
     }
 
+    @OnClick(R.id.userAvatar)
+    public void changeAvatar() {
+
+    }
+
+    @OnClick(R.id.info_nickname_root)
+    public void changeNickName() {
+
+    }
+
+    int sexId;
+
+    @OnClick(R.id.info_sex_root)
+    public void changeSex() {
+
+        sexId = 0;
+        AlertDialog.Builder builder = new AlertDialog.Builder(UserInfoActivity.this);
+        builder.setIcon(R.drawable.ic_launcher);
+        builder.setTitle("请选择性别");
+        builder.setSingleChoiceItems(sex, sexId, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                sexId = which;
+            }
+        });
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                sexTV.setText(sex[sexId]);
+
+                // TODO 保存
+//                mUserInfo.set
+//                updateInfo.put()
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.show();
+    }
+
+    Calendar calendar = Calendar.getInstance();
+    DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker datePicker, int year, int monthOfYear, int dayOfMonth) {
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, monthOfYear);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            LogUtil.d("DatePickerDialog", year + "-" + monthOfYear + "-" + dayOfMonth);
+
+            if(pickOk) {
+                birthdayTV.setText(birthdayFormate(calendar.getTimeInMillis()));
+
+                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                updateInfo.put("birthday", format.format(calendar.getTimeInMillis()));
+            }
+        }
+    };
+    private boolean pickOk = false;
+
+    @OnClick(R.id.info_birthday_root)
+    public void changeBirtday() {
+
+        DatePickerDialog dialog = new DatePickerDialog(UserInfoActivity.this,
+                dateSetListener, calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        dialog.setButton(DialogInterface.BUTTON_POSITIVE, "确定",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        LogUtil.d("DatePickerDialog", "OK");
+                        pickOk = true;
+                    }
+                });
+
+        DatePicker datePicker = dialog.getDatePicker();
+//        datePicker.setMinDate(-28800L); // 1070-01-01
+        datePicker.setMaxDate(Calendar.getInstance().getTimeInMillis());
+
+        dialog.setButton(DialogInterface.BUTTON_NEGATIVE, "取消",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        LogUtil.d("DatePickerDialog", "Cancle");
+                        pickOk = false;
+                    }
+                });
+
+        dialog.show();
+
+    }
+
+    int constellationId;
+
+    @OnClick(R.id.info_constellation_root)
+    public void changeConstellation() {
+
+        constellationId = 0;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(UserInfoActivity.this);
+        builder.setIcon(R.drawable.ic_launcher);
+        builder.setTitle("星座选择");
+        builder.setSingleChoiceItems(constellations, constellationId, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                constellationId = which;
+            }
+        });
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                constellationTV.setText(constellations[constellationId]);
+
+                int horoscopeId = constellationId + 1;
+                updateInfo.put("horoscope", String.valueOf(horoscopeId));
+                mUserInfo.setHoroscope(horoscopeId);
+            }
+        });
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        builder.show();
+
+    }
 
     private void setUserInfo() {
 
         mUserInfo = UserInfoManager.getUserInfo();
 
-        nickname.setText(StringUtils.makeSafe(mUserInfo.getNickname()));
+        nicknameTV.setText(StringUtils.makeSafe(mUserInfo.getNickname()));
+
+        int horoscope = mUserInfo.getHoroscope();
+        if (horoscope > 0 && horoscope < 12) {
+            constellationTV.setText(constellations[horoscope]);
+        }
+
+        getUserInfo();
     }
 
-//    private void getUserInfo(int loginId, String token) {
-//        RequestParams requestParams = new RequestParams();
-//        requestParams.put("appId", Constants.APP_ID);
-//        requestParams.put("appKey", Constants.APP_KEY);
-//        requestParams.put("loginId", loginId);
-//        requestParams.put("loginToken", token);
-//        StickerHttpClient.post("/account/user/info", requestParams,
-//                new TypeReference<ResponseData<UserInfo>>() {
-//                }.getType(),
-//                new StickerHttpResponseHandler<UserInfo>() {
-//
-//                    @Override
-//                    public void onStart() {
-//                        showProgressDialog("获取用户信息...");
-//                    }
-//
-//                    @Override
-//                    public void onSuccess(UserInfo userInfo) {
-//
-//                        mUserInfo = userInfo;
-//
-//                        nickname.setText(StringUtils.makeSafe(userInfo.getNickname()));
-////                        sex.setText(StringUtils.makeSafe(userInfo.get));
-////                        birthday.setText(StringUtils.makeSafe(userInfo.getNickname()));
-////                        constellation.setText(StringUtils.makeSafe(userInfo.getNickname()));
-//                    }
-//
-//                    @Override
-//                    public void onFailure(String message) {
-//                        LogUtil.e("onFailure", message);
-//                        ToastUtil.shortToast(UserInfoActivity.this, "获取用户信息失败：" + message);
-//                    }
-//
-//                    @Override
-//                    public void onFinish() {
-//                        dismissProgressDialog();
-//                    }
-//                });
-//    }
 
-    private void updateUserInfo() {
+    private void getUserInfo() {
 
-        if(!UserInfoManager.isLogin()) {
+        if (!UserInfoManager.isLogin()) {
             ToastUtil.shortToast(UserInfoActivity.this, "你尚未登录，请登录后重试");
             return;
         }
 
-        updateInfo.put("name", "牛轰轰");
-        updateInfo.put("nickname", "牛轰轰");
-        updateInfo.put("avatar", "http://img5.duitang.com/uploads/item/201409/08/20140908021251_Z2y2t.thumb.700_0.jpeg");
-        updateInfo.put("birthday", "1440465912123");
-        updateInfo.put("horoscope", "2");
+        int loginId = UserInfoManager.getUserInfo().getId();
+        String token = UserInfoManager.getToken();
 
-        mUserInfo.setName("牛轰轰");
-        mUserInfo.setNickname("牛轰轰");
-        mUserInfo.setAvatar("http://img5.duitang.com/uploads/item/201409/08/20140908021251_Z2y2t.thumb.700_0.jpeg");
-        mUserInfo.setBirthday(1440465912123L);
-        mUserInfo.setHoroscope(2);
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("appId", Constants.APP_ID);
+        requestParams.put("appKey", Constants.APP_KEY);
+        requestParams.put("loginId", loginId);
+        requestParams.put("loginToken", token);
+        StickerHttpClient.post("/account/user/info", requestParams,
+                new TypeReference<ResponseData<UserInfo>>() {
+                }.getType(),
+                new StickerHttpResponseHandler<UserInfo>() {
+
+                    @Override
+                    public void onStart() {
+                        showProgressDialog("获取用户信息...");
+                    }
+
+                    @Override
+                    public void onSuccess(UserInfo userInfo) {
+
+                        mUserInfo = userInfo;
+
+                        nicknameTV.setText(StringUtils.makeSafe(userInfo.getNickname()));
+//                        sex.setText(StringUtils.makeSafe(userInfo.get));
+
+                        birthdayTV.setText(birthdayFormate(userInfo.getBirthday()));
+//                        constellation.setText(StringUtils.makeSafe(userInfo.getNickname()));
+                    }
+
+                    @Override
+                    public void onFailure(String message) {
+                        LogUtil.e("onFailure", message);
+                        ToastUtil.shortToast(UserInfoActivity.this, "获取用户信息失败：" + message);
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        dismissProgressDialog();
+                    }
+                });
+    }
+
+    private void updateUserInfo() {
+
+        if (!UserInfoManager.isLogin()) {
+            ToastUtil.shortToast(UserInfoActivity.this, "你尚未登录，请登录后重试");
+            return;
+        }
+
+//        updateInfo.put("name", "呵呵");
+//        updateInfo.put("nickname", "牛轰轰");
+//        updateInfo.put("avatar", "http://img5.duitang.com/uploads/item/201409/08/20140908021251_Z2y2t.thumb.700_0.jpeg");
+//        updateInfo.put("birthday", "2015-10-10 0:0:0");
+
+
+//        mUserInfo.setNickname("牛轰轰");
+//        mUserInfo.setAvatar("http://img5.duitang.com/uploads/item/201409/08/20140908021251_Z2y2t.thumb.700_0.jpeg");
+//        mUserInfo.setBirthday(1440465912123L);
+//        mUserInfo.setHoroscope(2);
 
 
 //        Calendar calendar = Calendar.getInstance();
@@ -195,6 +359,12 @@ public class UserInfoActivity extends BaseActivity {
                         dismissProgressDialog();
                     }
                 });
+    }
+
+    private String birthdayFormate(long time) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date bData = new Date(time);
+        return format.format(bData);
     }
 
     public static void launch(Context context) {
