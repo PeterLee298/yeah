@@ -144,7 +144,6 @@ public class UserInfoActivity extends BaseActivity {
 
         sexId = 0;
         AlertDialog.Builder builder = new AlertDialog.Builder(UserInfoActivity.this);
-        builder.setIcon(R.drawable.ic_launcher);
         builder.setTitle("请选择性别");
         builder.setSingleChoiceItems(sex, sexId, new DialogInterface.OnClickListener() {
             @Override
@@ -231,7 +230,6 @@ public class UserInfoActivity extends BaseActivity {
         constellationId = 0;
 
         AlertDialog.Builder builder = new AlertDialog.Builder(UserInfoActivity.this);
-        builder.setIcon(R.drawable.ic_launcher);
         builder.setTitle("星座选择");
         builder.setSingleChoiceItems(constellations, constellationId, new DialogInterface.OnClickListener() {
             @Override
