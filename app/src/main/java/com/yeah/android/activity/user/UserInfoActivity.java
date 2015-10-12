@@ -4,12 +4,16 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.text.format.DateUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -103,6 +107,33 @@ public class UserInfoActivity extends BaseActivity {
 
     @OnClick(R.id.info_nickname_root)
     public void changeNickName() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("编辑昵称");
+
+        LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LinearLayout layout = (LinearLayout)inflater.inflate(R.layout.dialog_nickname, null);
+        dialog.setView(layout);
+
+        EditText editText  = (EditText)layout.findViewById(R.id.nickname_input);
+
+        dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+
+                String nickName = StringUtils.makeSafe(editText.getText().toString());
+
+                if(StringUtils.isEmpty(nickName) || nickName.length() < 4) {
+                    ToastUtil.shortToast(UserInfoActivity.this, "昵称需至少4个字符");
+                    return;
+                }
+
+                nicknameTV.setText(nickName);
+                updateInfo.put("nickname", nickName);
+            }
+        });
+
+        dialog.setNegativeButton("取消", null);
+        dialog.show();
 
     }
 
@@ -162,9 +193,12 @@ public class UserInfoActivity extends BaseActivity {
     @OnClick(R.id.info_birthday_root)
     public void changeBirtday() {
 
+        Calendar calendar1 = Calendar.getInstance();
+        calendar1.setTimeInMillis(mUserInfo.getBirthday());
+
         DatePickerDialog dialog = new DatePickerDialog(UserInfoActivity.this,
-                dateSetListener, calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+                dateSetListener, calendar1.get(Calendar.YEAR),
+                calendar1.get(Calendar.MONTH), calendar1.get(Calendar.DAY_OF_MONTH));
         dialog.setButton(DialogInterface.BUTTON_POSITIVE, "确定",
                 new DialogInterface.OnClickListener() {
                     @Override
@@ -188,11 +222,9 @@ public class UserInfoActivity extends BaseActivity {
                 });
 
         dialog.show();
-
     }
 
     int constellationId;
-
     @OnClick(R.id.info_constellation_root)
     public void changeConstellation() {
 
@@ -274,9 +306,9 @@ public class UserInfoActivity extends BaseActivity {
 
                         nicknameTV.setText(StringUtils.makeSafe(userInfo.getNickname()));
 //                        sex.setText(StringUtils.makeSafe(userInfo.get));
-
                         birthdayTV.setText(birthdayFormate(userInfo.getBirthday()));
 //                        constellation.setText(StringUtils.makeSafe(userInfo.getNickname()));
+                        userAvatar.setImageURI(Uri.parse(userInfo.getAvatar()));
                     }
 
                     @Override
