@@ -15,7 +15,7 @@
         android:layout_marginLeft="@dimen/splash_horizontal_margin"
         android:layout_marginRight="@dimen/splash_horizontal_margin"
         android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:visibility="invisible">
+        android:visibility="visible">
 
         <LinearLayout android:id="@+id/splash_login"
             android:layout_width="match_parent"

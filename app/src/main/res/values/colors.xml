@@ -8,6 +8,13 @@
 
     <color name="login_bg">#CC000000</color>
 
+    <color name="base_bg">#f5f3f0</color>
+
+    <color name="input_border">@color/white</color>
+    <color name="input_text">@color/text_gray</color>
+    <color name="input_text_hint">@color/txt_color_gray_3</color>
+
+
 
     <color name="transparent">#00000000</color>
     <color name="black">#ff000000</color>
