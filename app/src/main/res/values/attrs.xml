@@ -13,6 +13,7 @@
         <attr name="rightBtnTxt" format="string|reference" />
         <attr name="rightBtnIcon" format="reference" />
         <attr name="bgColor" format="reference" />
+        <attr name="titleTxtColor" format="reference" />
     </declare-styleable>
 
 

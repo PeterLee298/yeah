@@ -4,15 +4,17 @@
     <!-- 主题颜色 -->
     <color name="app_base">#76dca3</color>
     <!-- 文案颜色 -->
-    <color name="text_gray">#535353</color>
+    <color name="text_gray">#bebebe</color>
+    <color name="text_dark">#464646</color>
 
     <color name="login_bg">#CC000000</color>
 
     <color name="base_bg">#f5f3f0</color>
+    <color name="base_bg_light">#e6e7e9</color>
 
-    <color name="input_border">@color/white</color>
+    <color name="input_border">@color/light_grey</color>
     <color name="input_text">@color/text_gray</color>
-    <color name="input_text_hint">@color/txt_color_gray_3</color>
+    <color name="input_text_hint">#cbc4c6</color>
 
 
 
