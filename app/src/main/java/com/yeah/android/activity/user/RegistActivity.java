@@ -120,15 +120,15 @@ public class RegistActivity extends BaseActivity {
 
 
         String password = StringUtils.deleteWhitespace(registerInputPassword.getText().toString());
-        if (StringUtils.isEmpty(password)) {
-            ToastUtil.shortToast(this, "请输入登录密码，不可包含空格");
+        if (StringUtils.makeSafe(password).length() < 6) {
+            ToastUtil.shortToast(this, "请输入6位登录密码，不可包含空格");
             return;
         }
 
         String passwordConfirm = StringUtils.deleteWhitespace(
                 registerInputPasswordConfirm.getText().toString());
-        if (StringUtils.isEmpty(passwordConfirm)) {
-            ToastUtil.shortToast(this, "请输再次入登录密码，不可包含空格");
+        if (StringUtils.makeSafe(password).length() < 6) {
+            ToastUtil.shortToast(this, "请再次输入6位登录密码，不可包含空格");
             return;
         }
 

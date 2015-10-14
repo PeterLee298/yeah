@@ -42,6 +42,9 @@ public class SplashActivity extends BaseActivity {
 
     private int tickCount = 0;
     private static final int [] imgs = {R.drawable.splash_p1, R.drawable.splash_p2};
+    private boolean isStartNext = false;
+
+    CountDownTimer countDownTimer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,12 +54,8 @@ public class SplashActivity extends BaseActivity {
 
 
         splashPager.setAdapter(new RecommendPagerAdapter(SplashActivity.this, imgs));
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        new CountDownTimer(30000000, 1500) {
+        countDownTimer = new CountDownTimer(1500 * 6, 1500) {
             public void onTick(long millisUntilFinished) {
                 tickCount++;
                 splashPager.setCurrentItem(tickCount % imgs.length);
@@ -64,7 +63,19 @@ public class SplashActivity extends BaseActivity {
             public void onFinish() {
                 doNext();
             }
-        }.start();
+        };
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        countDownTimer.start();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        countDownTimer.cancel();
     }
 
     @OnClick(R.id.splash_next)
@@ -73,6 +84,12 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void doNext() {
+
+        if(isStartNext) {
+            return;
+        }
+
+        isStartNext = true;
         if (UserInfoManager.isLogin()) {
             MainActivity.launch(SplashActivity.this);
         } else {
