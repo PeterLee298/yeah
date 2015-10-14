@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.TypeReference;
+import com.yeah.android.activity.camera.CameraManager;
 import com.yeah.android.utils.LogUtil;
 import com.yeah.android.utils.StringUtils;
 import com.yeah.android.utils.ToastUtil;
@@ -163,7 +164,8 @@ public class RegistActivity extends BaseActivity {
 
                         // TODO 登录成功后的处理
                         ToastUtil.shortToast(RegistActivity.this, "注册成功");
-                        MainActivity.launch(RegistActivity.this);
+
+                        CameraManager.getInst().openCamera(RegistActivity.this);
 
                         RegistActivity.this.finish();
                     }

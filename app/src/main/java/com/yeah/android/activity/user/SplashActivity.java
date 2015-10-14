@@ -15,6 +15,7 @@ import com.facebook.drawee.view.SimpleDraweeView;
 import com.yeah.android.R;
 import com.yeah.android.activity.BaseActivity;
 import com.yeah.android.activity.MainActivity;
+import com.yeah.android.activity.camera.CameraManager;
 import com.yeah.android.utils.UserInfoManager;
 import com.yeah.android.view.LoopViewPager;
 
@@ -91,7 +92,7 @@ public class SplashActivity extends BaseActivity {
 
         isStartNext = true;
         if (UserInfoManager.isLogin()) {
-            MainActivity.launch(SplashActivity.this);
+            CameraManager.getInst().openCamera(SplashActivity.this);
         } else {
             LoginActivity.launch(SplashActivity.this);
         }

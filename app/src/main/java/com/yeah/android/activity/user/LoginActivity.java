@@ -12,6 +12,7 @@ import com.loopj.android.http.RequestParams;
 import com.yeah.android.R;
 import com.yeah.android.activity.BaseActivity;
 import com.yeah.android.activity.MainActivity;
+import com.yeah.android.activity.camera.CameraManager;
 import com.yeah.android.model.common.ResponseData;
 import com.yeah.android.model.user.LoginResult;
 import com.yeah.android.model.user.VerifyResponse;
@@ -101,9 +102,9 @@ public class LoginActivity extends BaseActivity {
 
                         UserInfoManager.login(loginResult);
 
-                        // TODO 登录成功后的处理
+                        //  登录成功后的处理
                         ToastUtil.shortToast(LoginActivity.this, "登录成功");
-                        MainActivity.launch(LoginActivity.this);
+                        CameraManager.getInst().openCamera(LoginActivity.this);
 
                         LoginActivity.this.finish();
                     }
