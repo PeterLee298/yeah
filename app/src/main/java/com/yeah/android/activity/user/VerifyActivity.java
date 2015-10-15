@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.TypeReference;
+import com.yeah.android.model.user.VerifyConfirmResponse;
 import com.yeah.android.utils.LogUtil;
 import com.yeah.android.utils.StringUtils;
 import com.yeah.android.utils.ToastUtil;
@@ -58,6 +59,7 @@ public class VerifyActivity extends BaseActivity {
 
     }
 
+    // 获取验证码
     @OnClick(R.id.verify_btn_get)
     public void reGetVerify() {
         if (StringUtils.isEmpty(mPhoneNumber)) {
@@ -101,8 +103,56 @@ public class VerifyActivity extends BaseActivity {
 
     }
 
+    // 校验验证码
     @OnClick(R.id.verify_btn_next)
     public void verifyNext() {
+
+        String verifyCode = StringUtils.clean(verifyInputVerify.getText().toString());
+
+        if (StringUtils.isEmpty(verifyCode)) {
+            ToastUtil.shortToast(VerifyActivity.this, "请输入验证码");
+            return;
+        }
+
+        if(mVerifyResponse == null) {
+            ToastUtil.shortToast(VerifyActivity.this, "尚未发送验证信息 请点击重新发送");
+            return;
+        }
+
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("appId", Constants.APP_ID);
+        requestParams.put("appKey", Constants.APP_KEY);
+        requestParams.put("verifyCode", mVerifyResponse.getId());
+        requestParams.put("verifyId", verifyCode);
+        StickerHttpClient.post("/account/verify/confirm", requestParams,
+                new TypeReference<ResponseData<VerifyConfirmResponse>>() {
+                }.getType(),
+                new StickerHttpResponseHandler<VerifyConfirmResponse>() {
+
+                    @Override
+                    public void onStart() {
+                        showProgressDialog("验证码校验中...");
+                    }
+
+                    @Override
+                    public void onSuccess(VerifyConfirmResponse verifyConfirmResponse) {
+                        ResetPasswordActivity.launch(VerifyActivity.this,
+                                mVerifyResponse.getId(), verifyCode);
+                    }
+
+                    @Override
+                    public void onFailure(String message) {
+                        LogUtil.e("onFailure", message);
+                        ToastUtil.shortToast(VerifyActivity.this, "验证码校验失败：" + message
+                                + "\n请稍候重试");
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        dismissProgressDialog();
+                    }
+                });
+
 
     }
 

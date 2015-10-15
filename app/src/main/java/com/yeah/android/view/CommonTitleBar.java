@@ -34,6 +34,7 @@ public class CommonTitleBar extends RelativeLayout {
     private int              leftBtnIconId;
     private String           leftBtnStr;
     private String           titleTxtStr;
+    private int              titleTextColor;
     private String           rightBtnStr;
     private int              rightBtnIconId;
     private int              bgColorId;
@@ -55,6 +56,7 @@ public class CommonTitleBar extends RelativeLayout {
         rightBtnIconId = arr.getResourceId(R.styleable.CommonTitleBar_rightBtnIcon, 0);
         bgStyle = arr.getString(R.styleable.CommonTitleBar_baseStyle);
         bgColorId = arr.getResourceId(R.styleable.CommonTitleBar_bgColor, R.color.app_base);
+        titleTextColor = arr.getResourceId(R.styleable.CommonTitleBar_titleTxtColor, R.color.white);
         if (isInEditMode()) {
             LayoutInflater.from(context).inflate(R.layout.view_title_bar, this);
             return;
@@ -76,6 +78,7 @@ public class CommonTitleBar extends RelativeLayout {
         rightButton = (TextView) findViewById(R.id.title_right);
 
         bg.setBackgroundColor(getResources().getColor(bgColorId));
+        middleButton.setTextColor(getResources().getColor(titleTextColor));
 
         if (leftBtnIconId != 0) {
             leftButtonImg.setImageResource(leftBtnIconId);

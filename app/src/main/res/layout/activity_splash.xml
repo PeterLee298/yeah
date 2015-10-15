@@ -2,9 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_splash" >
+    android:background="@drawable/base_bg" >
 
-
+    <ImageView android:id="@+id/splash_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_splash_logo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="48dp"/>
 
     <LinearLayout
         android:id="@+id/splash_action_layout"
@@ -12,72 +17,38 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/splash_horizontal_margin"
-        android:layout_marginRight="@dimen/splash_horizontal_margin"
-        android:layout_marginBottom="@dimen/activity_vertical_margin"
-        android:visibility="invisible">
+        android:paddingBottom="16dp"
+        android:visibility="visible"
+        android:gravity="center_horizontal">
 
-        <LinearLayout android:id="@+id/splash_login"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/splash_btn_h"
-            android:background="@drawable/splash_btn_bg"
-            android:gravity="center">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="直接登录Yeah星球"
-                android:textColor="@color/splash_btn_text_color"
-                android:drawableLeft="@drawable/ic_splash_login"
-                android:drawablePadding="2dp"/>
-
-        </LinearLayout>
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginTop="8.5dp">
+            android:textColor="@color/text_dark"
+            android:textSize="@dimen/txt_size_l"
+            android:text="Yeah！这就是我的生活！"/>
 
-            <LinearLayout android:id="@+id/splash_bind"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="@dimen/splash_btn_h"
-                android:layout_marginRight="4dp"
-                android:background="@drawable/splash_btn_bg"
-                android:gravity="center" >
+        <ImageView android:id="@+id/splash_next"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_splash_btn"
+            android:layout_marginTop="18dp"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="帐号绑定"
-                    android:textColor="@color/splash_btn_text_color"
-                    android:drawableLeft="@drawable/ic_splash_bind"
-                    android:drawablePadding="2dp"/>
+        <ImageView android:id="@+id/splash_arrow_up"
+            android:layout_width="48dp"
+            android:layout_height="48dp"/>
 
-            </LinearLayout>
-
-            <LinearLayout android:id="@+id/splash_regist"
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:layout_height="@dimen/splash_btn_h"
-                android:background="@drawable/splash_btn_bg"
-                android:layout_marginLeft="4dp"
-                android:gravity="center">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="手机注册"
-                    android:textColor="@color/splash_btn_text_color"
-                    android:drawableLeft="@drawable/ic_splash_regist"
-                    android:drawablePadding="2dp"/>
-
-            </LinearLayout>
-        </LinearLayout>
 
     </LinearLayout>
 
+    <com.yeah.android.view.LoopViewPager
+        android:id="@+id/splash_pager"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="12dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/splash_logo"
+        android:layout_above="@id/splash_action_layout"/>
 
 </RelativeLayout>

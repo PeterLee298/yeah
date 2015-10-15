@@ -1,7 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <color name="app_base">#41D09E</color>
+    <!-- 主题颜色 -->
+    <color name="app_base">#76dca3</color>
+    <!-- 文案颜色 -->
+    <color name="text_gray">#bebebe</color>
+    <color name="text_dark">#464646</color>
+
+    <color name="login_bg">#CC000000</color>
+
+    <color name="base_bg">#f5f3f0</color>
+    <color name="base_bg_light">#e6e7e9</color>
+
+    <color name="input_border">@color/light_grey</color>
+    <color name="input_text">@color/text_gray</color>
+    <color name="input_text_hint">#cbc4c6</color>
+
+
 
     <color name="transparent">#00000000</color>
     <color name="black">#ff000000</color>
@@ -36,8 +51,7 @@
     <color name="light_grey">#ffbebebe</color>
 
 
-    <color name="splash_btn_text_color">@color/gray</color>
-    <color name="login_bg">#CC000000</color>
+
 
     <!--camera-->
     <color name="camera_top_bar_bg_color">#1b1b1b</color>

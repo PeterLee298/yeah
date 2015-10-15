@@ -6,6 +6,10 @@
         <item name="android:fitsSystemWindows">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <!--<item name="colorPrimary">@color/app_base</item>
+        <item name="colorPrimaryDark">@color/app_base</item>
+        <item name="colorAccent">@color/app_base</item>-->
+
     </style>
 
     <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light">
@@ -21,12 +25,6 @@
         <item name="android:windowBackground">@color/transparent</item>
     </style>
 
-
-    <style name="RedTheme" parent="AppTheme">
-        <item name="colorPrimary">@color/app_base</item>
-        <item name="colorPrimaryDark">@color/app_base</item>
-        <item name="colorAccent">@color/app_base</item>
-    </style>
 
     <style name="head_default">
         <item name="android:layout_width">fill_parent</item>
@@ -51,7 +49,7 @@
     <style name="line_horizontal_style">
         <item name="android:layout_height">1dp</item>
         <item name="android:layout_width">match_parent</item>
-        <item name="android:background">@color/white</item>
+        <item name="android:background">@color/light_grey</item>
     </style>
 
 </resources>

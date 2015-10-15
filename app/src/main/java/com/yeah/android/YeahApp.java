@@ -3,6 +3,7 @@ package com.yeah.android;
 import android.app.Application;
 import android.util.DisplayMetrics;
 
+import com.facebook.drawee.backends.pipeline.Fresco;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
 import com.nostra13.universalimageloader.cache.memory.impl.LruMemoryCache;
@@ -40,9 +41,9 @@ public class YeahApp extends Application {
     public void onCreate() {
         super.onCreate();
         initImageLoader();
+        Fresco.initialize(this);
         mInstance = this;
     }
-
 
     private void initImageLoader() {
         DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()

@@ -208,7 +208,7 @@
                     android:layout_marginLeft="12dp"
                     android:text="拍照"
                     android:textSize="18sp"
-                    android:textColor="@color/gray"/>
+                    android:textColor="@color/text_gray"/>
 
             </LinearLayout>
 
@@ -230,7 +230,7 @@
                     android:layout_marginLeft="12dp"
                     android:text="个人主页"
                     android:textSize="18sp"
-                    android:textColor="@color/gray"/>
+                    android:textColor="@color/text_gray"/>
 
             </LinearLayout>
 
@@ -252,7 +252,7 @@
                     android:layout_marginLeft="12dp"
                     android:text="消息"
                     android:textSize="18sp"
-                    android:textColor="@color/gray"/>
+                    android:textColor="@color/text_gray"/>
 
             </LinearLayout>
 
@@ -275,7 +275,7 @@
                     android:layout_marginLeft="12dp"
                     android:text="设置"
                     android:textSize="18sp"
-                    android:textColor="@color/gray"/>
+                    android:textColor="@color/text_gray"/>
 
             </LinearLayout>
 

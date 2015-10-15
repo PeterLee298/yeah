@@ -7,24 +7,26 @@ package com.yeah.android.model.user;
 public class UserInfo {
 
     /**
-     * id : 20111106
-     * phone : 15615236548
-     * email : 11111111
-     * name : 1111111
-     * nickname : 1111111111
-     * avatar : 1111111
-     * birthday : 1440465912000
-     * horoscope : 23
+     * id : 20111114
+     * phone : 17091088678
+     * email :
+     * password : f874834766c4ec63d4173738ec88ba31
+     * name :
+     * nickname :
+     * avatar :
+     * birthday : 1444448942000
+     * horoscope : 0
      * deviceId : 0
-     * ownerId : 5
+     * ownerId : 13
      * state : 0
-     * createdAt : 1442845040000
-     * updatedAt : 1444405217000
+     * createdAt : 1444448942000
+     * updatedAt : 1444448943000
      */
 
     private int id;
     private String phone;
     private String email;
+    private String password;
     private String name;
     private String nickname;
     private String avatar;
@@ -46,6 +48,10 @@ public class UserInfo {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setName(String name) {
@@ -98,6 +104,10 @@ public class UserInfo {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     public String getName() {

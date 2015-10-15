@@ -2,59 +2,25 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.yeah.android">
 
-    <uses-feature android:name="android.hardware.camera"/>
-    <uses-feature android:name="android.hardware.camera.autofocus"/>
-    
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:name="com.yeah.android.YeahApp"
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/RedTheme">
-        <activity
-            android:name="com.yeah.android.activity.MainActivity"
-            android:label="@string/app_name">
-            <!--<intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
-        </activity>
+        android:theme="@style/AppTheme">
 
         <activity
-            android:name="com.yeah.android.activity.camera.ui.CameraActivity"
+            android:name="com.yeah.android.activity.user.SplashActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
-        <activity
-            android:name="com.yeah.android.activity.camera.ui.Camera2Activity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
-
-        <activity
-            android:name="com.yeah.android.activity.camera.ui.CropPhotoActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
-        <activity
-            android:name="com.yeah.android.activity.camera.ui.AlbumActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
-        <activity
-            android:name="com.yeah.android.activity.camera.ui.PhotoProcessActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
-        <activity android:name="com.yeah.android.activity.EditTextActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
-
-
-        <activity android:name="com.yeah.android.activity.user.SplashActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" >
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -63,32 +29,73 @@
             </intent-filter>
         </activity>
 
-        <activity android:name="com.yeah.android.activity.user.LoginActivity"
+        <activity
+            android:name="com.yeah.android.activity.user.LoginActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen.Translucent"
             android:windowSoftInputMode="adjustPan|stateHidden" />
 
-        <activity android:name="com.yeah.android.activity.user.RegistActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen.Translucent"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+        <activity
+            android:name="com.yeah.android.activity.MainActivity"
+            android:label="@string/app_name"></activity>
 
-        <activity android:name="com.yeah.android.activity.user.BindActivity"
+        <activity
+            android:name="com.yeah.android.activity.camera.ui.CameraActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+        <activity
+            android:name="com.yeah.android.activity.camera.ui.Camera2Activity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
+
+        <activity
+            android:name="com.yeah.android.activity.camera.ui.CropPhotoActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+        <activity
+            android:name="com.yeah.android.activity.camera.ui.AlbumActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light" />
+        <activity
+            android:name="com.yeah.android.activity.camera.ui.PhotoProcessActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+        <activity
+            android:name="com.yeah.android.activity.EditTextActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
 
-        <activity android:name="com.yeah.android.activity.user.VerifyActivity"
+
+
+
+        <activity
+            android:name="com.yeah.android.activity.user.RegistActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen.Translucent"
-            android:windowSoftInputMode="adjustPan|stateHidden"/>
+            android:windowSoftInputMode="adjustPan|stateHidden" />
 
-        <activity android:name="com.yeah.android.activity.user.UserInfoActivity"
+        <activity
+            android:name="com.yeah.android.activity.user.BindActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+
+        <activity
+            android:name="com.yeah.android.activity.user.VerifyActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen.Translucent"
+            android:windowSoftInputMode="adjustPan|stateHidden" />
+
+        <activity
+            android:name="com.yeah.android.activity.user.UserInfoActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
 
         <!-- umeng -->
-        <meta-data android:value="561520e667e58eb1c000226e" android:name="UMENG_APPKEY"></meta-data>
-        <meta-data android:value="debug" android:name="UMENG_CHANNEL"/>
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="561b549c67e58e0d8000374c"></meta-data>
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="debug" />
     </application>
 
 </manifest>

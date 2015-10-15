@@ -7,6 +7,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.TypeReference;
+import com.yeah.android.activity.camera.CameraManager;
 import com.yeah.android.utils.LogUtil;
 import com.yeah.android.utils.StringUtils;
 import com.yeah.android.utils.ToastUtil;
@@ -120,15 +121,15 @@ public class RegistActivity extends BaseActivity {
 
 
         String password = StringUtils.deleteWhitespace(registerInputPassword.getText().toString());
-        if (StringUtils.isEmpty(password)) {
-            ToastUtil.shortToast(this, "请输入登录密码，不可包含空格");
+        if (StringUtils.makeSafe(password).length() < 6) {
+            ToastUtil.shortToast(this, "请输入6位登录密码，不可包含空格");
             return;
         }
 
         String passwordConfirm = StringUtils.deleteWhitespace(
                 registerInputPasswordConfirm.getText().toString());
-        if (StringUtils.isEmpty(passwordConfirm)) {
-            ToastUtil.shortToast(this, "请输再次入登录密码，不可包含空格");
+        if (StringUtils.makeSafe(password).length() < 6) {
+            ToastUtil.shortToast(this, "请再次输入6位登录密码，不可包含空格");
             return;
         }
 
@@ -158,15 +159,13 @@ public class RegistActivity extends BaseActivity {
 
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        UserInfoManager.saveName(phoneNumber);
                         UserInfoManager.savePassword(password);
-                        UserInfoManager.saveToken(loginResult.getTokenKey());
-                        UserInfoManager.saveId(loginResult.getId());
-                        UserInfoManager.saveUserId(loginResult.getUserId());
+                        UserInfoManager.login(loginResult);
 
                         // TODO 登录成功后的处理
                         ToastUtil.shortToast(RegistActivity.this, "注册成功");
-                        MainActivity.launch(RegistActivity.this);
+
+                        CameraManager.getInst().openCamera(RegistActivity.this);
 
                         RegistActivity.this.finish();
                     }

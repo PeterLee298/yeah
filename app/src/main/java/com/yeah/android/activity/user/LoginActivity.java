@@ -3,25 +3,26 @@ package com.yeah.android.activity.user;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.TypeReference;
-import com.yeah.android.utils.LogUtil;
-import com.yeah.android.utils.StringUtils;
-import com.yeah.android.utils.ToastUtil;
 import com.loopj.android.http.RequestParams;
-import com.yeah.android.utils.Constants;
-import com.yeah.android.net.http.StickerHttpClient;
-import com.yeah.android.net.http.StickerHttpResponseHandler;
-import com.yeah.android.utils.UserInfoManager;
+import com.yeah.android.R;
+import com.yeah.android.activity.BaseActivity;
+import com.yeah.android.activity.MainActivity;
+import com.yeah.android.activity.camera.CameraManager;
 import com.yeah.android.model.common.ResponseData;
 import com.yeah.android.model.user.LoginResult;
 import com.yeah.android.model.user.VerifyResponse;
-import com.yeah.android.activity.MainActivity;
-import com.yeah.android.activity.BaseActivity;
-import com.yeah.android.R;
+import com.yeah.android.net.http.StickerHttpClient;
+import com.yeah.android.net.http.StickerHttpResponseHandler;
+import com.yeah.android.utils.Constants;
+import com.yeah.android.utils.LogUtil;
+import com.yeah.android.utils.StringUtils;
+import com.yeah.android.utils.ToastUtil;
+import com.yeah.android.utils.UserInfoManager;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -32,7 +33,7 @@ import butterknife.OnClick;
  */
 public class LoginActivity extends BaseActivity {
 
-    private VerifyResponse mVerifyResponse;
+
 
 
     @InjectView(R.id.login_input_name)
@@ -43,19 +44,23 @@ public class LoginActivity extends BaseActivity {
     TextView loginBtnLogin;
     @InjectView(R.id.login_forget_password)
     TextView loginForgetPassword;
+    @InjectView(R.id.login_register)
+    TextView loginRegister;
+    @InjectView(R.id.bind_weibo)
+    ImageView bindWeibo;
+    @InjectView(R.id.bind_weixin)
+    ImageView bindWeixin;
+    @InjectView(R.id.bind_qq)
+    ImageView bindQq;
+
+
+    private VerifyResponse mVerifyResponse;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.inject(this);
-
-        titleBar.setLeftBtnOnclickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                LoginActivity.this.finish();
-            }
-        });
 
         // TODO
         loginInputName.setText("17091088678");
@@ -65,13 +70,13 @@ public class LoginActivity extends BaseActivity {
     @OnClick(R.id.login_btn_login)
     public void login() {
         String phoneNumber = StringUtils.deleteWhitespace(loginInputName.getText().toString());
-        if(StringUtils.isEmpty(phoneNumber)) {
+        if (StringUtils.isEmpty(phoneNumber)) {
             ToastUtil.shortToast(this, "请输入用户名，不可包含空格");
             return;
         }
 
         String password = StringUtils.deleteWhitespace(loginInputPassword.getText().toString());
-        if(StringUtils.isEmpty(password)) {
+        if (StringUtils.isEmpty(password)) {
             ToastUtil.shortToast(this, "请输入登录密码，不可包含空格");
             return;
         }
@@ -93,15 +98,13 @@ public class LoginActivity extends BaseActivity {
 
                     @Override
                     public void onSuccess(LoginResult loginResult) {
-                        UserInfoManager.saveName(phoneNumber);
                         UserInfoManager.savePassword(password);
-                        UserInfoManager.saveToken(loginResult.getTokenKey());
-                        UserInfoManager.saveId(loginResult.getId());
-                        UserInfoManager.saveUserId(loginResult.getUserId());
 
-                        // TODO 登录成功后的处理
+                        UserInfoManager.login(loginResult);
+
+                        //  登录成功后的处理
                         ToastUtil.shortToast(LoginActivity.this, "登录成功");
-                        MainActivity.launch(LoginActivity.this);
+                        CameraManager.getInst().openCamera(LoginActivity.this);
 
                         LoginActivity.this.finish();
                     }
@@ -123,7 +126,7 @@ public class LoginActivity extends BaseActivity {
     @OnClick(R.id.login_forget_password)
     public void resetPassword() {
         String phoneNumber = StringUtils.deleteWhitespace(loginInputName.getText().toString());
-        if(StringUtils.isEmpty(phoneNumber)) {
+        if (StringUtils.isEmpty(phoneNumber)) {
             ToastUtil.shortToast(this, "请输入用户名，不可包含空格");
             return;
         }
@@ -163,6 +166,23 @@ public class LoginActivity extends BaseActivity {
                         dismissProgressDialog();
                     }
                 });
+    }
+
+    @OnClick(R.id.login_register)
+    public void register() {
+        RegistActivity.launch(LoginActivity.this);
+    }
+    @OnClick(R.id.bind_weibo)
+    public void bindWeiBo() {
+
+    }
+    @OnClick(R.id.bind_weixin)
+    public void binWeiXin() {
+
+    }
+    @OnClick(R.id.bind_qq)
+    public void bindQQ() {
+
     }
 
     public static void launch(Context context) {
