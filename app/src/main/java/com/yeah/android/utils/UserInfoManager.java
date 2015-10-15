@@ -20,6 +20,7 @@ public class UserInfoManager {
     private static final String USER_INFO = "yeah_user_info";
 
     private static LoginResult mLoginResult;
+    private static UserInfo mUserInfo;
 
     public static void login(LoginResult loginResult) {
         if(loginResult == null) {
@@ -79,6 +80,8 @@ public class UserInfoManager {
             LogUtil.e(TAG, "save error : userInfo is null");
         }
 
+        mUserInfo = userInfo;
+
         if(mLoginResult == null) {
             mLoginResult = getLoginResult();
         }
@@ -92,13 +95,29 @@ public class UserInfoManager {
 
     public static UserInfo getUserInfo() {
 
-        if(mLoginResult == null) {
-            return null;
+        if(mLoginResult == null
+                || mLoginResult.getExtra() == null
+                || mLoginResult.getExtra().getUser() == null) {
+            mUserInfo = new UserInfo();
+            mUserInfo.setNickname("设置昵称");
+            mUserInfo.setNickname("设置昵称");
+            mUserInfo.setBirthday(System.currentTimeMillis());
+            mUserInfo.setHoroscope(1);
+            mUserInfo.setAvatar("http://img5.duitang.com/uploads/item/201409/25/20140925225937_AeQiT.thumb.700_0.jpeg");
+        } else {
+            mUserInfo = mLoginResult.getExtra().getUser();
         }
 
-        return mLoginResult.getExtra().getUser();
+        return mUserInfo;
     }
 
+    public static int getId() {
+        if(isLogin()) {
+            return mLoginResult.getId();
+        }
+
+        return 0;
+    }
 
 
     public static String getToken() {

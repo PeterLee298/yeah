@@ -28,6 +28,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.yeah.android.activity.user.SettingActivity;
 import com.yeah.android.utils.DistanceUtil;
 import com.yeah.android.utils.FileUtils;
 import com.yeah.android.utils.IOUtil;
@@ -314,6 +315,7 @@ public class CameraActivity extends CameraBaseActivity {
     @OnClick(R.id.drawer_setting)
     public void drawerSeting() {
         drawerLayout.closeDrawer(Gravity.LEFT);
+        SettingActivity.launch(CameraActivity.this);
     }
 
     @Override

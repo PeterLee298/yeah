@@ -5,22 +5,21 @@ package com.yeah.android.model.user;
  * 用户信息
  */
 public class UserInfo {
-
     /**
-     * id : 20111114
-     * phone : 17091088678
-     * email :
-     * password : f874834766c4ec63d4173738ec88ba31
-     * name :
-     * nickname :
-     * avatar :
-     * birthday : 1444448942000
-     * horoscope : 0
-     * deviceId : 0
-     * ownerId : 13
+     * id : 20111106
+     * phone : 15615236548
+     * email : 11111111
+     * password : 79d886010186eb60e3611cd4a5d0bcae
+     * name : 1111111
+     * nickname : 1111111111
+     * avatar : 1111111
+     * sex : 1
+     * birthday : 1440465912000
+     * horoscope : 23
+     * ownerId : 5
      * state : 0
-     * createdAt : 1444448942000
-     * updatedAt : 1444448943000
+     * createdAt : 1442845040000
+     * updatedAt : 1444827158000
      */
 
     private int id;
@@ -30,9 +29,9 @@ public class UserInfo {
     private String name;
     private String nickname;
     private String avatar;
+    private int sex;
     private long birthday;
     private int horoscope;
-    private int deviceId;
     private int ownerId;
     private int state;
     private long createdAt;
@@ -66,16 +65,16 @@ public class UserInfo {
         this.avatar = avatar;
     }
 
+    public void setSex(int sex) {
+        this.sex = sex;
+    }
+
     public void setBirthday(long birthday) {
         this.birthday = birthday;
     }
 
     public void setHoroscope(int horoscope) {
         this.horoscope = horoscope;
-    }
-
-    public void setDeviceId(int deviceId) {
-        this.deviceId = deviceId;
     }
 
     public void setOwnerId(int ownerId) {
@@ -122,16 +121,16 @@ public class UserInfo {
         return avatar;
     }
 
+    public int getSex() {
+        return sex;
+    }
+
     public long getBirthday() {
         return birthday;
     }
 
     public int getHoroscope() {
         return horoscope;
-    }
-
-    public int getDeviceId() {
-        return deviceId;
     }
 
     public int getOwnerId() {

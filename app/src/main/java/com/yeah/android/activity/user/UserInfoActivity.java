@@ -279,7 +279,7 @@ public class UserInfoActivity extends BaseActivity {
             return;
         }
 
-        int loginId = UserInfoManager.getUserInfo().getId();
+        int loginId = UserInfoManager.getId();
         String token = UserInfoManager.getToken();
 
         RequestParams requestParams = new RequestParams();
