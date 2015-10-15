@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android" android:exitFadeDuration="@android:integer/config_shortAnimTime">
+
+    <item android:state_selected="true" android:drawable="@drawable/ic_camera_topbar_menu_4_clicked" />
+    <item android:drawable="@drawable/ic_camera_topbar_menu_4"/>
+
+</selector>

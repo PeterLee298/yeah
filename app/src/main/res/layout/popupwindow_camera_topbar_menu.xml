@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="62dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/camera_popupmenu_bg">
+
+    <ImageView
+        android:id="@+id/camera_topbar_menu_1"
+        android:layout_width="match_parent"
+        android:layout_height="62dp"
+        android:singleLine="true"
+        android:padding="16dp"
+        android:src="@drawable/camera_topbar_menu_1"
+        android:background="@null"/>
+
+    <ImageView
+        android:id="@+id/camera_topbar_menu_2"
+        android:layout_width="match_parent"
+        android:layout_height="62dp"
+        android:padding="16dp"
+        android:singleLine="true"
+        android:src="@drawable/ic_camera_topbar_menu_2"
+        android:background="@null"/>
+
+    <ImageView
+        android:id="@+id/camera_topbar_menu_3"
+        android:layout_width="match_parent"
+        android:layout_height="62dp"
+        android:singleLine="true"
+        android:padding="16dp"
+        android:src="@drawable/ic_camera_topbar_menu_flash_on"
+        android:background="@null"/>
+
+    <ImageView
+        android:id="@+id/camera_topbar_menu_4"
+        android:layout_width="match_parent"
+        android:layout_height="62dp"
+        android:singleLine="true"
+        android:padding="16dp"
+        android:src="@drawable/ic_camera_topbar_menu_4"
+        android:background="@null"/>
+
+</LinearLayout>

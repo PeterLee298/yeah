@@ -39,4 +39,8 @@
     <color name="splash_btn_text_color">@color/gray</color>
     <color name="login_bg">#CC000000</color>
 
+    <!--camera-->
+    <color name="camera_top_bar_bg_color">#1b1b1b</color>
+    <color name="camera_bottom_filter_choose_bg">#b8454545</color>
+
 </resources>

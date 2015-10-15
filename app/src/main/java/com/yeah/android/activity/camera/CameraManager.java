@@ -5,12 +5,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
-import com.yeah.android.activity.camera.ui.CameraActivity;
+import com.yeah.android.activity.camera.ui.Camera2Activity;
 import com.yeah.android.activity.camera.ui.CropPhotoActivity;
 import com.yeah.android.activity.camera.ui.PhotoProcessActivity;
-import com.yeah.android.utils.ImageUtils;
-import com.yeah.android.utils.Constants;
 import com.yeah.android.model.PhotoItem;
+import com.yeah.android.utils.Constants;
+import com.yeah.android.utils.ImageUtils;
 
 import java.util.Stack;
 
@@ -37,7 +37,7 @@ public class CameraManager {
 
     //打开照相界面
     public void openCamera(Context context) {
-        Intent intent = new Intent(context, CameraActivity.class);
+        Intent intent = new Intent(context, Camera2Activity.class);
         context.startActivity(intent);
     }
 
