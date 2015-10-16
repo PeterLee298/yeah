@@ -1,9 +1,14 @@
 package com.yeah.android.activity.camera.ui;
 
 import android.annotation.TargetApi;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BitmapRegionDecoder;
+import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.hardware.Camera;
@@ -11,9 +16,11 @@ import android.hardware.Camera.CameraInfo;
 import android.hardware.Camera.Parameters;
 import android.net.Uri;
 import android.opengl.GLSurfaceView;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.provider.MediaStore.Images.ImageColumns;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.util.FloatMath;
@@ -45,14 +52,19 @@ import com.yeah.android.utils.CameraUtils;
 import com.yeah.android.utils.Constants;
 import com.yeah.android.utils.DistanceUtil;
 import com.yeah.android.utils.FileUtils;
+import com.yeah.android.utils.IOUtil;
+import com.yeah.android.utils.ImageUtils;
+import com.yeah.android.utils.StringUtils;
 import com.yeah.android.utils.UserInfoManager;
 import com.yeah.android.view.CameraGrid;
 import com.yeah.android.view.CameraTopBarMenu;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -437,53 +449,51 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
         parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
     }
 
-//    private final class MyPictureCallback implements Camera.PictureCallback {
-//
-//        @Override
-//        public void onPictureTaken(byte[] data, Camera camera) {
-//            bundle = new Bundle();
-//            bundle.putByteArray("bytes", data); //将图片字节数据保存在bundle当中，实现数据交换
-//            new SavePicTask(data).execute();
-//            camera.startPreview(); // 拍完照后，重新开始预览
-//        }
-//    }
+    private final class MyPictureCallback implements Camera.PictureCallback {
 
-//    private class SavePicTask extends AsyncTask<Void, Void, String> {
-//        private byte[] data;
-//
-//        protected void onPreExecute() {
-//            showProgressDialog("处理中");
-//        }
-//
-//        ;
-//
-//        SavePicTask(byte[] data) {
-//            this.data = data;
-//        }
-//
-//        @Override
-//        protected String doInBackground(Void... params) {
-//            try {
-//                return saveToSDCard(data);
-//            } catch (IOException e) {
-//                e.printStackTrace();
-//                return null;
-//            }
-//        }
-//
-//        @Override
-//        protected void onPostExecute(String result) {
-//            super.onPostExecute(result);
-//
-//            if (StringUtils.isNotEmpty(result)) {
-//                dismissProgressDialog();
-//                CameraManager.getInst().processPhotoItem(Camera2Activity.this,
-//                        new PhotoItem(result, System.currentTimeMillis()));
-//            } else {
-//                toast("拍照失败，请稍后重试！", Toast.LENGTH_LONG);
-//            }
-//        }
-//    }
+        @Override
+        public void onPictureTaken(byte[] data, Camera camera) {
+            bundle = new Bundle();
+            bundle.putByteArray("bytes", data); //将图片字节数据保存在bundle当中，实现数据交换
+            new SavePicTask(data).execute();
+            camera.startPreview(); // 拍完照后，重新开始预览
+        }
+    }
+
+    private class SavePicTask extends AsyncTask<Void, Void, String> {
+        private byte[] data;
+
+        protected void onPreExecute() {
+            showProgressDialog("处理中");
+        }
+
+        SavePicTask(byte[] data) {
+            this.data = data;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            try {
+                return saveToSDCard(data);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            if (StringUtils.isNotEmpty(result)) {
+                dismissProgressDialog();
+                CameraManager.getInst().processPhotoItem(Camera2Activity.this,
+                        new PhotoItem(result, System.currentTimeMillis()));
+            } else {
+                toast("拍照失败，请稍后重试！", Toast.LENGTH_LONG);
+            }
+        }
+    }
 
 
     //实现自动对焦
@@ -747,69 +757,69 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
         }
     }
 
-//
-//    /**
-//     * 将拍下来的照片存放在SD卡中
-//     *
-//     * @param data
-//     * @throws java.io.IOException
-//     */
-//    public String saveToSDCard(byte[] data) throws IOException {
-//        Bitmap croppedImage;
-//
-//        //获得图片大小
-//        BitmapFactory.Options options = new BitmapFactory.Options();
-//        options.inJustDecodeBounds = true;
-//        BitmapFactory.decodeByteArray(data, 0, data.length, options);
-//
-//        PHOTO_SIZE = options.outHeight > options.outWidth ? options.outWidth : options.outHeight;
-//        int height = options.outHeight > options.outWidth ? options.outHeight : options.outWidth;
-//        options.inJustDecodeBounds = false;
-//        Rect r;
-//        if (mCurrentCameraId == 1) {
-//            r = new Rect(height - PHOTO_SIZE, 0, height, PHOTO_SIZE);
-//        } else {
-//            r = new Rect(0, 0, PHOTO_SIZE, PHOTO_SIZE);
-//        }
-//        try {
-//            croppedImage = decodeRegionCrop(data, r);
-//        } catch (Exception e) {
-//            return null;
-//        }
-//        String imagePath = ImageUtils.saveToFile(FileUtils.getInst().getSystemPhotoPath(), true,
-//                croppedImage);
-//        croppedImage.recycle();
-//        return imagePath;
-//    }
-//
-//    private Bitmap decodeRegionCrop(byte[] data, Rect rect) {
-//
-//        InputStream is = null;
-//        System.gc();
-//        Bitmap croppedImage = null;
-//        try {
-//            is = new ByteArrayInputStream(data);
-//            BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(is, false);
-//
-//            try {
-//                croppedImage = decoder.decodeRegion(rect, new BitmapFactory.Options());
-//            } catch (IllegalArgumentException e) {
-//            }
-//        } catch (Throwable e) {
-//            e.printStackTrace();
-//        } finally {
-//            IOUtil.closeStream(is);
-//        }
-//        Matrix m = new Matrix();
-//        m.setRotate(90, PHOTO_SIZE / 2, PHOTO_SIZE / 2);
-//        if (mCurrentCameraId == 1) {
-//            m.postScale(1, -1);
-//        }
-//        Bitmap rotatedImage = Bitmap.createBitmap(croppedImage, 0, 0, PHOTO_SIZE, PHOTO_SIZE, m, true);
-//        if (rotatedImage != croppedImage)
-//            croppedImage.recycle();
-//        return rotatedImage;
-//    }
+
+    /**
+     * 将拍下来的照片存放在SD卡中
+     *
+     * @param data
+     * @throws java.io.IOException
+     */
+    public String saveToSDCard(byte[] data) throws IOException {
+        Bitmap croppedImage;
+
+        //获得图片大小
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeByteArray(data, 0, data.length, options);
+
+        PHOTO_SIZE = options.outHeight > options.outWidth ? options.outWidth : options.outHeight;
+        int height = options.outHeight > options.outWidth ? options.outHeight : options.outWidth;
+        options.inJustDecodeBounds = false;
+        Rect r;
+        if (mCamera.mCurrentCameraId == 1) {
+            r = new Rect(height - PHOTO_SIZE, 0, height, PHOTO_SIZE);
+        } else {
+            r = new Rect(0, 0, PHOTO_SIZE, PHOTO_SIZE);
+        }
+        try {
+            croppedImage = decodeRegionCrop(data, r);
+        } catch (Exception e) {
+            return null;
+        }
+        String imagePath = ImageUtils.saveToFile(FileUtils.getInst().getSystemPhotoPath(), true,
+                croppedImage);
+        croppedImage.recycle();
+        return imagePath;
+    }
+
+    private Bitmap decodeRegionCrop(byte[] data, Rect rect) {
+
+        InputStream is = null;
+        System.gc();
+        Bitmap croppedImage = null;
+        try {
+            is = new ByteArrayInputStream(data);
+            BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(is, false);
+
+            try {
+                croppedImage = decoder.decodeRegion(rect, new BitmapFactory.Options());
+            } catch (IllegalArgumentException e) {
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        } finally {
+            IOUtil.closeStream(is);
+        }
+        Matrix m = new Matrix();
+        m.setRotate(90, PHOTO_SIZE / 2, PHOTO_SIZE / 2);
+        if (mCamera.mCurrentCameraId == 1) {
+            m.postScale(1, -1);
+        }
+        Bitmap rotatedImage = Bitmap.createBitmap(croppedImage, 0, 0, PHOTO_SIZE, PHOTO_SIZE, m, true);
+        if (rotatedImage != croppedImage)
+            croppedImage.recycle();
+        return rotatedImage;
+    }
 
 
     private class CameraLoader {
@@ -924,20 +934,6 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
                         // mGPUImage.setImage(bitmap);
                         final GLSurfaceView view = (GLSurfaceView) findViewById(R.id.surfaceView);
                         view.setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
-//                        Date date = new Date();
-//                        SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss"); // 格式化时间
-//                        String filename = format.format(date) + ".jpg";
-//
-//                        mGPUImage.saveToPictures(FileUtils.getInst().getSystemPhotoPath(), filename, new OnPictureSavedListener() {
-//
-//                            @Override
-//                            public void onPictureSaved(final Uri
-//                                                               uri) {
-//                                pictureFile.delete();
-//                                camera.startPreview();
-//                                view.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
-//                            }
-//                        });
 
                         mGPUImage.saveToPictures(bitmap, "GPUImage",
                                 System.currentTimeMillis() + ".jpg",
@@ -946,13 +942,45 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
                                     @Override
                                     public void onPictureSaved(final Uri
                                                                        uri) {
-                                        pictureFile.delete();
-                                        camera.startPreview();
-                                        view.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
+
+                                        if (StringUtils.isNotEmpty(getRealFilePath(Camera2Activity.this,uri))) {
+                                            dismissProgressDialog();
+                                            CameraManager.getInst().processPhotoItem(Camera2Activity.this,
+                                                    new PhotoItem(getRealFilePath(Camera2Activity.this,uri), System.currentTimeMillis()));
+                                        } else {
+                                            toast("拍照失败，请稍后重试！", Toast.LENGTH_LONG);
+                                        }
+
+//                                        pictureFile.delete();
+//                                        camera.startPreview();
+//                                        view.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
                                     }
                                 });
                     }
                 });
+    }
+
+    public static String getRealFilePath( final Context context, final Uri uri ) {
+        if ( null == uri ) return null;
+        final String scheme = uri.getScheme();
+        String data = null;
+        if ( scheme == null )
+            data = uri.getPath();
+        else if ( ContentResolver.SCHEME_FILE.equals( scheme ) ) {
+            data = uri.getPath();
+        } else if ( ContentResolver.SCHEME_CONTENT.equals( scheme ) ) {
+            Cursor cursor = context.getContentResolver().query( uri, new String[] { ImageColumns.DATA }, null, null, null );
+            if ( null != cursor ) {
+                if ( cursor.moveToFirst() ) {
+                    int index = cursor.getColumnIndex( ImageColumns.DATA );
+                    if ( index > -1 ) {
+                        data = cursor.getString( index );
+                    }
+                }
+                cursor.close();
+            }
+        }
+        return data;
     }
 
 
