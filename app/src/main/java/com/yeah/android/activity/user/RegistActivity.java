@@ -162,7 +162,7 @@ public class RegistActivity extends BaseActivity {
                         UserInfoManager.savePassword(password);
                         UserInfoManager.login(loginResult);
 
-                        // TODO 登录成功后的处理
+                        // 登录成功后的处理
                         ToastUtil.shortToast(RegistActivity.this, "注册成功");
 
                         CameraManager.getInst().openCamera(RegistActivity.this);

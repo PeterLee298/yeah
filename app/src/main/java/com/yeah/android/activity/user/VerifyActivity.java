@@ -122,8 +122,8 @@ public class VerifyActivity extends BaseActivity {
         RequestParams requestParams = new RequestParams();
         requestParams.put("appId", Constants.APP_ID);
         requestParams.put("appKey", Constants.APP_KEY);
-        requestParams.put("verifyCode", mVerifyResponse.getId());
-        requestParams.put("verifyId", verifyCode);
+        requestParams.put("verifyId", mVerifyResponse.getId());
+        requestParams.put("verifyCode", verifyCode);
         StickerHttpClient.post("/account/verify/confirm", requestParams,
                 new TypeReference<ResponseData<VerifyConfirmResponse>>() {
                 }.getType(),
@@ -137,7 +137,7 @@ public class VerifyActivity extends BaseActivity {
                     @Override
                     public void onSuccess(VerifyConfirmResponse verifyConfirmResponse) {
                         ResetPasswordActivity.launch(VerifyActivity.this,
-                                mVerifyResponse.getId(), verifyCode);
+                                mPhoneNumber, mVerifyResponse.getId(), verifyCode);
                     }
 
                     @Override

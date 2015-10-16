@@ -11,6 +11,8 @@ import com.loopj.android.http.RequestParams;
 import com.yeah.android.R;
 import com.yeah.android.activity.BaseActivity;
 import com.yeah.android.activity.MainActivity;
+import com.yeah.android.activity.camera.CameraManager;
+import com.yeah.android.activity.camera.ui.CameraActivity;
 import com.yeah.android.model.common.ResponseData;
 import com.yeah.android.model.user.LoginResult;
 import com.yeah.android.net.http.StickerHttpClient;
@@ -31,9 +33,11 @@ import butterknife.OnClick;
  */
 public class ResetPasswordActivity extends BaseActivity {
 
+    public static final String VERIFY_PHONE = "verify_phone";
     public static final String VERIFY_ID = "verify_id";
     public static final String VERIFY_CODE = "verify_code";
 
+    private String mPhone;
     private int mVerifyId;
     private String mVerifyCode;
 
@@ -51,6 +55,7 @@ public class ResetPasswordActivity extends BaseActivity {
         ButterKnife.inject(this);
 
         Intent intent = getIntent();
+        mPhone = intent.getStringExtra(VERIFY_PHONE);
         mVerifyId = intent.getIntExtra(VERIFY_ID, 0);
         mVerifyCode = intent.getStringExtra(VERIFY_CODE);
     }
@@ -80,13 +85,14 @@ public class ResetPasswordActivity extends BaseActivity {
         requestParams.put("appId", Constants.APP_ID);
         requestParams.put("appKey", Constants.APP_KEY);
         requestParams.put("password", password);
-        requestParams.put("verifyCode", mVerifyCode);
+        requestParams.put("phone", mPhone);
         requestParams.put("verifyId", mVerifyId);
+        requestParams.put("verifyCode", mVerifyCode);
 
         StickerHttpClient.post("/account/user/password/reset", requestParams,
-                new TypeReference<ResponseData<Object>>() {
+                new TypeReference<ResponseData<LoginResult>>() {
                 }.getType(),
-                new StickerHttpResponseHandler<Object>() {
+                new StickerHttpResponseHandler<LoginResult>() {
 
                     @Override
                     public void onStart() {
@@ -94,12 +100,13 @@ public class ResetPasswordActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onSuccess(Object o) {
+                    public void onSuccess(LoginResult loginResult) {
                         UserInfoManager.savePassword(password);
+                        UserInfoManager.login(loginResult);
 
-                        // TODO 成功后的处理
-                        ToastUtil.shortToast(ResetPasswordActivity.this, "密码重置成功，请登录");
+                        ToastUtil.shortToast(ResetPasswordActivity.this, "密码重置成功，请重新登录");
 
+                        LoginActivity.launch(ResetPasswordActivity.this);
                     }
 
                     @Override
@@ -116,8 +123,9 @@ public class ResetPasswordActivity extends BaseActivity {
                 });
     }
 
-    public static void launch(Context context, int verifyId, String verifyCode) {
-        Intent intent = new Intent(context, LoginActivity.class);
+    public static void launch(Context context, String phone, int verifyId, String verifyCode) {
+        Intent intent = new Intent(context, ResetPasswordActivity.class);
+        intent.putExtra(VERIFY_PHONE, phone);
         intent.putExtra(VERIFY_ID, verifyId);
         intent.putExtra(VERIFY_CODE, verifyCode);
         context.startActivity(intent);
