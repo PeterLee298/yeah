@@ -28,7 +28,8 @@
         android:src="@drawable/ic_camera_white"
         app:fab_colorNormal="?attr/colorPrimary"
         app:fab_colorPressed="?attr/colorPrimaryDark"
-        app:fab_colorRipple="?attr/colorPrimary" />
+        app:fab_colorRipple="?attr/colorPrimary"
+        android:visibility="gone"/>
 
 
 </RelativeLayout>

@@ -60,6 +60,17 @@
             android:name="com.yeah.android.activity.camera.ui.PhotoProcessActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+
+        <activity
+            android:name=".activity.camera.ui.PhotoFilterActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+
+        <activity
+            android:name=".activity.camera.ui.PhotoStickerActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+
         <activity
             android:name="com.yeah.android.activity.EditTextActivity"
             android:screenOrientation="portrait"

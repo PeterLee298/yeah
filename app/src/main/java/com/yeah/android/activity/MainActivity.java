@@ -63,9 +63,10 @@ public class MainActivity extends BaseActivity {
             feedList = JSON.parseArray(str, FeedItem.class);
         }
         if (feedList == null) {
-            CameraManager.getInst().openCamera(MainActivity.this);
+//            CameraManager.getInst().openCamera(MainActivity.this);
         } else {
             mAdapter.setList(feedList);
+            mAdapter.notifyDataSetChanged();
         }
 
     }
