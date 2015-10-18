@@ -4,9 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,10 +17,8 @@ import android.widget.Toast;
 import com.alibaba.fastjson.JSON;
 import com.yeah.android.R;
 import com.yeah.android.YeahApp;
-import com.yeah.android.activity.EditTextActivity;
 import com.yeah.android.activity.MainActivity;
 import com.yeah.android.activity.camera.CameraBaseActivity;
-import com.yeah.android.activity.camera.CameraManager;
 import com.yeah.android.activity.camera.EffectService;
 import com.yeah.android.activity.camera.adapter.FilterAdapter;
 import com.yeah.android.activity.camera.adapter.StickerToolAdapter;
@@ -38,7 +34,6 @@ import com.yeah.android.utils.FileUtils;
 import com.yeah.android.utils.ImageUtils;
 import com.yeah.android.utils.StringUtils;
 import com.yeah.android.utils.TimeUtils;
-import com.yeah.android.view.LabelSelector;
 import com.yeah.android.view.LabelView;
 import com.yeah.android.view.MyHighlightView;
 import com.yeah.android.view.MyImageViewDrawableOverlay;
@@ -49,7 +44,6 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.greenrobot.event.EventBus;
 import it.sephiroth.android.library.widget.HListView;
 import jp.co.cyberagent.android.gpuimage.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
@@ -68,10 +62,6 @@ public class PhotoStickerActivity extends CameraBaseActivity {
     //底部按钮
     @InjectView(R.id.sticker_next)
     TextView stickerNext;
-//    @InjectView(R.id.filter_btn)
-//    TextView filterBtn;
-//    @InjectView(R.id.text_btn)
-//    TextView labelBtn;
     //工具区
     @InjectView(R.id.list_tools)
     HListView bottomToolBar;

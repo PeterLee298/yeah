@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#ffffff"
+    android:background="@color/base_bg"
     android:orientation="vertical" >
 
     <com.yeah.android.view.CommonTitleBar
@@ -11,9 +11,8 @@
         style="@style/head_default"
         app:leftBtnIcon="@drawable/back"
         app:rightBtnIcon="@drawable/next"
-        app:titleTxt="编辑相片"
-        app:leftBtnTxt="返回"
-        app:rightBtnTxt="下一步" />
+        app:bgColor="@color/transparent"
+        app:titleTxt="" />
 
     <LinearLayout
         android:id="@+id/main_area"
@@ -57,18 +56,20 @@
         android:id="@+id/btn_area"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
-        android:background="@color/app_base"
-        android:orientation="horizontal" >
+        android:background="@color/white"
+        android:orientation="vertical"
+        android:gravity="center">
 
         <TextView
             android:id="@+id/sticker_next"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
+            android:layout_width="120dp"
+            android:layout_height="36dp"
+            android:layout_below="@id/login_input_root"
+            android:background="@drawable/base_btn_bg"
             android:gravity="center"
             android:text="下一步"
             android:textColor="@color/white"
-            android:textSize="22sp" />
+            android:textSize="@dimen/txt_size_xl" />
     </LinearLayout>
 
 </LinearLayout>
