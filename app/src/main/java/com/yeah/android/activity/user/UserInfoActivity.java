@@ -1,12 +1,19 @@
 package com.yeah.android.activity.user;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,11 +35,14 @@ import com.yeah.android.net.http.StickerHttpClient;
 import com.yeah.android.net.http.StickerHttpResponseHandler;
 import com.yeah.android.utils.Constants;
 import com.yeah.android.utils.DataUtils;
+import com.yeah.android.utils.FileUtils;
 import com.yeah.android.utils.LogUtil;
+import com.yeah.android.utils.PhotoFileUtils;
 import com.yeah.android.utils.StringUtils;
 import com.yeah.android.utils.ToastUtil;
 import com.yeah.android.utils.UserInfoManager;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -52,6 +62,8 @@ import butterknife.OnClick;
  */
 public class UserInfoActivity extends BaseActivity {
 
+    private static final String TAG = BaseActivity.class.getSimpleName();
+
     @InjectView(R.id.userAvatar)
     SimpleDraweeView userAvatar;
     @InjectView(R.id.nickname)
@@ -70,6 +82,13 @@ public class UserInfoActivity extends BaseActivity {
     TextView constellationTV;
     @InjectView(R.id.info_constellation_root)
     RelativeLayout infoConstellationRoot;
+
+
+    private static final int IMAGE_REQUEST_CODE = 0; // 请求码 本地图片
+    private static final int CAMERA_REQUEST_CODE = 1; // 拍照
+    private static final int RESULT_REQUEST_CODE = 2; // 裁剪
+    private static final String SAVE_AVATORNAME = "head.jpeg";// 保存的图片名
+
 
     private final String[] sex = {"男", "女"};
 
@@ -100,9 +119,155 @@ public class UserInfoActivity extends BaseActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case LOCAL_PICTURE:
+                    LogUtil.e(TAG, "onActivityResult LOCAL_PICTURE");
+                    try {
+                        if (data != null) {
+                            Uri uri = data.getData();
+                            startPhotoRoom(uri);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        LogUtil.e(TAG, e.toString());
+                    }
+                    break;
+                case CAMERA_PICTURE:
+                    LogUtil.e(TAG, "onActivityResult CAMERA_PICTURE");
+                    try {
+                        File userPhotoFile = getUserPhotoFile();
+                        if (userPhotoFile != null && userPhotoFile.isFile()) {
+                            startPhotoRoom(Uri.fromFile(userPhotoFile));
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        LogUtil.e(TAG, e.toString());
+                    }
+                    break;
+                case CUT_PICTURE:
+                    LogUtil.e(TAG, "onActivityResult CUT_PICTURE");
+                    try {
+                        if (data != null) {
+                            Bundle extras = data.getExtras();
+                            if (extras != null) {
+                                Bitmap photo = extras.getParcelable("data");
+
+                                // TODO
+                                userAvatar.setImageURI(data.getData());
+                            }
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        LogUtil.e(TAG, e.toString());
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+
+
+    }
+
+
+
+
+
+    private void startPhotoRoom(Uri uri) {
+        Log.i(TAG, "startPhotoZoom()");
+        Log.d("Temp", "startPhotoZoom uri -->> " + uri.toString());
+
+        Intent intent = new Intent("com.android.camera.action.CROP");
+
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        intent.putExtra("outputX", 150);
+        intent.putExtra("outputY", 150);
+
+        if (PhotoFileUtils.isDocumentUri(this, uri)) {
+            intent.setDataAndType(PhotoFileUtils.convertUri(this, uri), "image/*");
+        } else {
+            intent.setDataAndType(uri, "image/*");
+        }
+        intent.putExtra("crop", "true");
+//        intent.putExtra("return-data", true);
+        intent.putExtra("return-data", false);
+
+        intent.putExtra(MediaStore.EXTRA_OUTPUT,
+                Uri.fromFile(getUserPhotoFile()));
+
+        intent.putExtra("scale", true);
+        intent.putExtra("scaleUpIfNeeded", true);
+        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+        startActivityForResult(intent, CUT_PICTURE);
+        Log.i(TAG, "---------------------------->goZoom");
+    }
+
+
+    private static final int LOCAL_PICTURE = 101;
+    private static final int CAMERA_PICTURE = 102;
+    private static final int CUT_PICTURE = 103;
     @OnClick(R.id.userAvatar)
     public void changeAvatar() {
 
+        if(!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+            ToastUtil.shortToast(UserInfoActivity.this, "请插入SD卡后重试");
+            return;
+        }
+
+        AlertDialog.Builder dialog = new AlertDialog.Builder(UserInfoActivity.this);
+        dialog.setTitle("上传头像");
+        final String[] items = { "拍照上传", "相册选择"};
+
+        dialog.setItems(items, new DialogInterface.OnClickListener() {
+
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+
+                switch (which) {
+                    case 0:
+                        LogUtil.d("changeAvatar", "camera");
+
+                        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                        intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(getUserPhotoFile()));
+                        startActivityForResult(intent, CAMERA_PICTURE);
+                        break;
+                    case 1:
+                        LogUtil.d("changeAvatar", "photo");
+                        Intent intent2 = new Intent(Intent.ACTION_PICK, null);
+                        intent2.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                        startActivityForResult(intent2, LOCAL_PICTURE);
+                        break;
+                    default:
+                        break;
+                }
+            }
+        });
+
+        dialog.show().setCanceledOnTouchOutside(true);
+    }
+
+    public File getUserPhotoFile() {
+        File imageFile = null;
+        try {
+            File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/yeah/userphoto");
+            if (!file.exists()) {
+                file.mkdir();
+            }
+            imageFile = new File(file, "/android_user_no_image.jpg");
+            return imageFile;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return imageFile;
     }
 
     @OnClick(R.id.info_nickname_root)

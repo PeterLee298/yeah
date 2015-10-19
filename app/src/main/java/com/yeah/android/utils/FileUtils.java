@@ -348,4 +348,11 @@ public class FileUtils {
     }
 
 
+
+    //////////////////////
+    public static boolean isSDCardMounted() {
+        return Environment.getExternalStorageState().equals(
+                Environment.MEDIA_MOUNTED);
+    }
+
 }
