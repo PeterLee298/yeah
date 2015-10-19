@@ -1,18 +1,19 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.AppCompat.Light">
         <!-- Customize your theme here. -->
         <item name="android:fitsSystemWindows">true</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:screenOrientation">portrait</item>
         <!--<item name="colorPrimary">@color/app_base</item>
         <item name="colorPrimaryDark">@color/app_base</item>
         <item name="colorAccent">@color/app_base</item>-->
 
     </style>
 
-    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen" parent="@style/Theme.AppCompat.Light">
+    <style name="AppTheme.NoActionBar.FullScreen" parent="AppTheme">
         <item name="windowNoTitle">true</item>
         <item name="windowActionBar">false</item>
         <item name="android:windowFullscreen">true</item>
@@ -20,7 +21,7 @@
         <item name="colorPrimary">@color/transparent</item>
     </style>
 
-    <style name="Theme.AppCompat.Light.NoActionBar.FullScreen.Translucent" parent="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
+    <style name="AppTheme.NoActionBar.FullScreen.Translucent" parent="AppTheme.NoActionBar.FullScreen">
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:windowBackground">@color/transparent</item>
     </style>

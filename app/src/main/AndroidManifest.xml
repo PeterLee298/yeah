@@ -12,15 +12,16 @@
 
     <application
         android:name="com.yeah.android.YeahApp"
-        android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        android:allowBackup="true"
+        android:largeHeap="true"
         android:theme="@style/AppTheme">
 
         <activity
             android:name="com.yeah.android.activity.user.SplashActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen">
+            android:theme="@style/AppTheme.NoActionBar.FullScreen"
+            android:screenOrientation="portrait">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -32,82 +33,67 @@
         <activity
             android:name="com.yeah.android.activity.user.LoginActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustPan|stateHidden" />
+            android:windowSoftInputMode="adjustPan|stateHidden"
+            android:screenOrientation="portrait"/>
 
-        <activity
-            android:name="com.yeah.android.activity.MainActivity"
-            android:label="@string/app_name"></activity>
+        <activity android:name="com.yeah.android.activity.MainActivity"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.yeah.android.activity.camera.ui.CameraActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+            android:theme="@style/AppTheme.NoActionBar.FullScreen"
+            android:screenOrientation="portrait"/>
         <activity
             android:name="com.yeah.android.activity.camera.ui.Camera2Activity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
+            android:theme="@style/AppTheme.NoActionBar.FullScreen"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name="com.yeah.android.activity.camera.ui.CropPhotoActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
-        <activity
-            android:name="com.yeah.android.activity.camera.ui.AlbumActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light" />
-        <activity
-            android:name="com.yeah.android.activity.camera.ui.PhotoProcessActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+            android:theme="@style/AppTheme.NoActionBar.FullScreen"
+            android:screenOrientation="portrait"/>
 
-        <activity
-            android:name=".activity.camera.ui.PhotoFilterActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+        <activity android:name="com.yeah.android.activity.camera.ui.AlbumActivity"
+            android:screenOrientation="portrait"/>
 
-        <activity
-            android:name=".activity.camera.ui.PhotoStickerActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+        <activity android:name="com.yeah.android.activity.camera.ui.PhotoProcessActivity"
+            android:screenOrientation="portrait"/>
 
-        <activity
-            android:name="com.yeah.android.activity.EditTextActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+        <activity android:name=".activity.camera.ui.PhotoFilterActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name=".activity.camera.ui.PhotoStickerActivity"
+            android:screenOrientation="portrait"/>
+
+        <activity android:name="com.yeah.android.activity.EditTextActivity"
+            android:screenOrientation="portrait"/>
 
 
         <activity
             android:name="com.yeah.android.activity.user.RegistActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen.Translucent"
             android:windowSoftInputMode="adjustPan|stateHidden" />
 
         <activity
             android:name="com.yeah.android.activity.user.VerifyActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen.Translucent"
             android:windowSoftInputMode="adjustPan|stateHidden" />
 
         <activity
             android:name="com.yeah.android.activity.user.ResetPasswordActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen.Translucent"
             android:windowSoftInputMode="adjustPan|stateHidden" />
 
-        <activity
-            android:name="com.yeah.android.activity.user.UserInfoActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen" />
+        <activity android:name="com.yeah.android.activity.user.UserInfoActivity"
+            android:screenOrientation="portrait"/>
 
-        <activity
-            android:name="com.yeah.android.activity.user.SettingActivity"
-            android:screenOrientation="portrait" />
+        <activity android:name="com.yeah.android.activity.user.SettingActivity"
+            android:screenOrientation="portrait"/>
 
         <!-- umeng -->
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="561b549c67e58e0d8000374c"></meta-data>
+            android:value="561b549c67e58e0d8000374c" />
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="debug" />
