@@ -51,7 +51,7 @@ public class AlbumFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 PhotoItem photo = photos.get(arg2);
-				CameraManager.getInst().processPhotoItem(getActivity(), photo);
+				CameraManager.getInst().filterPhotoItem(getActivity(), photo);
             }
         });
         return root;

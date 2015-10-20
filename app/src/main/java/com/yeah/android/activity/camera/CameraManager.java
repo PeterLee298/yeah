@@ -6,13 +6,9 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.yeah.android.activity.camera.ui.Camera2Activity;
-import com.yeah.android.activity.camera.ui.CropPhotoActivity;
-import com.yeah.android.activity.camera.ui.PhotoProcessActivity;
+import com.yeah.android.activity.camera.ui.PhotoFilterActivity;
 import com.yeah.android.activity.camera.ui.PhotoStickerActivity;
 import com.yeah.android.model.PhotoItem;
-import com.yeah.android.utils.Constants;
-import com.yeah.android.utils.ImageUtils;
-
 import java.util.Stack;
 
 /**
@@ -57,6 +53,14 @@ public class CameraManager {
 
         // 直接进行贴图
         Intent newIntent = new Intent(activity, PhotoStickerActivity.class);
+        newIntent.setData(uri);
+        activity.startActivity(newIntent);
+    }
+
+    public void filterPhotoItem(Activity activity, PhotoItem photo) {
+        Uri uri = photo.getImageUri().startsWith("file:") ? Uri.parse(photo
+                .getImageUri()) : Uri.parse("file://" + photo.getImageUri());
+        Intent newIntent = new Intent(activity, PhotoFilterActivity.class);
         newIntent.setData(uri);
         activity.startActivity(newIntent);
     }

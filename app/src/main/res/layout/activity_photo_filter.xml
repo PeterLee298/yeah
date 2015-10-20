@@ -3,16 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@color/base_bg"
+    android:background="#454545"
     android:orientation="vertical" >
 
     <com.yeah.android.view.CommonTitleBar
         android:id="@+id/title_layout"
         style="@style/head_default"
-        app:leftBtnIcon="@drawable/back"
-        app:rightBtnIcon="@drawable/next"
         app:bgColor="@color/transparent"
-        app:titleTxt="" />
+        app:leftBtnIcon="@drawable/back"  />
 
     <LinearLayout
         android:id="@+id/main_area"
@@ -61,7 +59,7 @@
         android:gravity="center">
 
         <TextView
-            android:id="@+id/sticker_next"
+            android:id="@+id/filter_next"
             android:layout_width="120dp"
             android:layout_height="36dp"
             android:background="@drawable/base_btn_bg"

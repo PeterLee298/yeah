@@ -7,6 +7,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ import com.yeah.android.activity.camera.util.EffectUtil;
 import com.yeah.android.activity.camera.util.GPUImageFilterTools;
 import com.yeah.android.model.Addon;
 import com.yeah.android.model.FeedItem;
+import com.yeah.android.model.PhotoItem;
 import com.yeah.android.model.TagItem;
 import com.yeah.android.utils.Constants;
 import com.yeah.android.utils.FileUtils;
@@ -63,12 +65,8 @@ public class PhotoFilterActivity extends CameraBaseActivity {
     @InjectView(R.id.drawing_view_container)
     ViewGroup drawArea;
     //底部按钮
-    @InjectView(R.id.sticker_btn)
-    TextView stickerBtn;
-    @InjectView(R.id.filter_btn)
-    TextView filterBtn;
-    @InjectView(R.id.text_btn)
-    TextView labelBtn;
+    @InjectView(R.id.filter_next)
+    TextView filterNextBtn;
     //工具区
     @InjectView(R.id.list_tools)
     HListView bottomToolBar;
@@ -94,12 +92,11 @@ public class PhotoFilterActivity extends CameraBaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_image_process);
+        setContentView(R.layout.activity_photo_filter);
         ButterKnife.inject(this);
         EffectUtil.clear();
         initView();
         initEvent();
-        initStickerToolBar();
 
         ImageUtils.asyncLoadImage(this, getIntent().getData(), new ImageUtils.LoadImageCallback() {
             @Override
@@ -155,61 +152,32 @@ public class PhotoFilterActivity extends CameraBaseActivity {
     }
 
     private void initEvent() {
-        stickerBtn.setOnClickListener(v ->{
-            if (!setCurrentBtn(stickerBtn)) {
-                return;
-            }
-            bottomToolBar.setVisibility(View.VISIBLE);
-            labelSelector.hide();
-            emptyLabelView.setVisibility(View.GONE);
-            commonLabelArea.setVisibility(View.GONE);
-            initStickerToolBar();
-        });
+        bottomToolBar.setVisibility(View.VISIBLE);
+        labelSelector.hide();
+        emptyLabelView.setVisibility(View.INVISIBLE);
+        commonLabelArea.setVisibility(View.GONE);
 
-        filterBtn.setOnClickListener(v -> {
-            if (!setCurrentBtn(filterBtn)) {
-                return;
-            }
-            bottomToolBar.setVisibility(View.VISIBLE);
-            labelSelector.hide();
-            emptyLabelView.setVisibility(View.INVISIBLE);
-            commonLabelArea.setVisibility(View.GONE);
-            initFilterToolBar();
-        });
-        labelBtn.setOnClickListener(v -> {
-            if (!setCurrentBtn(labelBtn)) {
-                return;
-            }
-            bottomToolBar.setVisibility(View.GONE);
-            labelSelector.showToTop();
-            commonLabelArea.setVisibility(View.VISIBLE);
+        initFilterToolBar();
 
-        });
-        labelSelector.setTxtClicked(v -> {
-            EditTextActivity.openTextEdit(PhotoFilterActivity.this,"",8, Constants.ACTION_EDIT_LABEL);
-        });
-        labelSelector.setAddrClicked(v -> {
-            EditTextActivity.openTextEdit(PhotoFilterActivity.this,"",8, Constants.ACTION_EDIT_LABEL_POI);
 
-        });
         mImageView.setOnDrawableEventListener(wpEditListener);
-        mImageView.setSingleTapListener(()->{
-                emptyLabelView.updateLocation((int) mImageView.getmLastMotionScrollX(),
-                        (int) mImageView.getmLastMotionScrollY());
-                emptyLabelView.setVisibility(View.VISIBLE);
+//        mImageView.setSingleTapListener(()->{
+//                emptyLabelView.updateLocation((int) mImageView.getmLastMotionScrollX(),
+//                        (int) mImageView.getmLastMotionScrollY());
+//                emptyLabelView.setVisibility(View.VISIBLE);
+//
+//                labelSelector.showToTop();
+//                drawArea.postInvalidate();
+//        });
+//        labelSelector.setOnClickListener(v -> {
+//            labelSelector.hide();
+//            emptyLabelView.updateLocation((int) labelSelector.getmLastTouchX(),
+//                    (int) labelSelector.getmLastTouchY());
+//            emptyLabelView.setVisibility(View.VISIBLE);
+//        });
 
-                labelSelector.showToTop();
-                drawArea.postInvalidate();
-        });
-        labelSelector.setOnClickListener(v -> {
-            labelSelector.hide();
-            emptyLabelView.updateLocation((int) labelSelector.getmLastTouchX(),
-                    (int) labelSelector.getmLastTouchY());
-            emptyLabelView.setVisibility(View.VISIBLE);
-        });
 
-
-        titleBar.setRightBtnOnclickListener(v -> {
+        filterNextBtn.setOnClickListener( v -> {
             savePicture();
         });
     }
@@ -228,7 +196,7 @@ public class PhotoFilterActivity extends CameraBaseActivity {
             cv.drawBitmap(currentBitmap, null, dst, null);
         }
         //加贴纸水印
-        EffectUtil.applyOnSave(cv, mImageView);
+//        EffectUtil.applyOnSave(cv, mImageView);
 
         new SavePicToFileTask().execute(newBitmap);
     }
@@ -267,15 +235,18 @@ public class PhotoFilterActivity extends CameraBaseActivity {
 
             //将照片信息保存至sharedPreference
             //保存标签信息
-            List<TagItem> tagInfoList = new ArrayList<TagItem>();
-            for (LabelView label : labels) {
-                tagInfoList.add(label.getTagInfo());
-            }
+//            List<TagItem> tagInfoList = new ArrayList<TagItem>();
+//            for (LabelView label : labels) {
+//                tagInfoList.add(label.getTagInfo());
+//            }
+//
+//            //将图片信息通过EventBus发送到MainActivity
+//            FeedItem feedItem = new FeedItem(tagInfoList,fileName);
+//            EventBus.getDefault().post(feedItem);
+//            CameraManager.getInst().close();
 
-            //将图片信息通过EventBus发送到MainActivity
-            FeedItem feedItem = new FeedItem(tagInfoList,fileName);
-            EventBus.getDefault().post(feedItem);
-            CameraManager.getInst().close();
+            CameraManager.getInst().processPhotoItem(PhotoFilterActivity.this,
+                    new PhotoItem(fileName, System.currentTimeMillis()));
         }
     }
 
@@ -320,45 +291,29 @@ public class PhotoFilterActivity extends CameraBaseActivity {
         }
     };
 
-    private boolean setCurrentBtn(TextView btn) {
-        if (currentBtn == null) {
-            currentBtn = btn;
-        } else if (currentBtn.equals(btn)) {
-            return false;
-        } else {
-            currentBtn.setTextColor(Color.rgb(208, 190, 185));
-            currentBtn.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
-        }
-        Drawable myImage = getResources().getDrawable(R.drawable.select_icon);
-        btn.setTextColor(Color.rgb(255, 255, 255));
-        btn.setCompoundDrawablesWithIntrinsicBounds(null, null, null, myImage);
-        currentBtn = btn;
-        return true;
-    }
-
 
     //初始化贴图
-    private void initStickerToolBar(){
-
-        bottomToolBar.setAdapter(new StickerToolAdapter(PhotoFilterActivity.this, EffectUtil.addonList));
-        bottomToolBar.setOnItemClickListener(new it.sephiroth.android.library.widget.AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(it.sephiroth.android.library.widget.AdapterView<?> arg0,
-                                    View arg1, int arg2, long arg3) {
-                labelSelector.hide();
-                Addon sticker = EffectUtil.addonList.get(arg2);
-                EffectUtil.addStickerImage(mImageView, PhotoFilterActivity.this, sticker,
-                        new EffectUtil.StickerCallback() {
-                            @Override
-                            public void onRemoveSticker(Addon sticker) {
-                                labelSelector.hide();
-                            }
-                        });
-            }
-        });
-        setCurrentBtn(stickerBtn);
-    }
+//    private void initStickerToolBar(){
+//
+//        bottomToolBar.setAdapter(new StickerToolAdapter(PhotoFilterActivity.this, EffectUtil.addonList));
+//        bottomToolBar.setOnItemClickListener(new it.sephiroth.android.library.widget.AdapterView.OnItemClickListener() {
+//
+//            @Override
+//            public void onItemClick(it.sephiroth.android.library.widget.AdapterView<?> arg0,
+//                                    View arg1, int arg2, long arg3) {
+//                labelSelector.hide();
+//                Addon sticker = EffectUtil.addonList.get(arg2);
+//                EffectUtil.addStickerImage(mImageView, PhotoFilterActivity.this, sticker,
+//                        new EffectUtil.StickerCallback() {
+//                            @Override
+//                            public void onRemoveSticker(Addon sticker) {
+//                                labelSelector.hide();
+//                            }
+//                        });
+//            }
+//        });
+//        setCurrentBtn(stickerBtn);
+//    }
 
 
     //初始化滤镜

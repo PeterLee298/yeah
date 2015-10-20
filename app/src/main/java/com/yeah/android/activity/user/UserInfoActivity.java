@@ -216,13 +216,13 @@ public class UserInfoActivity extends BaseActivity {
     @OnClick(R.id.userAvatar)
     public void changeAvatar() {
 
-        if(!Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
+        if(!FileUtils.isSDCardMounted()) {
             ToastUtil.shortToast(UserInfoActivity.this, "请插入SD卡后重试");
             return;
         }
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(UserInfoActivity.this);
-        dialog.setTitle("上传头像");
+//        dialog.setTitle("上传头像");
         final String[] items = { "拍照上传", "相册选择"};
 
         dialog.setItems(items, new DialogInterface.OnClickListener() {

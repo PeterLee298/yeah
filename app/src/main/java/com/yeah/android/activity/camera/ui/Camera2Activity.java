@@ -365,14 +365,16 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent result) {
         if (requestCode == Constants.REQUEST_PICK && resultCode == RESULT_OK) {
-            CameraManager.getInst().processPhotoItem(
+            CameraManager.getInst().filterPhotoItem(
                     Camera2Activity.this,
                     new PhotoItem(result.getData().getPath(), System
                             .currentTimeMillis()));
         } else if (requestCode == Constants.REQUEST_CROP && resultCode == RESULT_OK) {
-            Intent newIntent = new Intent(this, PhotoProcessActivity.class);
+            Intent newIntent = new Intent(this, PhotoFilterActivity.class);
             newIntent.setData(result.getData());
             startActivity(newIntent);
+
+
         }
     }
 
