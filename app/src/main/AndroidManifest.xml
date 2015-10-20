@@ -65,6 +65,9 @@
         <activity android:name=".activity.camera.ui.PhotoStickerActivity"
             android:screenOrientation="portrait"/>
 
+        <activity android:name="com.yeah.android.activity.user.PhotoPostAvtivity"
+            android:screenOrientation="portrait"/>
+
         <activity android:name="com.yeah.android.activity.EditTextActivity"
             android:screenOrientation="portrait"/>
 

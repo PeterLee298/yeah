@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.RectF;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -25,6 +26,7 @@ import com.yeah.android.activity.camera.adapter.StickerToolAdapter;
 import com.yeah.android.activity.camera.effect.FilterEffect;
 import com.yeah.android.activity.camera.util.EffectUtil;
 import com.yeah.android.activity.camera.util.GPUImageFilterTools;
+import com.yeah.android.activity.user.PhotoPostAvtivity;
 import com.yeah.android.model.Addon;
 import com.yeah.android.model.FeedItem;
 import com.yeah.android.model.TagItem;
@@ -249,7 +251,10 @@ public class PhotoStickerActivity extends CameraBaseActivity {
 
             DataUtils.setStringPreferences(YeahApp.getApp(), Constants.FEED_INFO, JSON.toJSONString(feedList));
 
-            MainActivity.launch(PhotoStickerActivity.this);
+//            MainActivity.launch(PhotoStickerActivity.this);
+
+            Uri uri = fileName.startsWith("file:") ? Uri.parse(fileName) : Uri.parse("file://" + fileName);
+            PhotoPostAvtivity.launch(PhotoStickerActivity.this, uri);
         }
     }
 
