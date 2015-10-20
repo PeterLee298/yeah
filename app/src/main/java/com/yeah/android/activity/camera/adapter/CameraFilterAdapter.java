@@ -33,29 +33,11 @@ public class CameraFilterAdapter extends PagerAdapter implements OnPageChangeLis
 
     public CameraFilterAdapter(Context context, IFilterChange filterChange){
         mFilterBundles = new ArrayList<>();
-//        mFilterBundles.add(new FilterBundle("Lomo", new GPUImageWeakPixelInclusionFilter()));
-//        mFilterBundles.add(new FilterBundle("冬日", new GPUImageWhiteBalanceFilter()));
-//        mFilterBundles.add(new FilterBundle("复古", new GPUImageLookupFilter()));
-//        mFilterBundles.add(new FilterBundle("夏日", new GPUImageVignetteFilter()));
-//        mFilterBundles.add(new FilterBundle("怀旧", new GPUImageToneCurveFilter()));
-//        mFilterBundles.add(new FilterBundle("喜剧", new GPUImageSphereRefractionFilter()));
-//        mFilterBundles.add(new FilterBundle("文艺", new GPUImageLookupFilter()));
-//        mFilterBundles.add(new FilterBundle("日系", new GPUImageKuwaharaFilter()));
-//        mFilterBundles.add(new FilterBundle("时尚", new GPUImageLookupFilter()));
-//        mFilterBundles.add(new FilterBundle("温暖", new GPUImageKuwaharaFilter()));
-//        mFilterBundles.add(new FilterBundle("纪实", new GPUImageLookupFilter()));
-//        mFilterBundles.add(new FilterBundle("艺术", new GPUImageKuwaharaFilter()));
-//        mFilterBundles.add(new FilterBundle("质感", new GPUImageLookupFilter()));
-//        mFilterBundles.add(new FilterBundle("静物肖像", new GPUImageKuwaharaFilter()));
-//        mFilterBundles.add(new FilterBundle("黑白电影", new GPUImageLookupFilter()));
-//        mFilterBundles.add(new FilterBundle("黑白胶片", new GPUImageKuwaharaFilter()));
-
         List<FilterEffect> effects = EffectService.getInst().getLocalFilters();
         for(FilterEffect filterEffect : effects){
             mFilterBundles.add(new FilterBundle(filterEffect.getTitle(), GPUImageFilterTools.createFilterForType(context, filterEffect.getType())));
         }
 
-//        mEmptyPageView = new View(context);
         mContext = context;
         for(FilterBundle filterBundle : mFilterBundles){
             View view = new View(mContext);

@@ -27,7 +27,6 @@ public class EffectService {
     public List<FilterEffect> getLocalFilters() {
         List<FilterEffect> filters = new ArrayList<FilterEffect>();
         filters.add(new FilterEffect("原始", GPUImageFilterTools.FilterType.NORMAL, 0));
-
         filters.add(new FilterEffect("暧昧", GPUImageFilterTools.FilterType.ACV_AIMEI, 0));
         filters.add(new FilterEffect("淡蓝", GPUImageFilterTools.FilterType.ACV_DANLAN, 0));
         filters.add(new FilterEffect("蛋黄", GPUImageFilterTools.FilterType.ACV_DANHUANG, 0));

@@ -44,6 +44,7 @@ import com.yeah.android.activity.camera.CameraManager;
 import com.yeah.android.activity.camera.adapter.CameraFilterAdapter;
 import com.yeah.android.activity.camera.util.CameraHelper;
 import com.yeah.android.activity.camera.util.CameraHelper.CameraInfo2;
+import com.yeah.android.activity.camera.util.StateCameraGridHander;
 import com.yeah.android.activity.user.UserInfoActivity;
 import com.yeah.android.impl.ICameraLightBack;
 import com.yeah.android.impl.IFilterChange;
@@ -89,7 +90,7 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
 
     private CameraHelper mCameraHelper;
     private Camera.Parameters parameters = null;
-    private Camera cameraInst = null;
+//    private Camera cameraInst = null;
     private Bundle bundle = null;
     private int photoWidth = DistanceUtil.getCameraPhotoWidth();
     private int photoNumber = 4;
@@ -106,18 +107,13 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
     private GPUImage mGPUImage;
     private CameraLoader mCamera;
     private GPUImageFilter mFilter;
-//    private FilterAdjuster mFilterAdjuster;
 
     @InjectView(R.id.masking)
     CameraGrid cameraGrid;
-    //    @InjectView(R.id.photo_area)
-//    LinearLayout photoArea;
     @InjectView(R.id.panel_take_photo)
     View takePhotoPanel;
     @InjectView(R.id.takepicture)
     View takePicture;
-//    @InjectView(R.id.flashBtn)
-//    ImageView flashBtn;
     @InjectView(R.id.change)
     ImageView changeBtn;
     @InjectView(R.id.next)
@@ -176,6 +172,9 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
         mViewPager.addOnPageChangeListener(mCameraFilterAdapter);
         mChangeRatioBtn.setOnClickListener(this);
         mPagerSlidingTabStrip.setViewPager(mViewPager);
+        mPagerSlidingTabStrip.setTextColorResource(R.color.camera_bottom_filter_tab_color);
+        mPagerSlidingTabStrip.setBackgroundResource(R.color.camera_bottom_filter_bg);
+        mPagerSlidingTabStrip.setIndicatorColor(R.color.camera_bottom_filter_bg);
         mCameraTopBarMenu = new CameraTopBarMenu(LayoutInflater.from(this).inflate(
                 R.layout.popupwindow_camera_topbar_menu, null), this);
         mCameraMenu.setOnClickListener(this);
@@ -209,12 +208,6 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
         }
     }
 
-    public void onBtn1Click(){
-
-    }
-    public void onTimeBtnClick(){
-
-    }
     public void onFlashBtnClick(ImageView v){
 
         CameraUtils.turnLight(mCamera.mCameraInstance, new ICameraLightBack() {
@@ -235,8 +228,12 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
         });
 
     }
-    public void onGridBtnClick(){
-
+    public void onGridBtnClick(int state){
+        if(state == StateCameraGridHander.STATE_GRID_OFF){
+            cameraGrid.setVisibility(View.INVISIBLE);
+        }else{
+            cameraGrid.setVisibility(View.VISIBLE);
+        }
     }
 
     public void onFilterChange(GPUImageFilter gpuImageFilter){
@@ -396,7 +393,7 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
     private void addZoomIn(int delta) {
 
         try {
-            Camera.Parameters params = cameraInst.getParameters();
+            Camera.Parameters params = mCamera.mCameraInstance.getParameters();
             Log.d("Camera", "Is support Zoom " + params.isZoomSupported());
             if (!params.isZoomSupported()) {
                 return;
@@ -410,10 +407,10 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
 
             if (!params.isSmoothZoomSupported()) {
                 params.setZoom(curZoomValue);
-                cameraInst.setParameters(params);
+                mCamera.mCameraInstance.setParameters(params);
                 return;
             } else {
-                cameraInst.startSmoothZoom(curZoomValue);
+                mCamera.mCameraInstance.startSmoothZoom(curZoomValue);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -422,12 +419,13 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
 
     //定点对焦的代码
     private void pointFocus(int x, int y) {
-        cameraInst.cancelAutoFocus();
-        parameters = cameraInst.getParameters();
+        mCamera.mCameraInstance.cancelAutoFocus();
+//        cameraInst.cancelAutoFocus();
+        parameters = mCamera.mCameraInstance.getParameters();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             showPoint(x, y);
         }
-        cameraInst.setParameters(parameters);
+        mCamera.mCameraInstance.setParameters(parameters);
         autoFocus();
     }
 
@@ -508,10 +506,10 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                if (cameraInst == null) {
+                if (mCamera.mCameraInstance == null) {
                     return;
                 }
-                cameraInst.autoFocus(new Camera.AutoFocusCallback() {
+                mCamera.mCameraInstance.autoFocus(new Camera.AutoFocusCallback() {
                     @Override
                     public void onAutoFocus(boolean success, Camera camera) {
                         if (success) {
@@ -527,7 +525,7 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
     private Camera.Size previewSize = null;
 
     private void initCamera() {
-        parameters = cameraInst.getParameters();
+        parameters = mCamera.mCameraInstance.getParameters();
         parameters.setPictureFormat(PixelFormat.JPEG);
         //if (adapterSize == null) {
         setUpPicSize(parameters);
@@ -546,14 +544,14 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
         } else {
             parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_AUTO);
         }
-        setDispaly(parameters, cameraInst);
+        setDispaly(parameters, mCamera.mCameraInstance);
         try {
-            cameraInst.setParameters(parameters);
+            mCamera.mCameraInstance.setParameters(parameters);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        cameraInst.startPreview();
-        cameraInst.cancelAutoFocus();// 2如果要实现连续的自动对焦，这一句必须加上
+        mCamera.mCameraInstance.startPreview();
+        mCamera.mCameraInstance.cancelAutoFocus();// 2如果要实现连续的自动对焦，这一句必须加上
     }
 
     private void setUpPicSize(Camera.Parameters parameters) {
@@ -591,7 +589,7 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
      * @return
      */
     private Camera.Size findBestPreviewResolution() {
-        Camera.Parameters cameraParameters = cameraInst.getParameters();
+        Camera.Parameters cameraParameters = mCamera.mCameraInstance.getParameters();
         Camera.Size defaultPreviewResolution = cameraParameters.getPreviewSize();
 
         List<Camera.Size> rawSupportedSizes = cameraParameters.getSupportedPreviewSizes();
@@ -671,7 +669,7 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
     }
 
     private Camera.Size findBestPictureResolution() {
-        Camera.Parameters cameraParameters = cameraInst.getParameters();
+        Camera.Parameters cameraParameters = mCamera.mCameraInstance.getParameters();
         List<Camera.Size> supportedPicResolutions = cameraParameters.getSupportedPictureSizes(); // 至少会返回一个值
 
         StringBuilder picResolutionSb = new StringBuilder();
@@ -884,20 +882,12 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
     //切换前后置摄像头
     private void switchCamera() {
         mCamera.switchCamera();
-//        mCurrentCameraId = (mCurrentCameraId + 1) % mCameraHelper.getNumberOfCameras();
-//        releaseCamera();
-//        Log.d("DDDD", "DDDD----mCurrentCameraId" + mCurrentCameraId);
-//        setUpCamera(mCurrentCameraId);
     }
 
 
     private void switchFilterTo(final GPUImageFilter filter) {
-        if (mFilter == null
-                || (filter != null && !mFilter.getClass().equals(filter.getClass()))) {
-            mFilter = filter;
-            mGPUImage.setFilter(mFilter);
-//            mFilterAdjuster = new FilterAdjuster(mFilter);
-        }
+        mFilter = filter;
+        mGPUImage.setFilter(mFilter);
     }
 
     private void takePicture() {
@@ -985,43 +975,4 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
         return data;
     }
 
-
-    private void releaseCamera() {
-        if (cameraInst != null) {
-            cameraInst.setPreviewCallback(null);
-            cameraInst.release();
-            cameraInst = null;
-        }
-        adapterSize = null;
-        previewSize = null;
-    }
-
-    /**
-     * @param mCurrentCameraId2
-     */
-    private void setUpCamera(int mCurrentCameraId2) {
-        cameraInst = getCameraInstance(mCurrentCameraId2);
-        if (cameraInst != null) {
-            try {
-                cameraInst.setPreviewDisplay(surfaceView.getHolder());
-                initCamera();
-                cameraInst.startPreview();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
-            toast("切换失败，请重试！", Toast.LENGTH_LONG);
-
-        }
-    }
-
-    private Camera getCameraInstance(final int id) {
-        Camera c = null;
-        try {
-            c = mCameraHelper.openCamera(id);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return c;
-    }
 }

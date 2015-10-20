@@ -129,7 +129,8 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_above="@id/panel_take_photo"
-                            android:layout_alignParentTop="true" />
+                            android:layout_alignParentTop="true"
+                            android:visibility="gone"/>
 
                         <View
                             android:id="@+id/focus_index"
