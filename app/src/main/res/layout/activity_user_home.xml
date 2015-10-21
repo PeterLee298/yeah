@@ -10,7 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:gravity="center">
+        android:gravity="center"
+        android:background="@drawable/personal_info_bg_unlogin_noon">
 
         <com.yeah.android.view.CommonTitleBar
             android:id="@+id/title_layout"
