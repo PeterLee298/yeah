@@ -103,7 +103,7 @@ public class PhotoPostAvtivity extends BaseActivity {
                     @Override
                     public void onSuccess(UploadPhotoResponse response) {
                         // TODO 验证码
-                        ToastUtil.longToast(PhotoPostAvtivity.this, "发布中成功");
+                        ToastUtil.longToast(PhotoPostAvtivity.this, "发布成功");
 
                         LogUtil.d(TAG, response.getUrl());
                     }
@@ -111,7 +111,7 @@ public class PhotoPostAvtivity extends BaseActivity {
                     @Override
                     public void onFailure(String message) {
                         LogUtil.e("onFailure", message);
-                        ToastUtil.shortToast(PhotoPostAvtivity.this, "发布中失败：" + message
+                        ToastUtil.shortToast(PhotoPostAvtivity.this, "发布失败：" + message
                                 + "\n请稍候重试");
                     }
 
