@@ -42,10 +42,12 @@
         <activity
             android:name="com.yeah.android.activity.camera.ui.CameraActivity"
             android:theme="@style/AppTheme.NoActionBar.FullScreen"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
         <activity
             android:name="com.yeah.android.activity.camera.ui.Camera2Activity"
             android:theme="@style/AppTheme.NoActionBar.FullScreen"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"/>
 
         <activity
@@ -86,6 +88,9 @@
             android:name="com.yeah.android.activity.user.ResetPasswordActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustPan|stateHidden" />
+
+        <activity android:name="com.yeah.android.activity.user.UserHomeActivity"
+            android:screenOrientation="portrait"/>
 
         <activity android:name="com.yeah.android.activity.user.UserInfoActivity"
             android:screenOrientation="portrait"/>

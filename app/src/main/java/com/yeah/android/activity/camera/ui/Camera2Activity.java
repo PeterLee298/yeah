@@ -45,6 +45,7 @@ import com.yeah.android.activity.camera.adapter.CameraFilterAdapter;
 import com.yeah.android.activity.camera.util.CameraHelper;
 import com.yeah.android.activity.camera.util.CameraHelper.CameraInfo2;
 import com.yeah.android.activity.camera.util.StateCameraGridHander;
+import com.yeah.android.activity.user.UserHomeActivity;
 import com.yeah.android.activity.user.UserInfoActivity;
 import com.yeah.android.impl.ICameraLightBack;
 import com.yeah.android.impl.IFilterChange;
@@ -345,7 +346,7 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
 
     @OnClick(R.id.drawer_user_home)
     public void drawerUserHome() {
-        UserInfoActivity.launch(Camera2Activity.this);
+        UserHomeActivity.launch(Camera2Activity.this);
         drawerLayout.closeDrawer(Gravity.LEFT);
     }
 

@@ -13,6 +13,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.loopj.android.http.RequestParams;
 import com.yeah.android.R;
 import com.yeah.android.activity.BaseActivity;
+import com.yeah.android.activity.camera.CameraManager;
 import com.yeah.android.activity.camera.ui.PhotoStickerActivity;
 import com.yeah.android.model.common.ResponseData;
 import com.yeah.android.model.user.UploadPhotoResponse;
@@ -104,6 +105,8 @@ public class PhotoPostAvtivity extends BaseActivity {
                     public void onSuccess(UploadPhotoResponse response) {
                         // TODO 验证码
                         ToastUtil.longToast(PhotoPostAvtivity.this, "发布成功");
+
+                        CameraManager.getInst().openCamera(PhotoPostAvtivity.this);
 
                         LogUtil.d(TAG, response.getUrl());
                     }
