@@ -211,7 +211,7 @@ public class PhotoStickerActivity extends CameraBaseActivity {
             try {
                 bitmap = params[0];
 
-                String picName = TimeUtils.dtFormat(new Date(), "yyyyMMddHHmmss");
+                String picName = TimeUtils.dtFormat(new Date(), "yyyyMMddHHmmss") + ".jpeg";
                  fileName = ImageUtils.saveToFile(FileUtils.getInst().getPhotoSavedPath() + "/"+ picName, false, bitmap);
 
             } catch (Exception e) {
