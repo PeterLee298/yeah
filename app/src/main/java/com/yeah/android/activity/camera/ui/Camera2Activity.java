@@ -46,6 +46,7 @@ import com.yeah.android.activity.camera.util.CameraHelper;
 import com.yeah.android.activity.camera.util.CameraHelper.CameraInfo2;
 import com.yeah.android.activity.camera.util.StateCameraGridHander;
 import com.yeah.android.activity.user.UserHomeActivity;
+import com.yeah.android.activity.camera.util.StateCameraScaleHander;
 import com.yeah.android.activity.user.UserInfoActivity;
 import com.yeah.android.impl.ICameraLightBack;
 import com.yeah.android.impl.IFilterChange;
@@ -85,7 +86,7 @@ import jp.co.cyberagent.android.gpuimage.GPUImageFilter;
  * 相机界面
  * on 15/7/6.
  */
-public class Camera2Activity extends CameraBaseActivity implements View.OnClickListener, IFilterChange, CameraTopBarMenu.OnMenuClickListener{
+public class Camera2Activity extends CameraBaseActivity implements View.OnClickListener, IFilterChange, CameraTopBarMenu.OnMenuClickListener, StateCameraScaleHander.OnScaleChangeListener{
 
 
 
@@ -148,9 +149,12 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
     ViewPager mViewPager;
     @InjectView(R.id.camera_menu)
     ImageView mCameraMenu;
+    @InjectView(R.id.camera_top)
+    RelativeLayout mCameraTopLayout;
 
     private CameraFilterAdapter mCameraFilterAdapter;
     private CameraTopBarMenu mCameraTopBarMenu;
+    private StateCameraScaleHander mStateCameraScaleHander;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,6 +182,7 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
         mPagerSlidingTabStrip.setIndicatorColor(R.color.camera_bottom_filter_bg);
         mCameraTopBarMenu = new CameraTopBarMenu(LayoutInflater.from(this).inflate(
                 R.layout.popupwindow_camera_topbar_menu, null), this);
+        mStateCameraScaleHander = new StateCameraScaleHander(mChangeRatioBtn, this);
         mCameraMenu.setOnClickListener(this);
     }
 
@@ -206,6 +211,15 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
                     mCameraTopBarMenu.showAsDropDown(v);
                 }
                 break;
+        }
+    }
+
+    @Override
+    public void onScaleChange(int scale) {
+        if(scale == StateCameraScaleHander.STATE_SCALE_43){
+            mCameraTopLayout.setBackgroundColor(getResources().getColor(R.color.transparent));
+        }else{
+            mCameraTopLayout.setBackgroundColor(getResources().getColor(R.color.camera_top_bar_bg_color));
         }
     }
 
@@ -577,7 +591,7 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
     /**
      * 最小预览界面的分辨率
      */
-    private static final int MIN_PREVIEW_PIXELS = 480 * 320;
+    private static final int MIN_PREVIEW_PIXELS = 640 * 480;//480 * 320;
     /**
      * 最大宽高比差
      */

@@ -18,48 +18,10 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical">
 
-                <RelativeLayout
-                    android:id="@+id/camera_top"
-                    android:layout_width="fill_parent"
-                    android:layout_height="99dp"
-                    android:paddingLeft="20dp"
-                    android:paddingRight="20dp"
-                    android:layout_alignParentTop="true"
-                    android:background="@color/camera_top_bar_bg_color" >
-
-                    <ImageView
-                        android:id="@+id/drawerBtn"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:scaleType="centerInside"
-                        android:layout_alignParentLeft="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="4dp"
-                        android:src="@drawable/ic_camera_drawer_menu" />
-
-                    <ImageView
-                        android:id="@+id/camera_menu"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:scaleType="centerInside"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/ic_camera_menu" />
-
-                    <ImageView
-                        android:id="@+id/change"
-                        android:layout_width="48dp"
-                        android:layout_height="48dp"
-                        android:scaleType="centerInside"
-                        android:layout_centerInParent="true"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/ic_camera_flip" />
-
-                </RelativeLayout>
-
                 <FrameLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
                     <!-- 显示预览图形 -->
 
                     <android.opengl.GLSurfaceView
@@ -67,68 +29,55 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" />
 
-
                     <RelativeLayout
                         android:id="@+id/buttonLayout"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" >
 
-                        <RelativeLayout
-                            android:id="@+id/panel_take_photo"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:padding="2dp"
-                            android:gravity="center_vertical"
-                            android:layout_alignParentBottom="true"
-                            android:background="@color/white" >
+                    <RelativeLayout
+                        android:id="@+id/camera_top"
+                        android:layout_width="fill_parent"
+                        android:layout_height="99dp"
+                        android:paddingLeft="20dp"
+                        android:paddingRight="20dp"
+                        android:layout_alignParentTop="true"
+                        android:background="@color/camera_top_bar_bg_color" >
 
+                        <ImageView
+                            android:id="@+id/drawerBtn"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:scaleType="centerInside"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginLeft="4dp"
+                            android:src="@drawable/ic_camera_drawer_menu" />
 
-                            <ImageView
-                                android:id="@+id/takepicture"
-                                android:layout_width="80dp"
-                                android:layout_height="80dp"
-                                android:layout_centerInParent="true"
-                                android:src="@drawable/ic_camera_trigger" />
+                        <ImageView
+                            android:id="@+id/camera_menu"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:scaleType="centerInside"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_camera_menu" />
 
-                            <ImageView
-                                android:id="@+id/next"
-                                android:layout_width="48dp"
-                                android:layout_height="48dp"
-                                android:layout_alignParentLeft="true"
-                                android:layout_centerVertical="true"
-                                android:padding="5dp"
-                                android:layout_marginLeft="50dp"
-                                android:src="@drawable/ic_camera_gallery" />
-                            <ImageView
-                                android:id="@+id/change_ratio"
-                                android:layout_width="40dp"
-                                android:layout_height="40dp"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:padding="5dp"
-                                android:src="@drawable/ic_camera_ratio43"
-                                android:layout_marginRight="20dp"
-                                android:scaleType="fitXY"/>
-                        </RelativeLayout>
+                        <ImageView
+                            android:id="@+id/change"
+                            android:layout_width="48dp"
+                            android:layout_height="48dp"
+                            android:scaleType="centerInside"
+                            android:layout_centerInParent="true"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/ic_camera_flip" />
 
-
-                        <!--<LinearLayout-->
-                            <!--android:layout_width="fill_parent"-->
-                            <!--android:layout_height="wrap_content"-->
-                            <!--android:id="@+id/photo_area"-->
-                            <!--android:layout_centerVertical="true"-->
-                            <!--android:orientation="horizontal"-->
-                            <!--android:background="@color/white"-->
-                            <!--android:layout_above="@id/panel_take_photo">-->
-                        <!--</LinearLayout>-->
-
-
+                    </RelativeLayout>
 
                         <com.yeah.android.view.CameraGrid
                             android:id="@+id/masking"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:layout_above="@id/panel_take_photo"
+                            android:layout_below="@id/camera_top"
                             android:layout_alignParentTop="true"
                             android:visibility="gone"/>
 
@@ -136,7 +85,7 @@
                             android:id="@+id/focus_index"
                             android:layout_width="40dp"
                             android:layout_height="40dp"
-                            android:layout_above="@id/panel_take_photo"
+                            android:layout_below="@id/camera_top"
                             android:background="@drawable/cam_focus"
                             android:visibility="invisible" />
 
@@ -144,7 +93,7 @@
                             android:id="@+id/camera_filter_choose"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
-                            android:layout_above="@id/panel_take_photo"
+                            android:layout_alignParentBottom="true"
                             android:background="@color/camera_bottom_filter_choose_bg"/>
 
                         <android.support.v4.view.ViewPager
@@ -154,7 +103,60 @@
                             android:layout_above="@id/camera_filter_choose"/>
 
                     </RelativeLayout>
+
                 </FrameLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/panel_take_photo"
+                    android:layout_width="fill_parent"
+                    android:layout_height="81dp"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/white"
+                    android:gravity="center_vertical"
+                    android:padding="2dp">
+
+
+                    <ImageView
+                        android:id="@+id/takepicture"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_camera_trigger" />
+
+                    <ImageView
+                        android:id="@+id/next"
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="50dp"
+                        android:padding="5dp"
+                        android:src="@drawable/ic_camera_gallery" />
+
+                    <ImageView
+                        android:id="@+id/change_ratio"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="20dp"
+                        android:padding="5dp"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_camera_ratio11" />
+                </RelativeLayout>
+
+
+                <!--<LinearLayout-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:id="@+id/photo_area"-->
+                <!--android:layout_centerVertical="true"-->
+                <!--android:orientation="horizontal"-->
+                <!--android:background="@color/white"-->
+                <!--android:layout_above="@id/panel_take_photo">-->
+                <!--</LinearLayout>-->
+
 
             </LinearLayout>
 
