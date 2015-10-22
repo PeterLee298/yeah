@@ -37,6 +37,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.astuetz.PagerSlidingTabStrip;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yeah.android.R;
 import com.yeah.android.YeahApp;
 import com.yeah.android.activity.camera.CameraBaseActivity;
@@ -51,6 +52,7 @@ import com.yeah.android.activity.user.UserInfoActivity;
 import com.yeah.android.impl.ICameraLightBack;
 import com.yeah.android.impl.IFilterChange;
 import com.yeah.android.model.PhotoItem;
+import com.yeah.android.model.user.UserInfo;
 import com.yeah.android.utils.CameraUtils;
 import com.yeah.android.utils.Constants;
 import com.yeah.android.utils.DistanceUtil;
@@ -140,6 +142,9 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
     LinearLayout drawerSetting;
     @InjectView(R.id.userNickName)
     TextView userNickName;
+    @InjectView(R.id.userAvatar)
+    ImageView userAvatar;
+
 
     @InjectView(R.id.change_ratio)
     ImageView mChangeRatioBtn;
@@ -259,6 +264,7 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
 
         drawerBtn.setOnClickListener(v -> {
             drawerLayout.openDrawer(Gravity.LEFT);
+            displayUserInfo();
         });
 
         //拍照
@@ -347,8 +353,18 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
     }
 
     private void initData() {
+        displayUserInfo();
+    }
+
+    private void displayUserInfo() {
         if(UserInfoManager.isLogin()) {
-            userNickName.setText(UserInfoManager.getUserInfo().getNickname());
+
+            UserInfo userInfo = UserInfoManager.getUserInfo();
+
+            if(userInfo != null) {
+                userNickName.setText(userInfo.getNickname());
+                ImageLoader.getInstance().displayImage(userInfo.getAvatar(), userAvatar);
+            }
         }
     }
 

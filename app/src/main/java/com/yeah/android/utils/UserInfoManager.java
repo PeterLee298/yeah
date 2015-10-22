@@ -128,6 +128,15 @@ public class UserInfoManager {
         return null;
     }
 
+    public static int getUserId() {
+        if(isLogin()) {
+            return mLoginResult.getUserId();
+        }
+
+        return 0;
+    }
+
+
 
     public static void savePassword(final String password) {
         PreferencesUtils.putString(YeahApp.getApp(), PASSWORD, password);

@@ -81,7 +81,7 @@ public class PhotoPostAvtivity extends BaseActivity {
         RequestParams requestParams = new RequestParams();
         requestParams.put("appId", Constants.APP_ID);
         requestParams.put("appKey", Constants.APP_KEY);
-        requestParams.put("loginId", UserInfoManager.getUserInfo().getId());
+        requestParams.put("loginId", UserInfoManager.getUserId());
         requestParams.put("loginToken", UserInfoManager.getToken());
 
         try {

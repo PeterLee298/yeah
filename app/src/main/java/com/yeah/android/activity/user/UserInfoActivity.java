@@ -444,7 +444,7 @@ public class UserInfoActivity extends BaseActivity {
             return;
         }
 
-        int loginId = UserInfoManager.getId();
+        int loginId = UserInfoManager.getUserId();
         String token = UserInfoManager.getToken();
 
         RequestParams requestParams = new RequestParams();
@@ -510,7 +510,7 @@ public class UserInfoActivity extends BaseActivity {
 //        calendar.set();
 //        calendar.getTimeInMillis();
 
-        int loginId = UserInfoManager.getUserInfo().getId();
+        int loginId = UserInfoManager.getUserId();
         String token = UserInfoManager.getToken();
 
         RequestParams requestParams = new RequestParams();
@@ -541,6 +541,7 @@ public class UserInfoActivity extends BaseActivity {
                     @Override
                     public void onSuccess(UserInfo userInfo) {
                         ToastUtil.shortToast(UserInfoActivity.this, "更新用户信息成功");
+                        UserInfoManager.updateUserInfo(userInfo);
                     }
 
                     @Override
