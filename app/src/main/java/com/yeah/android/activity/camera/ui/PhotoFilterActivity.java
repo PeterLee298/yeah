@@ -4,10 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.RectF;
-import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -19,17 +16,13 @@ import android.widget.Toast;
 
 import com.yeah.android.R;
 import com.yeah.android.YeahApp;
-import com.yeah.android.activity.EditTextActivity;
 import com.yeah.android.activity.camera.CameraBaseActivity;
 import com.yeah.android.activity.camera.CameraManager;
 import com.yeah.android.activity.camera.EffectService;
 import com.yeah.android.activity.camera.adapter.FilterAdapter;
-import com.yeah.android.activity.camera.adapter.StickerToolAdapter;
 import com.yeah.android.activity.camera.effect.FilterEffect;
 import com.yeah.android.activity.camera.util.EffectUtil;
 import com.yeah.android.activity.camera.util.GPUImageFilterTools;
-import com.yeah.android.model.Addon;
-import com.yeah.android.model.FeedItem;
 import com.yeah.android.model.PhotoItem;
 import com.yeah.android.model.TagItem;
 import com.yeah.android.utils.Constants;
@@ -48,7 +41,6 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.greenrobot.event.EventBus;
 import it.sephiroth.android.library.widget.HListView;
 import jp.co.cyberagent.android.gpuimage.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
@@ -110,6 +102,7 @@ public class PhotoFilterActivity extends CameraBaseActivity {
             @Override
             public void callback(Bitmap result) {
                 smallImageBackgroud = result;
+                initFilterToolBar();
             }
         });
 
@@ -157,7 +150,7 @@ public class PhotoFilterActivity extends CameraBaseActivity {
         emptyLabelView.setVisibility(View.INVISIBLE);
         commonLabelArea.setVisibility(View.GONE);
 
-        initFilterToolBar();
+//        initFilterToolBar();
 
 
         mImageView.setOnDrawableEventListener(wpEditListener);
