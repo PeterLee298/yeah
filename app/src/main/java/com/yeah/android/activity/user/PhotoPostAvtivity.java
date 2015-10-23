@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import com.yeah.android.utils.Constants;
 import com.yeah.android.utils.FileUtils;
 import com.yeah.android.utils.ImageUtils;
 import com.yeah.android.utils.LogUtil;
+import com.yeah.android.utils.StringUtils;
 import com.yeah.android.utils.ToastUtil;
 import com.yeah.android.utils.UserInfoManager;
 
@@ -69,7 +71,7 @@ public class PhotoPostAvtivity extends BaseActivity {
     @OnClick(R.id.post_btn)
     public void postPhoto() {
 
-        String contentStr = postContent.getText().toString();
+        String contentStr = StringUtils.clean(postContent.getText().toString());
 
         File file = new File(imgUri.getPath());
 
@@ -83,7 +85,7 @@ public class PhotoPostAvtivity extends BaseActivity {
         requestParams.put("appKey", Constants.APP_KEY);
         requestParams.put("loginId", UserInfoManager.getUserId());
         requestParams.put("loginToken", UserInfoManager.getToken());
-
+        requestParams.put("description", contentStr);
         try {
             requestParams.put("upload", file);
         } catch (FileNotFoundException e) {
