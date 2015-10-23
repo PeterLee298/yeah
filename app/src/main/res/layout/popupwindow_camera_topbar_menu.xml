@@ -5,14 +5,20 @@
     android:orientation="vertical"
     android:background="@drawable/camera_popupmenu_bg">
 
-    <ImageView
-        android:id="@+id/camera_topbar_menu_1"
+    <RelativeLayout
+        android:id="@+id/camera_topbar_menu_1_layout"
         android:layout_width="match_parent"
-        android:layout_height="62dp"
-        android:singleLine="true"
-        android:padding="16dp"
-        android:src="@drawable/camera_topbar_menu_1"
-        android:background="@null"/>
+        android:layout_height="62dp">
+
+        <ImageView
+            android:id="@+id/camera_topbar_menu_1"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:singleLine="true"
+            android:layout_centerInParent="true"
+            android:background="@drawable/camera_topbar_menu_1"/>
+
+    </RelativeLayout>
 
     <ImageView
         android:id="@+id/camera_topbar_menu_2"

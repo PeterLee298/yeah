@@ -4,6 +4,7 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 
 import com.yeah.android.R;
 import com.yeah.android.activity.camera.util.StateCameraGridHander;
@@ -20,6 +21,8 @@ import butterknife.InjectView;
 public class CameraTopBarMenu extends PopupWindow implements View.OnClickListener{
 
     private OnMenuClickListener mOnMenuClickListener;
+    @InjectView(R.id.camera_topbar_menu_1_layout)
+    RelativeLayout mBtn1Layout;
     @InjectView(R.id.camera_topbar_menu_1)
     ImageView mBtn1;
     @InjectView(R.id.camera_topbar_menu_2)
@@ -38,7 +41,7 @@ public class CameraTopBarMenu extends PopupWindow implements View.OnClickListene
         ButterKnife.inject(this, contentView);
         this.mOnMenuClickListener = onMenuClickListener;
         mFlashBtn.setOnClickListener(this);
-        mStateCameraTakePhotoHander = new StateCameraTakePhotoHander(mBtn1);
+        mStateCameraTakePhotoHander = new StateCameraTakePhotoHander(mBtn1Layout, mBtn1);
         mStateCameraTimerHander = new StateCameraTimerHander(mTimeBtn);
         mStateCameraGridHander = new StateCameraGridHander(mGridBtn, onMenuClickListener);
     }
@@ -47,7 +50,7 @@ public class CameraTopBarMenu extends PopupWindow implements View.OnClickListene
         if(mStateCameraTakePhotoHander != null){
             return mStateCameraTakePhotoHander.getState();
         }
-        return StateCameraTakePhotoHander.STATE_TOUCH_SCREEN;
+        return StateCameraTakePhotoHander.STATE_CLICK_TAKE_BTN;
     }
 
     public int getCameraTimerState(){

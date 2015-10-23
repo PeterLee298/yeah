@@ -31,7 +31,9 @@ public class CameraFilterAdapter extends PagerAdapter implements OnPageChangeLis
 
     private Context mContext;
 
-    public CameraFilterAdapter(Context context, IFilterChange filterChange){
+    private View.OnClickListener mOnClickListener;
+
+    public CameraFilterAdapter(Context context, IFilterChange filterChange, View.OnClickListener onClickListener){
         mFilterBundles = new ArrayList<>();
         List<FilterEffect> effects = EffectService.getInst().getLocalFilters();
         for(FilterEffect filterEffect : effects){
@@ -41,6 +43,7 @@ public class CameraFilterAdapter extends PagerAdapter implements OnPageChangeLis
         mContext = context;
         for(FilterBundle filterBundle : mFilterBundles){
             View view = new View(mContext);
+            view.setOnClickListener(onClickListener);
             mEmptyPageViews.add(view);
         }
         this.mIFilterChange = filterChange;

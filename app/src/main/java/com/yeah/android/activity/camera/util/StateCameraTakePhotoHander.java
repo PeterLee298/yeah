@@ -2,6 +2,7 @@ package com.yeah.android.activity.camera.util;
 
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.yeah.android.R;
 
@@ -18,8 +19,8 @@ public class StateCameraTakePhotoHander implements View.OnClickListener{
 
     private ImageView mCameraClickBtn;
 
-    public StateCameraTakePhotoHander(ImageView imageView){
-        imageView.setOnClickListener(this);
+    public StateCameraTakePhotoHander(RelativeLayout layout, ImageView imageView){
+        layout.setOnClickListener(this);
         this.mCameraClickBtn = imageView;
     }
 

@@ -34,45 +34,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent" >
 
-                    <RelativeLayout
-                        android:id="@+id/camera_top"
-                        android:layout_width="fill_parent"
-                        android:layout_height="99dp"
-                        android:paddingLeft="20dp"
-                        android:paddingRight="20dp"
-                        android:layout_alignParentTop="true"
-                        android:background="@color/camera_top_bar_bg_color" >
-
-                        <ImageView
-                            android:id="@+id/drawerBtn"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:scaleType="centerInside"
-                            android:layout_alignParentLeft="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginLeft="4dp"
-                            android:src="@drawable/ic_camera_drawer_menu" />
-
-                        <ImageView
-                            android:id="@+id/camera_menu"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:scaleType="centerInside"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:src="@drawable/ic_camera_menu" />
-
-                        <ImageView
-                            android:id="@+id/change"
-                            android:layout_width="48dp"
-                            android:layout_height="48dp"
-                            android:scaleType="centerInside"
-                            android:layout_centerInParent="true"
-                            android:layout_centerVertical="true"
-                            android:src="@drawable/ic_camera_flip" />
-
-                    </RelativeLayout>
-
                         <com.yeah.android.view.CameraGrid
                             android:id="@+id/masking"
                             android:layout_width="match_parent"
@@ -101,6 +62,45 @@
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:layout_above="@id/camera_filter_choose"/>
+
+                        <RelativeLayout
+                            android:id="@+id/camera_top"
+                            android:layout_width="fill_parent"
+                            android:layout_height="99dp"
+                            android:paddingLeft="20dp"
+                            android:paddingRight="20dp"
+                            android:layout_alignParentTop="true"
+                            android:background="@color/camera_top_bar_bg_color" >
+
+                            <ImageView
+                                android:id="@+id/drawerBtn"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:scaleType="centerInside"
+                                android:layout_alignParentLeft="true"
+                                android:layout_centerVertical="true"
+                                android:layout_marginLeft="4dp"
+                                android:src="@drawable/ic_camera_drawer_menu" />
+
+                            <ImageView
+                                android:id="@+id/camera_menu"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:scaleType="centerInside"
+                                android:layout_alignParentRight="true"
+                                android:layout_centerVertical="true"
+                                android:src="@drawable/ic_camera_menu" />
+
+                            <ImageView
+                                android:id="@+id/change"
+                                android:layout_width="48dp"
+                                android:layout_height="48dp"
+                                android:scaleType="centerInside"
+                                android:layout_centerInParent="true"
+                                android:layout_centerVertical="true"
+                                android:src="@drawable/ic_camera_flip" />
+
+                        </RelativeLayout>
 
                     </RelativeLayout>
 

@@ -20,6 +20,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore.Images.ImageColumns;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -46,9 +47,10 @@ import com.yeah.android.activity.camera.adapter.CameraFilterAdapter;
 import com.yeah.android.activity.camera.util.CameraHelper;
 import com.yeah.android.activity.camera.util.CameraHelper.CameraInfo2;
 import com.yeah.android.activity.camera.util.StateCameraGridHander;
-import com.yeah.android.activity.user.UserHomeActivity;
 import com.yeah.android.activity.camera.util.StateCameraScaleHander;
-import com.yeah.android.activity.user.UserInfoActivity;
+import com.yeah.android.activity.camera.util.StateCameraTakePhotoHander;
+import com.yeah.android.activity.camera.util.StateCameraTimerHander;
+import com.yeah.android.activity.user.UserHomeActivity;
 import com.yeah.android.impl.ICameraLightBack;
 import com.yeah.android.impl.IFilterChange;
 import com.yeah.android.model.PhotoItem;
@@ -160,6 +162,9 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
     private CameraFilterAdapter mCameraFilterAdapter;
     private CameraTopBarMenu mCameraTopBarMenu;
     private StateCameraScaleHander mStateCameraScaleHander;
+    private CameraHandler mCameraHandler;
+
+    private static final int HANDLER_MSG_TAKEPIC = 1001;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -177,18 +182,31 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
         mGPUImage.setGLSurfaceView(surfaceView);
         mCamera = new CameraLoader();
 
-        mCameraFilterAdapter = new CameraFilterAdapter(Camera2Activity.this, this);
+        mCameraHandler = new CameraHandler();
+
+        mCameraFilterAdapter = new CameraFilterAdapter(Camera2Activity.this, this, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(mCameraTopBarMenu.isShowing()){
+                    mCameraTopBarMenu.dismiss();
+                }
+                if(mCameraTopBarMenu.getCameraTakeState() == StateCameraTakePhotoHander.STATE_TOUCH_SCREEN){
+                    takePictureDelay();
+                }
+            }
+        });
         mViewPager.setAdapter(mCameraFilterAdapter);
         mViewPager.addOnPageChangeListener(mCameraFilterAdapter);
         mChangeRatioBtn.setOnClickListener(this);
         mPagerSlidingTabStrip.setViewPager(mViewPager);
         mPagerSlidingTabStrip.setTextColorResource(R.color.camera_bottom_filter_tab_color);
         mPagerSlidingTabStrip.setBackgroundResource(R.color.camera_bottom_filter_bg);
-        mPagerSlidingTabStrip.setIndicatorColor(R.color.camera_bottom_filter_bg);
+//        mPagerSlidingTabStrip.setIndicatorColor(R.color.camera_bottom_filter_bg);
         mCameraTopBarMenu = new CameraTopBarMenu(LayoutInflater.from(this).inflate(
                 R.layout.popupwindow_camera_topbar_menu, null), this);
         mStateCameraScaleHander = new StateCameraScaleHander(mChangeRatioBtn, this);
         mCameraMenu.setOnClickListener(this);
+//        mViewPager.setOnClickListener(this);
     }
 
     @Override
@@ -216,6 +234,19 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
                     mCameraTopBarMenu.showAsDropDown(v);
                 }
                 break;
+        }
+    }
+
+    class CameraHandler extends Handler {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case HANDLER_MSG_TAKEPIC:
+                    takePicture();
+                    break;
+
+            }
+            super.handleMessage(msg);
         }
     }
 
@@ -270,7 +301,7 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
         //拍照
         takePicture.setOnClickListener(v -> {
 
-            takePicture();
+            takePictureDelay();
 
         });
 
@@ -921,7 +952,17 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
         mGPUImage.setFilter(mFilter);
     }
 
+    private void takePictureDelay(){
+        if(mCameraTopBarMenu.getCameraTimerState() == StateCameraTimerHander.STATE_TIMER_OFF){
+            takePicture();
+        }else{
+            mCameraHandler.sendEmptyMessageDelayed(HANDLER_MSG_TAKEPIC, 3000);
+        }
+    }
+
     private void takePicture() {
+
+
         // TODO get a size that is about the size of the screen
         Camera.Parameters params = mCamera.mCameraInstance.getParameters();
         params.setRotation(90);
