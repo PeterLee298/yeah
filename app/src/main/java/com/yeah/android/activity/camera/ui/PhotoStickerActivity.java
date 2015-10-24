@@ -15,29 +15,18 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.alibaba.fastjson.JSON;
 import com.yeah.android.R;
 import com.yeah.android.YeahApp;
-import com.yeah.android.activity.MainActivity;
 import com.yeah.android.activity.camera.CameraBaseActivity;
-import com.yeah.android.activity.camera.EffectService;
-import com.yeah.android.activity.camera.adapter.FilterAdapter;
 import com.yeah.android.activity.camera.adapter.StickerToolAdapter;
-import com.yeah.android.activity.camera.effect.FilterEffect;
 import com.yeah.android.activity.camera.util.EffectUtil;
-import com.yeah.android.activity.camera.util.GPUImageFilterTools;
 import com.yeah.android.activity.user.PhotoPostAvtivity;
 import com.yeah.android.model.Addon;
-import com.yeah.android.model.FeedItem;
-import com.yeah.android.model.TagItem;
-import com.yeah.android.utils.Constants;
-import com.yeah.android.utils.DataUtils;
 import com.yeah.android.utils.FileUtils;
 import com.yeah.android.utils.ImageUtils;
 import com.yeah.android.utils.StringUtils;
 import com.yeah.android.utils.TimeUtils;
 import com.yeah.android.view.LabelView;
-import com.yeah.android.view.MyHighlightView;
 import com.yeah.android.view.MyImageViewDrawableOverlay;
 
 import java.util.ArrayList;
@@ -48,7 +37,6 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import it.sephiroth.android.library.widget.HListView;
-import jp.co.cyberagent.android.gpuimage.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
 
 /**
@@ -68,17 +56,11 @@ public class PhotoStickerActivity extends CameraBaseActivity {
     //工具区
     @InjectView(R.id.list_tools)
     HListView bottomToolBar;
-    @InjectView(R.id.toolbar_area)
-    ViewGroup toolArea;
+
     private MyImageViewDrawableOverlay mImageView;
-//    private LabelSelector labelSelector;
 
     //当前图片
     private Bitmap currentBitmap;
-    //用于预览的小图片
-    private Bitmap smallImageBackgroud;
-    //小白点标签
-//    private LabelView emptyLabelView;
 
     private List<LabelView> labels = new ArrayList<LabelView>();
 
@@ -102,15 +84,8 @@ public class PhotoStickerActivity extends CameraBaseActivity {
                 mGPUImageView.setImage(currentBitmap);
             }
         });
-
-        ImageUtils.asyncLoadSmallImage(this, getIntent().getData(), new ImageUtils.LoadImageCallback() {
-            @Override
-            public void callback(Bitmap result) {
-                smallImageBackgroud = result;
-            }
-        });
-
     }
+
     private void initView() {
         //添加贴纸水印的画布
         View overlay = LayoutInflater.from(PhotoStickerActivity.this).inflate(
@@ -125,52 +100,14 @@ public class PhotoStickerActivity extends CameraBaseActivity {
 
         //添加标签选择器
         RelativeLayout.LayoutParams rparams = new RelativeLayout.LayoutParams(YeahApp.getApp().getScreenWidth(), YeahApp.getApp().getScreenWidth());
-//        labelSelector = new LabelSelector(this);
-//        labelSelector.setLayoutParams(rparams);
-//        drawArea.addView(labelSelector);
-//        labelSelector.hide();
-
         //初始化滤镜图片
         mGPUImageView.setLayoutParams(rparams);
-
-
-        //初始化空白标签
-//        emptyLabelView = new LabelView(this);
-//        emptyLabelView.setEmpty();
-//        EffectUtil.addLabelEditable(mImageView, drawArea, emptyLabelView,
-//                mImageView.getWidth() / 2, mImageView.getWidth() / 2);
-//        emptyLabelView.setVisibility(View.INVISIBLE);
-
-        //初始化推荐标签栏
-//        commonLabelArea = LayoutInflater.from(PhotoStickerActivity.this).inflate(
-//                R.layout.view_label_bottom,null);
-//        commonLabelArea.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-//                ViewGroup.LayoutParams.MATCH_PARENT));
-//        toolArea.addView(commonLabelArea);
-//        commonLabelArea.setVisibility(View.GONE);
     }
 
     private void initEvent() {
         bottomToolBar.setVisibility(View.VISIBLE);
-//            labelSelector.hide();
-//        emptyLabelView.setVisibility(View.GONE);
         initStickerToolBar();
 
-//        mImageView.setOnDrawableEventListener(wpEditListener);
-//        mImageView.setSingleTapListener(()->{
-//                emptyLabelView.updateLocation((int) mImageView.getmLastMotionScrollX(),
-//                        (int) mImageView.getmLastMotionScrollY());
-//                emptyLabelView.setVisibility(View.VISIBLE);
-//
-////                labelSelector.showToTop();
-//                drawArea.postInvalidate();
-//        });
-//        labelSelector.setOnClickListener(v -> {
-//            labelSelector.hide();
-//            emptyLabelView.updateLocation((int) labelSelector.getmLastTouchX(),
-//                    (int) labelSelector.getmLastTouchY());
-//            emptyLabelView.setVisibility(View.VISIBLE);
-//        });
     }
 
     @OnClick(R.id.sticker_next)
@@ -229,58 +166,11 @@ public class PhotoStickerActivity extends CameraBaseActivity {
                 return;
             }
 
-            //将照片信息保存至sharedPreference
-            //保存标签信息
-            List<TagItem> tagInfoList = new ArrayList<TagItem>();
-            for (LabelView label : labels) {
-                tagInfoList.add(label.getTagInfo());
-            }
-
-            //将图片信息通过EventBus发送到MainActivity
-            FeedItem feedItem = new FeedItem(tagInfoList,fileName);
-//            EventBus.getDefault().post(feedItem);
-
-
-            List<FeedItem> feedList = new ArrayList<>();
-            String str = DataUtils.getStringPreferences(YeahApp.getApp(), Constants.FEED_INFO);
-            if (StringUtils.isNotEmpty(str)) {
-                feedList = JSON.parseArray(str, FeedItem.class);
-            }
-
-            feedList.add(0, feedItem);
-
-            DataUtils.setStringPreferences(YeahApp.getApp(), Constants.FEED_INFO, JSON.toJSONString(feedList));
-
-//            MainActivity.launch(PhotoStickerActivity.this);
-
             Uri uri = fileName.startsWith("file:") ? Uri.parse(fileName) : Uri.parse("file://" + fileName);
             PhotoPostAvtivity.launch(PhotoStickerActivity.this, uri);
         }
     }
 
-
-    private MyImageViewDrawableOverlay.OnDrawableEventListener wpEditListener   = new MyImageViewDrawableOverlay.OnDrawableEventListener() {
-        @Override
-        public void onMove(MyHighlightView view) {
-        }
-
-        @Override
-        public void onFocusChange(MyHighlightView newFocus, MyHighlightView oldFocus) {
-        }
-
-        @Override
-        public void onDown(MyHighlightView view) {
-
-        }
-
-        @Override
-        public void onClick(MyHighlightView view) {
-        }
-
-        @Override
-        public void onClick(final LabelView label) {
-        }
-    };
 
     //初始化贴图
     private void initStickerToolBar(){
@@ -291,13 +181,11 @@ public class PhotoStickerActivity extends CameraBaseActivity {
             @Override
             public void onItemClick(it.sephiroth.android.library.widget.AdapterView<?> arg0,
                                     View arg1, int arg2, long arg3) {
-//                labelSelector.hide();
                 Addon sticker = EffectUtil.addonList.get(arg2);
                 EffectUtil.addStickerImage(mImageView, PhotoStickerActivity.this, sticker,
                         new EffectUtil.StickerCallback() {
                             @Override
                             public void onRemoveSticker(Addon sticker) {
-//                                labelSelector.hide();
                             }
                         });
             }

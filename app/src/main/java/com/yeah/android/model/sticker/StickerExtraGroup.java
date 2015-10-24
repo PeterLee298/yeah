@@ -1,32 +1,30 @@
 package com.yeah.android.model.sticker;
 
 /**
- * Created by litingchang on 15-10-5.
+ * Created by litingchang on 15-10-24.
  */
-public class StickerInfo {
-
+public class StickerExtraGroup {
     /**
-     * id : 20150717
-     * icon : http://youryeah-test.oss-cn-beijing.aliyuncs.com/storage/4030/5281642/VgALDksC6zhwt2oCQMfBUCRHulJ2Z.jpg
-     * title : ffffffew
-     * description : adasdasd
-     * groupId : 20150716
-     * priority : 85
-     * state : 0
-     * createdAt : 1442576959000
-     * updatedAt : 1442843410000
+     * id : 20150721
+     * icon : http://youryeah-test.oss-cn-beijing.aliyuncs.com/storage/4030/5461660/VguBDXxGRAGEKotBAFFk5Fo2SV8vcbl9.png
+     * title : 星座宝宝
+     * description : 可爱的星座宝宝
+     * stickerCount : 19
+     * priority : 12
+     * state : 1
+     * createdAt : 1443594458000
+     * updatedAt : 1443595857000
      */
 
     private int id;
     private String icon;
     private String title;
     private String description;
-    private int groupId;
+    private int stickerCount;
     private int priority;
     private int state;
     private long createdAt;
     private long updatedAt;
-    private ExtraGroup extra;
 
     public void setId(int id) {
         this.id = id;
@@ -44,8 +42,8 @@ public class StickerInfo {
         this.description = description;
     }
 
-    public void setGroupId(int groupId) {
-        this.groupId = groupId;
+    public void setStickerCount(int stickerCount) {
+        this.stickerCount = stickerCount;
     }
 
     public void setPriority(int priority) {
@@ -80,8 +78,8 @@ public class StickerInfo {
         return description;
     }
 
-    public int getGroupId() {
-        return groupId;
+    public int getStickerCount() {
+        return stickerCount;
     }
 
     public int getPriority() {
@@ -98,13 +96,5 @@ public class StickerInfo {
 
     public long getUpdatedAt() {
         return updatedAt;
-    }
-
-    public ExtraGroup getExtra() {
-        return extra;
-    }
-
-    public void setExtra(ExtraGroup extra) {
-        this.extra = extra;
     }
 }

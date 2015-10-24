@@ -1,27 +1,22 @@
 package com.yeah.android.model.sticker;
 
 /**
- * Created by litingchang on 15-10-5.
+ * Created by litingchang on 15-10-24.
  */
-public class StickerInfo {
-
+public class StickerHot {
     /**
-     * id : 20150717
-     * icon : http://youryeah-test.oss-cn-beijing.aliyuncs.com/storage/4030/5281642/VgALDksC6zhwt2oCQMfBUCRHulJ2Z.jpg
-     * title : ffffffew
-     * description : adasdasd
-     * groupId : 20150716
-     * priority : 85
-     * state : 0
-     * createdAt : 1442576959000
-     * updatedAt : 1442843410000
+     * id : 20150747
+     * groupId : 20150722
+     * categoryId : 20150757
+     * priority : 30
+     * state : 1
+     * createdAt : 1445529299000
+     * updatedAt : 1445533137000
      */
 
     private int id;
-    private String icon;
-    private String title;
-    private String description;
     private int groupId;
+    private int categoryId;
     private int priority;
     private int state;
     private long createdAt;
@@ -32,20 +27,12 @@ public class StickerInfo {
         this.id = id;
     }
 
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
     public void setGroupId(int groupId) {
         this.groupId = groupId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
     }
 
     public void setPriority(int priority) {
@@ -68,20 +55,12 @@ public class StickerInfo {
         return id;
     }
 
-    public String getIcon() {
-        return icon;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
     public int getGroupId() {
         return groupId;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
     }
 
     public int getPriority() {
