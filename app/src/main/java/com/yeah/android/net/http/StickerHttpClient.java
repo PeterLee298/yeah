@@ -25,8 +25,8 @@ public class StickerHttpClient {
     public static <T> void get(String action, RequestParams requestParams, Type type,
                                StickerHttpResponseHandler<T> responseHandler) {
 
-        LogUtil.d(TAG, "get -> action:" + action);
-        LogUtil.d(TAG, "get -> requestParams:" + requestParams.toString());
+        LogUtil.d(TAG, "get -> action:" + action + " \n->requestParams:" + requestParams.toString());
+
 
         HttpClientUtil.getHttpClient().get(HOST + action,
                 requestParams, new AsyncHttpResponseHandler() {
@@ -112,8 +112,7 @@ public class StickerHttpClient {
     public static <T> void post(String action, RequestParams requestParams, Type type,
                                StickerHttpResponseHandler<T> responseHandler) {
 
-        LogUtil.d(TAG, "get -> action:" + action);
-        LogUtil.d(TAG, "post -> requestParams:" + requestParams.toString());
+        LogUtil.d(TAG, "post ->action:" + action + " \n->requestParams:" + requestParams.toString());
 
         HttpClientUtil.getHttpClient().post(HOST + action,
                 requestParams, new AsyncHttpResponseHandler() {

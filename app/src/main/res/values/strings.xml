@@ -1,6 +1,10 @@
 <resources>
     <string name="app_name">Yeah</string>
 
+    <string name="next_step">下一步</string>
+
+
+
     <string name="action_settings">设置</string>
 
 

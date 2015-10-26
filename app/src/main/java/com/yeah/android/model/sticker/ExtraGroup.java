@@ -5,4 +5,12 @@ package com.yeah.android.model.sticker;
  */
 public class ExtraGroup {
     private StickerExtraGroup group;
+
+    public StickerExtraGroup getGroup() {
+        return group;
+    }
+
+    public void setGroup(StickerExtraGroup group) {
+        this.group = group;
+    }
 }

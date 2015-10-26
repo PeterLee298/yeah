@@ -1,7 +1,5 @@
 package com.yeah.android.activity.camera.ui;
 
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.RectF;
@@ -11,36 +9,57 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.TypeReference;
+import com.loopj.android.http.RequestParams;
 import com.yeah.android.R;
 import com.yeah.android.YeahApp;
 import com.yeah.android.activity.camera.CameraBaseActivity;
+import com.yeah.android.activity.camera.CameraManager;
 import com.yeah.android.activity.camera.adapter.StickerToolAdapter;
 import com.yeah.android.activity.camera.util.EffectUtil;
+import com.yeah.android.activity.user.LoginActivity;
 import com.yeah.android.activity.user.PhotoPostAvtivity;
 import com.yeah.android.model.Addon;
+import com.yeah.android.model.common.ResponseData;
+import com.yeah.android.model.sticker.StickerHot;
+import com.yeah.android.model.sticker.StickerHotResponse;
+import com.yeah.android.model.sticker.StickerInfo;
+import com.yeah.android.model.sticker.StickerListItem;
+import com.yeah.android.model.sticker.StickerListResponse;
+import com.yeah.android.model.sticker.StickerResponse;
+import com.yeah.android.model.user.LoginResult;
+import com.yeah.android.net.http.StickerHttpClient;
+import com.yeah.android.net.http.StickerHttpResponseHandler;
+import com.yeah.android.utils.Constants;
 import com.yeah.android.utils.FileUtils;
 import com.yeah.android.utils.ImageUtils;
+import com.yeah.android.utils.LogUtil;
 import com.yeah.android.utils.StringUtils;
 import com.yeah.android.utils.TimeUtils;
-import com.yeah.android.view.LabelView;
+import com.yeah.android.utils.ToastUtil;
+import com.yeah.android.utils.UserInfoManager;
 import com.yeah.android.view.MyImageViewDrawableOverlay;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import it.sephiroth.android.library.widget.AdapterView;
 import it.sephiroth.android.library.widget.HListView;
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
 
 /**
- *图片贴图
+ * 图片贴图
  */
 public class PhotoStickerActivity extends CameraBaseActivity {
 
@@ -50,22 +69,40 @@ public class PhotoStickerActivity extends CameraBaseActivity {
     //绘图区域
     @InjectView(R.id.drawing_view_container)
     ViewGroup drawArea;
-    //底部按钮
-    @InjectView(R.id.sticker_next)
-    TextView stickerNext;
-    //工具区
-    @InjectView(R.id.list_tools)
+
+    @InjectView(R.id.sticker_list_area)
+    LinearLayout stickerListArea;
+    @InjectView(R.id.sticker_list)
     HListView bottomToolBar;
+    @InjectView(R.id.sticker_add_more)
+    TextView stickerAddMore;
+
+    @InjectView(R.id.sticker_group_area)
+    LinearLayout stickerGroupArea;
+    @InjectView(R.id.sticker_group_tab_theme)
+    RadioButton stickerGroupTabTheme;
+    @InjectView(R.id.sticker_group_tab_hot)
+    RadioButton stickerGroupTabHot;
+    @InjectView(R.id.sticker_group_tab_layout)
+    RadioGroup stickerGroupTabLayout;
+    @InjectView(R.id.sticker_theme)
+    GridView stickerTheme;
+    @InjectView(R.id.sticker_group)
+    GridView stickerGroup;
 
     private MyImageViewDrawableOverlay mImageView;
 
     //当前图片
     private Bitmap currentBitmap;
 
-    private List<LabelView> labels = new ArrayList<LabelView>();
+    private static final int PAGE_SIZE = 10;
+    // 热门
+    private List<StickerHot> stickerHotList;
+    // 主题
+    private List<StickerListItem> stickerThemeList;
+    // 单项列表
+    private List<StickerInfo> stickerInfoList;
 
-    //标签区域
-//    private View commonLabelArea;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +121,10 @@ public class PhotoStickerActivity extends CameraBaseActivity {
                 mGPUImageView.setImage(currentBitmap);
             }
         });
+
+        titleBar.setRightBtnOnclickListener(v -> {
+            savePicture();
+        });
     }
 
     private void initView() {
@@ -98,7 +139,6 @@ public class PhotoStickerActivity extends CameraBaseActivity {
         drawArea.addView(overlay);
 
 
-        //添加标签选择器
         RelativeLayout.LayoutParams rparams = new RelativeLayout.LayoutParams(YeahApp.getApp().getScreenWidth(), YeahApp.getApp().getScreenWidth());
         //初始化滤镜图片
         mGPUImageView.setLayoutParams(rparams);
@@ -108,15 +148,19 @@ public class PhotoStickerActivity extends CameraBaseActivity {
         bottomToolBar.setVisibility(View.VISIBLE);
         initStickerToolBar();
 
+        getStickerHotList(0);
+        getStickerThemeList(0);
+        getStickerList(0, 20150721);
+
     }
 
-    @OnClick(R.id.sticker_next)
-    public void stickerNext() {
-        savePicture();
+    @OnClick(R.id.sticker_add_more)
+    public void stickerAddMore() {
+
     }
 
     //保存图片
-    private void savePicture(){
+    private void savePicture() {
         //加滤镜
         final Bitmap newBitmap = Bitmap.createBitmap(mImageView.getWidth(), mImageView.getHeight(),
                 Bitmap.Config.ARGB_8888);
@@ -134,8 +178,9 @@ public class PhotoStickerActivity extends CameraBaseActivity {
         new SavePicToFileTask().execute(newBitmap);
     }
 
-    private class SavePicToFileTask extends AsyncTask<Bitmap,Void,String>{
+    private class SavePicToFileTask extends AsyncTask<Bitmap, Void, String> {
         Bitmap bitmap;
+
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -149,7 +194,7 @@ public class PhotoStickerActivity extends CameraBaseActivity {
                 bitmap = params[0];
 
                 String picName = TimeUtils.dtFormat(new Date(), "yyyyMMddHHmmss") + ".jpeg";
-                 fileName = ImageUtils.saveToFile(FileUtils.getInst().getPhotoSavedPath() + "/"+ picName, false, bitmap);
+                fileName = ImageUtils.saveToFile(FileUtils.getInst().getPhotoSavedPath() + "/" + picName, false, bitmap);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -173,13 +218,13 @@ public class PhotoStickerActivity extends CameraBaseActivity {
 
 
     //初始化贴图
-    private void initStickerToolBar(){
+    private void initStickerToolBar() {
 
         bottomToolBar.setAdapter(new StickerToolAdapter(PhotoStickerActivity.this, EffectUtil.addonList));
-        bottomToolBar.setOnItemClickListener(new it.sephiroth.android.library.widget.AdapterView.OnItemClickListener() {
+        bottomToolBar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
             @Override
-            public void onItemClick(it.sephiroth.android.library.widget.AdapterView<?> arg0,
+            public void onItemClick(AdapterView<?> arg0,
                                     View arg1, int arg2, long arg3) {
                 Addon sticker = EffectUtil.addonList.get(arg2);
                 EffectUtil.addStickerImage(mImageView, PhotoStickerActivity.this, sticker,
@@ -190,5 +235,100 @@ public class PhotoStickerActivity extends CameraBaseActivity {
                         });
             }
         });
+    }
+
+    private void getStickerHotList(int pageNumber) {
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("pageNumber", pageNumber);
+        requestParams.put("pageSize", PAGE_SIZE);
+        StickerHttpClient.post("/group/hot", requestParams,
+                new TypeReference<ResponseData<StickerHotResponse>>() {
+                }.getType(),
+                new StickerHttpResponseHandler<StickerHotResponse>() {
+
+                    @Override
+                    public void onStart() {
+                    }
+
+                    @Override
+                    public void onSuccess(StickerHotResponse response) {
+                        stickerHotList = response.getContent();
+
+
+                    }
+
+                    @Override
+                    public void onFailure(String message) {
+                        ToastUtil.shortToast(PhotoStickerActivity.this, "获取热门贴纸失败：" + message);
+                    }
+
+                    @Override
+                    public void onFinish() {
+                    }
+                });
+    }
+
+    private void getStickerThemeList(int pageNumber) {
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("pageNumber", pageNumber);
+        requestParams.put("pageSize", PAGE_SIZE);
+        StickerHttpClient.post("/group/list", requestParams,
+                new TypeReference<ResponseData<StickerListResponse>>() {
+                }.getType(),
+                new StickerHttpResponseHandler<StickerListResponse>() {
+
+                    @Override
+                    public void onStart() {
+                    }
+
+                    @Override
+                    public void onSuccess(StickerListResponse response) {
+                        stickerThemeList = response.getContent();
+
+
+                    }
+
+                    @Override
+                    public void onFailure(String message) {
+                        ToastUtil.shortToast(PhotoStickerActivity.this, "获取热门贴纸失败：" + message);
+                    }
+
+                    @Override
+                    public void onFinish() {
+                    }
+                });
+    }
+
+    private void getStickerList(int pageNumber, int groupId) {
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("pageNumber", pageNumber);
+        requestParams.put("pageSize", PAGE_SIZE);
+        requestParams.put("groupId", groupId);
+
+        StickerHttpClient.post("/group/sticker", requestParams,
+                new TypeReference<ResponseData<StickerResponse>>() {
+                }.getType(),
+                new StickerHttpResponseHandler<StickerResponse>() {
+
+                    @Override
+                    public void onStart() {
+                    }
+
+                    @Override
+                    public void onSuccess(StickerResponse response) {
+                        stickerInfoList = response.getContent();
+
+
+                    }
+
+                    @Override
+                    public void onFailure(String message) {
+                        ToastUtil.shortToast(PhotoStickerActivity.this, "获取贴纸失败：" + message);
+                    }
+
+                    @Override
+                    public void onFinish() {
+                    }
+                });
     }
 }
