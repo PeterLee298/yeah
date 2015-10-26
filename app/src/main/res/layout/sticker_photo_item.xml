@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="92dp"
+    android:layout_height="92dp"
+    android:minWidth="92dp"
+    android:minHeight="92dp">
+
+    <ImageView android:id="@+id/sticker_photo"
+        android:layout_width="92dp"
+        android:layout_height="92dp" />
+
+</LinearLayout>

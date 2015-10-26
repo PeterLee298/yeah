@@ -4,14 +4,14 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@color/base_bg"
-    android:orientation="vertical" >
+    android:orientation="vertical">
 
     <com.yeah.android.view.CommonTitleBar
         android:id="@+id/title_layout"
         style="@style/head_default"
+        app:bgColor="@color/transparent"
         app:leftBtnIcon="@drawable/ic_back_black"
         app:rightBtnTxt="@string/next_step"
-        app:bgColor="@color/transparent"
         app:titleTxt="编辑照片" />
 
     <LinearLayout
@@ -19,13 +19,14 @@
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:orientation="vertical" >
+        android:gravity="center"
+        android:orientation="vertical">
 
         <RelativeLayout
             android:id="@+id/drawing_view_container"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <jp.co.cyberagent.android.gpuimage.GPUImageView
                 android:id="@+id/gpuimage"
@@ -36,7 +37,7 @@
 
 
     </LinearLayout>
-    
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="148dp">
@@ -45,8 +46,9 @@
             android:id="@+id/sticker_list_area"
             android:layout_width="fill_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:orientation="vertical">
+
             <it.sephiroth.android.library.widget.HListView
                 android:id="@+id/sticker_list"
                 android:layout_width="match_parent"
@@ -55,31 +57,33 @@
                 android:background="@color/common_background"
                 android:gravity="center_vertical"
                 android:overScrollMode="always"
-                app:hlv_dividerWidth="@dimen/margin_15px"/>
+                app:hlv_dividerWidth="@dimen/margin_15px" />
 
             <TextView
                 android:id="@+id/sticker_add_more"
                 android:layout_width="match_parent"
                 android:layout_height="36dp"
-                android:padding="0dp"
-                android:lineSpacingExtra="0dp"
                 android:background="@color/app_base"
                 android:gravity="center"
+                android:lineSpacingExtra="0dp"
+                android:padding="0dp"
                 android:text="+"
                 android:textColor="@color/white"
-                android:textStyle="bold"
-                android:textSize="36sp" />
+                android:textSize="36sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
-        <LinearLayout android:id="@+id/sticker_group_area"
+        <LinearLayout
+            android:id="@+id/sticker_group_area"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/base_bg"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:background="@color/base_bg">
+            android:clickable="true">
 
             <RadioGroup
-                android:id="@+id/sticker_group_tab_layout"
+                android:id="@+id/sticker_tab_radio_group"
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
                 android:gravity="center"
@@ -93,11 +97,11 @@
                     android:layout_weight="1"
                     android:background="@color/base_bg"
                     android:button="@null"
+                    android:checked="true"
                     android:gravity="center"
                     android:text="主题贴纸"
                     android:textColor="@color/ticker_group_tab_text"
-                    android:textSize="12sp"
-                    android:checked="true"/>
+                    android:textSize="12sp" />
 
                 <RadioButton
                     android:id="@+id/sticker_group_tab_hot"
@@ -115,25 +119,27 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="360dp">
+                android:layout_height="match_parent">
 
-                <GridView android:id="@+id/sticker_theme"
+                <GridView
+                    android:id="@+id/sticker_theme"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:numColumns="4"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:verticalSpacing="10dp"
                     android:horizontalSpacing="10dp"
-                    android:visibility="visible"/>
+                    android:numColumns="4"
+                    android:verticalSpacing="10dp"
+                    android:visibility="visible" />
 
-                <GridView android:id="@+id/sticker_group"
+                <GridView
+                    android:id="@+id/sticker_hot"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:numColumns="4"
+                    android:layout_height="match_parent"
                     android:layout_gravity="center"
-                    android:verticalSpacing="10dp"
                     android:horizontalSpacing="10dp"
-                    android:visibility="gone"/>
+                    android:numColumns="4"
+                    android:verticalSpacing="10dp"
+                    android:visibility="gone" />
 
             </RelativeLayout>
 
@@ -142,7 +148,6 @@
 
 
     </RelativeLayout>
-
 
 
 </LinearLayout>

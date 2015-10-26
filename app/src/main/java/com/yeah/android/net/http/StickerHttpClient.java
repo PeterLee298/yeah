@@ -2,6 +2,7 @@ package com.yeah.android.net.http;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONException;
+import com.loopj.android.http.AsyncHttpClient;
 import com.yeah.android.utils.LogUtil;
 import com.yeah.android.net.HttpClientUtil;
 import com.loopj.android.http.AsyncHttpResponseHandler;
@@ -64,13 +65,13 @@ public class StickerHttpClient {
                             return;
                         }
 
-                        if(responseData == null) {
+                        if (responseData == null) {
                             LogUtil.e(TAG, "onSuccess -> responseData is null");
                             responseHandler.onFailure("JSON解析错误");
                             return;
                         }
 
-                        if(!responseData.isResult()) {
+                        if (!responseData.isResult()) {
                             LogUtil.e(TAG, "onSuccess -> responseData isResult false");
                             responseHandler.onFailure(responseData.getMessage());
                             return;
