@@ -1,6 +1,7 @@
 package com.yeah.android.activity.camera.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.RectF;
@@ -73,6 +74,10 @@ import jp.co.cyberagent.android.gpuimage.GPUImageView;
 public class PhotoStickerActivity extends CameraBaseActivity {
 
     private static final String TAG = PhotoStickerActivity.class.getSimpleName();
+
+    private static final int REQUEST_CODE_STICKER = 101;
+    private int mStickerGroupId;
+//    private int
     //滤镜图片
     @InjectView(R.id.sticker_root)
     View stickerRootView;
@@ -142,6 +147,12 @@ public class PhotoStickerActivity extends CameraBaseActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_STICKER && resultCode == RESULT_OK) {
+        }
+    }
+
     private void initView() {
         //添加贴纸水印的画布
         View overlay = LayoutInflater.from(PhotoStickerActivity.this).inflate(
@@ -162,6 +173,9 @@ public class PhotoStickerActivity extends CameraBaseActivity {
         stickerGroupPopWindow = new StickerGroupPopWindow(PhotoStickerActivity.this, new StickerGroupPopWindow.StickerGroupClickListener() {
             @Override
             public void onStickerCroupItemClicke(int position) {
+                LogUtil.d(TAG, "onStickerCroupItemClicke:" + position);
+
+                showStickerListArea();
 
             }
         });
@@ -194,7 +208,7 @@ public class PhotoStickerActivity extends CameraBaseActivity {
 
     @OnClick(R.id.sticker_add_more)
     public void stickerAddMore() {
-
+        showStickerGroupArea();
     }
 
     //保存图片
@@ -304,6 +318,17 @@ public class PhotoStickerActivity extends CameraBaseActivity {
 
     }
 
+    private void showStickerGroupArea() {
+        stickerGroupArea.setVisibility(View.VISIBLE);
+        stickerListArea.setVisibility(View.GONE);
+
+    }
+
+    private void showStickerListArea() {
+        stickerGroupArea.setVisibility(View.GONE);
+        stickerListArea.setVisibility(View.VISIBLE);
+    }
+
     private void getStickerHotList(int pageNumber) {
         RequestParams requestParams = new RequestParams();
         requestParams.put("pageNumber", pageNumber);
@@ -325,9 +350,11 @@ public class PhotoStickerActivity extends CameraBaseActivity {
 
                     @Override
                     public void onSuccess(StickerHotResponse response) {
-                        if (response.getContent() != null) {
+                        if (response.getContent() != null  && !response.getContent().isEmpty()) {
                             stickerHotList.addAll(response.getContent());
                             hotStickerAdapter.notifyDataSetChanged();
+                        } else {
+                            ToastUtil.shortToast(PhotoStickerActivity.this, "获取热门贴纸列表为空");
                         }
                     }
 
@@ -365,9 +392,11 @@ public class PhotoStickerActivity extends CameraBaseActivity {
 
                     @Override
                     public void onSuccess(StickerListResponse response) {
-                        if(response.getContent() != null) {
+                        if(response.getContent() != null && !response.getContent().isEmpty()) {
                             stickerThemeList.addAll(response.getContent());
                             themeStickerAdapter.notifyDataSetChanged();
+                        } else {
+                            ToastUtil.shortToast(PhotoStickerActivity.this, "获取主题贴纸列表为空");
                         }
                     }
 
@@ -403,11 +432,17 @@ public class PhotoStickerActivity extends CameraBaseActivity {
 
                     @Override
                     public void onSuccess(StickerResponse response) {
-                        stickerInfoList = response.getContent();
 
-                        stickerGroupPopWindow.showAtLocation(stickerRootView,
-                                Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
+                        if(response.getContent() != null && !response.getContent().isEmpty()) {
+                            stickerInfoList = response.getContent();
 
+                            stickerGroupPopWindow.showAtLocation(stickerRootView,
+                                    Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
+
+                            stickerGroupPopWindow.setStickerList(stickerInfoList);
+                        } else {
+                            ToastUtil.shortToast(PhotoStickerActivity.this, "获取贴纸列表为空");
+                        }
                     }
 
                     @Override
