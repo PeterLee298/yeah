@@ -7,6 +7,7 @@ import android.graphics.RectF;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,7 @@ import com.yeah.android.utils.TimeUtils;
 import com.yeah.android.utils.ToastUtil;
 import com.yeah.android.utils.UserInfoManager;
 import com.yeah.android.view.MyImageViewDrawableOverlay;
+import com.yeah.android.view.sticker.StickerGroupPopWindow;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -70,6 +72,10 @@ import jp.co.cyberagent.android.gpuimage.GPUImageView;
  */
 public class PhotoStickerActivity extends CameraBaseActivity {
 
+    private static final String TAG = PhotoStickerActivity.class.getSimpleName();
+    //滤镜图片
+    @InjectView(R.id.sticker_root)
+    View stickerRootView;
     //滤镜图片
     @InjectView(R.id.gpuimage)
     GPUImageView mGPUImageView;
@@ -111,6 +117,8 @@ public class PhotoStickerActivity extends CameraBaseActivity {
 
     private int stickerRequestCount = 0;
 
+    private StickerGroupPopWindow stickerGroupPopWindow;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -149,6 +157,14 @@ public class PhotoStickerActivity extends CameraBaseActivity {
         RelativeLayout.LayoutParams rparams = new RelativeLayout.LayoutParams(YeahApp.getApp().getScreenWidth(), YeahApp.getApp().getScreenWidth());
         //初始化滤镜图片
         mGPUImageView.setLayoutParams(rparams);
+
+
+        stickerGroupPopWindow = new StickerGroupPopWindow(PhotoStickerActivity.this, new StickerGroupPopWindow.StickerGroupClickListener() {
+            @Override
+            public void onStickerCroupItemClicke(int position) {
+
+            }
+        });
     }
 
     private void initEvent() {
@@ -265,7 +281,8 @@ public class PhotoStickerActivity extends CameraBaseActivity {
         stickerTheme.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(android.widget.AdapterView<?> parent, View view, int position, long id) {
-
+                LogUtil.d(TAG, "onItemClick:" + position);
+                getStickerList(0, stickerThemeList.get(position).getId());
             }
         });
 
@@ -276,14 +293,15 @@ public class PhotoStickerActivity extends CameraBaseActivity {
         stickerHot.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(android.widget.AdapterView<?> parent, View view, int position, long id) {
-
+                LogUtil.d(TAG, "onItemClick:" + position);
+                getStickerList(0, stickerHotList.get(position).getGroupId());
             }
         });
 
 
         getStickerHotList(0);
         getStickerThemeList(0);
-        getStickerList(0, 20150721);
+
     }
 
     private void getStickerHotList(int pageNumber) {
@@ -387,6 +405,8 @@ public class PhotoStickerActivity extends CameraBaseActivity {
                     public void onSuccess(StickerResponse response) {
                         stickerInfoList = response.getContent();
 
+                        stickerGroupPopWindow.showAtLocation(stickerRootView,
+                                Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
 
                     }
 
