@@ -16,7 +16,6 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,10 +27,9 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yeah.android.R;
 import com.yeah.android.YeahApp;
 import com.yeah.android.activity.camera.CameraBaseActivity;
-import com.yeah.android.activity.camera.CameraManager;
+import com.yeah.android.activity.camera.adapter.StickerSelectorAdapter;
 import com.yeah.android.activity.camera.adapter.StickerToolAdapter;
 import com.yeah.android.activity.camera.util.EffectUtil;
-import com.yeah.android.activity.user.LoginActivity;
 import com.yeah.android.activity.user.PhotoPostAvtivity;
 import com.yeah.android.model.Addon;
 import com.yeah.android.model.common.ResponseData;
@@ -41,18 +39,14 @@ import com.yeah.android.model.sticker.StickerInfo;
 import com.yeah.android.model.sticker.StickerListItem;
 import com.yeah.android.model.sticker.StickerListResponse;
 import com.yeah.android.model.sticker.StickerResponse;
-import com.yeah.android.model.user.LoginResult;
-import com.yeah.android.model.user.Photo;
 import com.yeah.android.net.http.StickerHttpClient;
 import com.yeah.android.net.http.StickerHttpResponseHandler;
-import com.yeah.android.utils.Constants;
 import com.yeah.android.utils.FileUtils;
 import com.yeah.android.utils.ImageUtils;
 import com.yeah.android.utils.LogUtil;
 import com.yeah.android.utils.StringUtils;
 import com.yeah.android.utils.TimeUtils;
 import com.yeah.android.utils.ToastUtil;
-import com.yeah.android.utils.UserInfoManager;
 import com.yeah.android.view.MyImageViewDrawableOverlay;
 import com.yeah.android.view.sticker.StickerGroupPopWindow;
 
@@ -62,7 +56,6 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import it.sephiroth.android.library.widget.AdapterView;
 import it.sephiroth.android.library.widget.HListView;
@@ -91,7 +84,7 @@ public class PhotoStickerActivity extends CameraBaseActivity {
     @InjectView(R.id.sticker_list_area)
     LinearLayout stickerListArea;
     @InjectView(R.id.sticker_list)
-    HListView bottomToolBar;
+    HListView stickerListView;
     @InjectView(R.id.sticker_add_more)
     TextView stickerAddMore;
 
@@ -117,6 +110,7 @@ public class PhotoStickerActivity extends CameraBaseActivity {
     // 单项列表
     private List<StickerInfo> stickerInfoList;
 
+//    private StickerSelectorAdapter stickerSelectorAdapter;
     private ThemeStickerAdapter themeStickerAdapter;
     private HotStickerAdapter hotStickerAdapter;
 
@@ -177,6 +171,10 @@ public class PhotoStickerActivity extends CameraBaseActivity {
 
                 showStickerListArea();
 
+                if(stickerInfoList != null && stickerInfoList.size() > position) {
+                    EffectUtil.addStickerImage2(mImageView, PhotoStickerActivity.this,
+                        stickerInfoList.get(position).getIcon());
+                }
             }
         });
     }
@@ -272,21 +270,15 @@ public class PhotoStickerActivity extends CameraBaseActivity {
     //初始化贴图
     private void initStickerToolBar() {
 
-        bottomToolBar.setAdapter(new StickerToolAdapter(PhotoStickerActivity.this, EffectUtil.addonList));
-        bottomToolBar.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> arg0,
-                                    View arg1, int arg2, long arg3) {
-                Addon sticker = EffectUtil.addonList.get(arg2);
-                EffectUtil.addStickerImage(mImageView, PhotoStickerActivity.this, sticker,
-                        new EffectUtil.StickerCallback() {
-                            @Override
-                            public void onRemoveSticker(Addon sticker) {
-                            }
-                        });
-            }
-        });
+        stickerInfoList = new ArrayList<>();
+//        stickerListView.setAdapter(new StickerSelectorAdapter(PhotoStickerActivity.this, stickerInfoList));
+//        stickerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                EffectUtil.addStickerImage2(mImageView, PhotoStickerActivity.this,
+//                        stickerInfoList.get(i).getIcon());
+//            }
+//        });
 
 
         stickerThemeList = new ArrayList<>();
@@ -315,7 +307,6 @@ public class PhotoStickerActivity extends CameraBaseActivity {
 
         getStickerHotList(0);
         getStickerThemeList(0);
-
     }
 
     private void showStickerGroupArea() {
@@ -327,6 +318,7 @@ public class PhotoStickerActivity extends CameraBaseActivity {
     private void showStickerListArea() {
         stickerGroupArea.setVisibility(View.GONE);
         stickerListArea.setVisibility(View.VISIBLE);
+//        stickerSelectorAdapter.notifyDataSetChanged();
     }
 
     private void getStickerHotList(int pageNumber) {
@@ -428,13 +420,24 @@ public class PhotoStickerActivity extends CameraBaseActivity {
 
                     @Override
                     public void onStart() {
+                        showProgressDialog("加载中。。。");
                     }
 
                     @Override
                     public void onSuccess(StickerResponse response) {
 
                         if(response.getContent() != null && !response.getContent().isEmpty()) {
-                            stickerInfoList = response.getContent();
+                            stickerInfoList.clear();
+                            stickerInfoList.addAll(response.getContent());
+
+                            stickerListView.setAdapter(new StickerSelectorAdapter(PhotoStickerActivity.this, stickerInfoList));
+                            stickerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                    EffectUtil.addStickerImage2(mImageView, PhotoStickerActivity.this,
+                                            stickerInfoList.get(i).getIcon());
+                                }
+                            });
 
                             stickerGroupPopWindow.showAtLocation(stickerRootView,
                                     Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
@@ -452,6 +455,7 @@ public class PhotoStickerActivity extends CameraBaseActivity {
 
                     @Override
                     public void onFinish() {
+                        dismissProgressDialog();
                     }
                 });
     }

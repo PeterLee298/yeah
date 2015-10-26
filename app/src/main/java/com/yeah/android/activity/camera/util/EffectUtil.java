@@ -7,10 +7,16 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.assist.FailReason;
+import com.nostra13.universalimageloader.core.listener.ImageLoadingListener;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.yeah.android.view.LabelView;
 import com.yeah.android.view.MyHighlightView;
 import com.yeah.android.view.MyImageViewDrawableOverlay;
@@ -76,6 +82,96 @@ public class EffectUtil {
                 hightlistViews.remove(hv);
                 ((MyImageViewDrawableOverlay) processImage).invalidate();
                 callback.onRemoveSticker(sticker);
+            }
+        });
+
+        Matrix mImageMatrix = processImage.getImageViewMatrix();
+
+        int cropWidth, cropHeight;
+        int x, y;
+
+        final int width = processImage.getWidth();
+        final int height = processImage.getHeight();
+
+        // width/height of the sticker
+        cropWidth = (int) drawable.getCurrentWidth();
+        cropHeight = (int) drawable.getCurrentHeight();
+
+        final int cropSize = Math.max(cropWidth, cropHeight);
+        final int screenSize = Math.min(processImage.getWidth(), processImage.getHeight());
+        RectF positionRect = null;
+        if (cropSize > screenSize) {
+            float ratio;
+            float widthRatio = (float) processImage.getWidth() / cropWidth;
+            float heightRatio = (float) processImage.getHeight() / cropHeight;
+
+            if (widthRatio < heightRatio) {
+                ratio = widthRatio;
+            } else {
+                ratio = heightRatio;
+            }
+
+            cropWidth = (int) ((float) cropWidth * (ratio / 2));
+            cropHeight = (int) ((float) cropHeight * (ratio / 2));
+
+            int w = processImage.getWidth();
+            int h = processImage.getHeight();
+            positionRect = new RectF(w / 2 - cropWidth / 2, h / 2 - cropHeight / 2,
+                    w / 2 + cropWidth / 2, h / 2 + cropHeight / 2);
+
+            positionRect.inset((positionRect.width() - cropWidth) / 2,
+                    (positionRect.height() - cropHeight) / 2);
+        }
+
+        if (positionRect != null) {
+            x = (int) positionRect.left;
+            y = (int) positionRect.top;
+
+        } else {
+            x = (width - cropWidth) / 2;
+            y = (height - cropHeight) / 2;
+        }
+
+        Matrix matrix = new Matrix(mImageMatrix);
+        matrix.invert(matrix);
+
+        float[] pts = new float[] { x, y, x + cropWidth, y + cropHeight };
+        MatrixUtils.mapPoints(matrix, pts);
+
+        RectF cropRect = new RectF(pts[0], pts[1], pts[2], pts[3]);
+        Rect imageRect = new Rect(0, 0, width, height);
+
+        hv.setup(context, mImageMatrix, imageRect, cropRect, false);
+
+        ((MyImageViewDrawableOverlay) processImage).addHighlightView(hv);
+        ((MyImageViewDrawableOverlay) processImage).setSelectedHighlightView(hv);
+        hightlistViews.add(hv);
+        return hv;
+    }
+
+    public static MyHighlightView addStickerImage2(final ImageViewTouch processImage,
+                                                  Context context, final String url) {
+
+        Bitmap mBitmap = ImageLoader.getInstance().loadImageSync(url);
+
+        if (mBitmap == null) {
+            return null;
+        }
+        StickerDrawable drawable = new StickerDrawable(context.getResources(), mBitmap);
+        drawable.setAntiAlias(true);
+        drawable.setMinSize(30, 30);
+
+        final MyHighlightView hv = new MyHighlightView(processImage, R.style.AppTheme, drawable);
+        //设置贴纸padding
+        hv.setPadding(10);
+        hv.setOnDeleteClickListener(new MyHighlightView.OnDeleteClickListener() {
+
+            @Override
+            public void onDeleteClick() {
+                ((MyImageViewDrawableOverlay) processImage).removeHightlightView(hv);
+                hightlistViews.remove(hv);
+                ((MyImageViewDrawableOverlay) processImage).invalidate();
+//                callback.onRemoveSticker(sticker);
             }
         });
 
