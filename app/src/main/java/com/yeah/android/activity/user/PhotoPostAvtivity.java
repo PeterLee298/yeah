@@ -73,6 +73,11 @@ public class PhotoPostAvtivity extends BaseActivity {
 
         String contentStr = StringUtils.clean(postContent.getText().toString());
 
+        if(StringUtils.isEmpty(contentStr)) {
+            ToastUtil.longToast(PhotoPostAvtivity.this, "请输入描述文字");
+            return;
+        }
+
         File file = new File(imgUri.getPath());
 
         if(file == null || !file.exists()) {
