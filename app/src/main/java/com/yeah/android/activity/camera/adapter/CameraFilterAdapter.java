@@ -3,9 +3,13 @@ package com.yeah.android.activity.camera.adapter;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.yeah.android.R;
 import com.yeah.android.activity.camera.EffectService;
 import com.yeah.android.activity.camera.effect.FilterEffect;
 import com.yeah.android.activity.camera.util.GPUImageFilterTools;
@@ -33,7 +37,7 @@ public class CameraFilterAdapter extends PagerAdapter implements OnPageChangeLis
 
     private View.OnClickListener mOnClickListener;
 
-    public CameraFilterAdapter(Context context, IFilterChange filterChange, View.OnClickListener onClickListener){
+    public CameraFilterAdapter(Context context, LinearLayout tabContainer, IFilterChange filterChange, View.OnClickListener onClickListener){
         mFilterBundles = new ArrayList<>();
         List<FilterEffect> effects = EffectService.getInst().getLocalFilters();
         for(FilterEffect filterEffect : effects){
@@ -41,6 +45,17 @@ public class CameraFilterAdapter extends PagerAdapter implements OnPageChangeLis
         }
 
         mContext = context;
+
+        if(tabContainer != null){
+            tabContainer.removeAllViews();
+            for(FilterEffect filterEffect : effects){
+                TextView tv = (TextView) LayoutInflater.from(mContext)
+                        .inflate(R.layout.camera_filter_tab_text, null, false);
+                tv.setText(filterEffect.getTitle());
+                tabContainer.addView(tv);
+            }
+        }
+
         for(FilterBundle filterBundle : mFilterBundles){
             View view = new View(mContext);
             view.setOnClickListener(onClickListener);

@@ -37,7 +37,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.astuetz.PagerSlidingTabStrip;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yeah.android.R;
 import com.yeah.android.YeahApp;
@@ -85,6 +84,7 @@ import butterknife.OnClick;
 import jp.co.cyberagent.android.gpuimage.GPUImage;
 import jp.co.cyberagent.android.gpuimage.GPUImage.OnPictureSavedListener;
 import jp.co.cyberagent.android.gpuimage.GPUImageFilter;
+import me.xiaopan.psts.PagerSlidingTabStrip;
 
 /**
  * 相机界面
@@ -154,6 +154,8 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
     PagerSlidingTabStrip mPagerSlidingTabStrip;
     @InjectView(R.id.camera_viewpager)
     ViewPager mViewPager;
+    @InjectView(R.id.tab_layout)
+    LinearLayout mTabLayout;
     @InjectView(R.id.camera_menu)
     ImageView mCameraMenu;
     @InjectView(R.id.camera_top)
@@ -184,7 +186,7 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
 
         mCameraHandler = new CameraHandler();
 
-        mCameraFilterAdapter = new CameraFilterAdapter(Camera2Activity.this, this, new View.OnClickListener() {
+        mCameraFilterAdapter = new CameraFilterAdapter(Camera2Activity.this, mTabLayout, this, new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(mCameraTopBarMenu.isShowing()){
@@ -199,8 +201,7 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
         mViewPager.addOnPageChangeListener(mCameraFilterAdapter);
         mChangeRatioBtn.setOnClickListener(this);
         mPagerSlidingTabStrip.setViewPager(mViewPager);
-        mPagerSlidingTabStrip.setTextColorResource(R.color.camera_bottom_filter_tab_color);
-        mPagerSlidingTabStrip.setBackgroundResource(R.color.camera_bottom_filter_bg);
+//        mPagerSlidingTabStrip.setTextColorResource(R.color.camera_bottom_filter_tab_color);
 //        mPagerSlidingTabStrip.setIndicatorColor(R.color.camera_bottom_filter_bg);
         mCameraTopBarMenu = new CameraTopBarMenu(LayoutInflater.from(this).inflate(
                 R.layout.popupwindow_camera_topbar_menu, null), this);

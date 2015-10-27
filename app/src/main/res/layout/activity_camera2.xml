@@ -50,12 +50,31 @@
                             android:background="@drawable/cam_focus"
                             android:visibility="invisible" />
 
-                        <com.astuetz.PagerSlidingTabStrip
+                        <me.xiaopan.psts.PagerSlidingTabStrip
+                            xmlns:app="http://schemas.android.com/apk/res-auto"
                             android:id="@+id/camera_filter_choose"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
+                            android:background="@color/camera_bottom_filter_choose_bg"
+                            app:allowWidthFull="true"
+                            app:pstsShouldExpand="true"
                             android:layout_alignParentBottom="true"
-                            android:background="@color/camera_bottom_filter_choose_bg"/>
+                            app:slidingBlock="@color/transparent">
+                            <LinearLayout
+                                android:id="@+id/tab_layout"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:orientation="horizontal">
+                            </LinearLayout>
+                        </me.xiaopan.psts.PagerSlidingTabStrip>
+
+                        <!--<com.astuetz.PagerSlidingTabStrip-->
+                            <!--android:id="@+id/camera_filter_choose"-->
+                            <!--android:layout_width="match_parent"-->
+                            <!--android:layout_height="40dp"-->
+                            <!--android:layout_alignParentBottom="true"-->
+                            <!--android:background="@color/camera_bottom_filter_choose_bg"/>-->
 
                         <android.support.v4.view.ViewPager
                             android:id="@+id/camera_viewpager"
