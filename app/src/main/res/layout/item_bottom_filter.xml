@@ -7,15 +7,15 @@
 
     <LinearLayout
         android:id="@+id/small_filter_container"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
         android:gravity="center"
-        android:background="@drawable/bottom_tool" >
+        android:background="@drawable/ic_photo_filter_item_bg" >
 
         <jp.co.cyberagent.android.gpuimage.GPUImageView
             android:id="@+id/small_filter"
-            android:layout_width="98dp"
-            android:layout_height="98dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_gravity="center"
             android:contentDescription="@null"
             android:scaleType="fitCenter" />
@@ -23,13 +23,13 @@
 
     <TextView
         android:id="@+id/filter_name"
-        android:layout_width="100dp"
+        android:layout_width="72dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/small_filter_container"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="4dp"
         android:gravity="center"
         android:text="无滤镜"
-        android:textColor="#9b6b6c"
-        android:textSize="20sp" />
+        android:textColor="@color/camera_tab_text_color"
+        android:textSize="14sp" />
 
 </RelativeLayout>

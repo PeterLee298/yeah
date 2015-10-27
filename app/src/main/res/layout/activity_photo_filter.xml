@@ -22,7 +22,8 @@
         <RelativeLayout
             android:id="@+id/drawing_view_container"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:orientation="vertical" >
 
             <jp.co.cyberagent.android.gpuimage.GPUImageView
@@ -35,14 +36,14 @@
         <LinearLayout
             android:id="@+id/toolbar_area"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="108dp"
             android:orientation="vertical" >
 
             <it.sephiroth.android.library.widget.HListView
                 android:id="@+id/list_tools"
                 android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:background="@color/common_background"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
                 android:gravity="center_vertical"
                 android:overScrollMode="always"
                 app:hlv_dividerWidth="@dimen/margin_15px"/>
@@ -53,19 +54,21 @@
     <LinearLayout
         android:id="@+id/btn_area"
         android:layout_width="fill_parent"
-        android:layout_height="50dp"
-        android:background="@color/white"
+        android:layout_height="wrap_content"
+        android:background="@color/base_bg"
         android:orientation="vertical"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
         android:gravity="center">
 
         <TextView
             android:id="@+id/filter_next"
-            android:layout_width="120dp"
-            android:layout_height="36dp"
-            android:background="@drawable/base_btn_bg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/ic_photo_filter_next_btn_bg"
             android:gravity="center"
             android:text="下一步"
-            android:textColor="@color/white"
+            android:textColor="#433d40"
             android:textSize="@dimen/txt_size_xl" />
     </LinearLayout>
 
