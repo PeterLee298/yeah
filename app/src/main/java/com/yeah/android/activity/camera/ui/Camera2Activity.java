@@ -50,6 +50,7 @@ import com.yeah.android.activity.camera.util.StateCameraGridHander;
 import com.yeah.android.activity.camera.util.StateCameraScaleHander;
 import com.yeah.android.activity.camera.util.StateCameraTakePhotoHander;
 import com.yeah.android.activity.camera.util.StateCameraTimerHander;
+import com.yeah.android.activity.user.SettingActivity;
 import com.yeah.android.activity.user.UserHomeActivity;
 import com.yeah.android.impl.ICameraLightBack;
 import com.yeah.android.impl.IFilterChange;
@@ -420,6 +421,8 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
     @OnClick(R.id.drawer_setting)
     public void drawerSeting() {
         drawerLayout.closeDrawer(Gravity.LEFT);
+
+        SettingActivity.launch(Camera2Activity.this);
     }
 
     @Override

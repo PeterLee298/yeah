@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.yeah.android.R;
 import com.yeah.android.activity.BaseActivity;
+import com.yeah.android.activity.camera.CameraManager;
 import com.yeah.android.utils.UserInfoManager;
 
 import butterknife.ButterKnife;
@@ -32,6 +33,8 @@ public class SettingActivity extends BaseActivity {
     @OnClick(R.id.logout)
     public void logout() {
         UserInfoManager.logout();
+        CameraManager.getInst().close();
+        SettingActivity.this.finish();
         LoginActivity.launch(SettingActivity.this);
     }
 

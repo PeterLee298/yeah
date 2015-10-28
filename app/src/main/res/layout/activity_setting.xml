@@ -1,34 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_bg"
+    android:background="@color/base_bg"
     android:orientation="vertical"
     android:gravity="center">
 
-    <!--<ScrollView
+    <com.yeah.android.view.CommonTitleBar
+        android:id="@+id/title_layout"
+        style="@style/head_default"
+        app:bgColor="@color/app_base"
+        app:leftBtnIcon="@drawable/ic_user_home_back"
+        app:rightBtnIcon="@drawable/ic_user_home_info"
+        app:titleTxt="个人" />
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:fillViewport="true">
 
+        <TextView android:id="@+id/logout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
 
+    </ScrollView>
 
-    </ScrollView>-->
 
-    <TextView
-        android:id="@+id/logout"
-        android:layout_width="match_parent"
-        android:layout_height="36dp"
-        android:layout_below="@id/login_input_root"
-        android:layout_marginLeft="40dp"
-        android:layout_marginRight="40dp"
-        android:layout_marginTop="30dp"
-        android:background="@drawable/base_btn_bg"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:text="退出登录"
-        android:textColor="@color/white"
-        android:textSize="@dimen/txt_size_xl" />
 
 </LinearLayout>

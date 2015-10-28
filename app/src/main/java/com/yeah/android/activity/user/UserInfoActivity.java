@@ -291,7 +291,6 @@ public class UserInfoActivity extends BaseActivity {
 
             // TODO
             uploadAvatar(fileName);
-
         }
     }
 
@@ -323,10 +322,10 @@ public class UserInfoActivity extends BaseActivity {
             return;
         }
 
-        StickerHttpClient.post("/account/user/photo/upload", requestParams,
-                new TypeReference<ResponseData<UploadPhotoResponse>>() {
+        StickerHttpClient.post("/account/user/avatar/upload", requestParams,
+                new TypeReference<ResponseData<UserInfo>>() {
                 }.getType(),
-                new StickerHttpResponseHandler<UploadPhotoResponse>() {
+                new StickerHttpResponseHandler<UserInfo>() {
 
                     @Override
                     public void onStart() {
@@ -334,10 +333,12 @@ public class UserInfoActivity extends BaseActivity {
                     }
 
                     @Override
-                    public void onSuccess(UploadPhotoResponse response) {
-                        LogUtil.d(TAG, response.getUrl());
-                        updateInfo.put("avatar", response.getUrl());
-                        userAvatar.setImageURI(Uri.parse(response.getUrl()));
+                    public void onSuccess(UserInfo userInfo) {
+                        LogUtil.d(TAG, userInfo.getAvatar());
+                        updateInfo.put("avatar", userInfo.getAvatar());
+                        userAvatar.setImageURI(Uri.parse(userInfo.getAvatar()));
+
+                        UserInfoManager.updateUserInfo(userInfo);
                     }
 
                     @Override
