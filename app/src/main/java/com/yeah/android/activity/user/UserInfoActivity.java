@@ -556,7 +556,8 @@ public class UserInfoActivity extends BaseActivity {
 
                         mUserInfo = userInfo;
 
-                        nicknameTV.setText(StringUtils.makeSafe(userInfo.getNickname()));
+                        nicknameTV.setText(StringUtils.isEmpty(userInfo.getNickname()) ?
+                                "设置昵称" : StringUtils.makeSafe(userInfo.getNickname()));
                         sexTV.setText(userInfo.getSex() == 1 ? "男" : "女");
                         birthdayTV.setText(birthdayFormate(userInfo.getBirthday()));
 
@@ -586,22 +587,6 @@ public class UserInfoActivity extends BaseActivity {
             ToastUtil.shortToast(UserInfoActivity.this, "你尚未登录，请登录后重试");
             return;
         }
-
-//        updateInfo.put("name", "呵呵");
-//        updateInfo.put("nickname", "牛轰轰");
-//        updateInfo.put("avatar", "http://img5.duitang.com/uploads/item/201409/08/20140908021251_Z2y2t.thumb.700_0.jpeg");
-//        updateInfo.put("birthday", "2015-10-10 0:0:0");
-
-
-//        mUserInfo.setNickname("牛轰轰");
-//        mUserInfo.setAvatar("http://img5.duitang.com/uploads/item/201409/08/20140908021251_Z2y2t.thumb.700_0.jpeg");
-//        mUserInfo.setBirthday(1440465912123L);
-//        mUserInfo.setHoroscope(2);
-
-
-//        Calendar calendar = Calendar.getInstance();
-//        calendar.set();
-//        calendar.getTimeInMillis();
 
         int loginId = UserInfoManager.getUserId();
         String token = UserInfoManager.getToken();

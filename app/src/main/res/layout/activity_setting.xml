@@ -11,9 +11,8 @@
         android:id="@+id/title_layout"
         style="@style/head_default"
         app:bgColor="@color/app_base"
-        app:leftBtnIcon="@drawable/ic_user_home_back"
-        app:rightBtnIcon="@drawable/ic_user_home_info"
-        app:titleTxt="个人" />
+        app:leftBtnIcon="@drawable/back"
+        app:titleTxt="设置" />
 
     <ScrollView
         android:layout_width="match_parent"

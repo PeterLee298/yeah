@@ -103,7 +103,7 @@ public class UserInfoManager {
             mUserInfo.setNickname("设置昵称");
             mUserInfo.setBirthday(System.currentTimeMillis());
             mUserInfo.setHoroscope(1);
-            mUserInfo.setAvatar("http://img5.duitang.com/uploads/item/201409/25/20140925225937_AeQiT.thumb.700_0.jpeg");
+            mUserInfo.setAvatar("");
         } else {
             mUserInfo = mLoginResult.getExtra().getUser();
         }
