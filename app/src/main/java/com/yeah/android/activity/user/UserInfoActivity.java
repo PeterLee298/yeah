@@ -335,8 +335,9 @@ public class UserInfoActivity extends BaseActivity {
 
                     @Override
                     public void onSuccess(UploadPhotoResponse response) {
-
                         LogUtil.d(TAG, response.getUrl());
+                        updateInfo.put("avatar", response.getUrl());
+                        userAvatar.setImageURI(Uri.parse(response.getUrl()));
                     }
 
                     @Override
@@ -510,6 +511,9 @@ public class UserInfoActivity extends BaseActivity {
 
         mUserInfo = UserInfoManager.getUserInfo();
 
+        if(!StringUtils.isEmpty(mUserInfo.getAvatar())) {
+            userAvatar.setImageURI(Uri.parse(mUserInfo.getAvatar()));
+        }
         nicknameTV.setText(StringUtils.makeSafe(mUserInfo.getNickname()));
 
         int horoscope = mUserInfo.getHoroscope();
@@ -552,9 +556,13 @@ public class UserInfoActivity extends BaseActivity {
                         mUserInfo = userInfo;
 
                         nicknameTV.setText(StringUtils.makeSafe(userInfo.getNickname()));
-//                        sex.setText(StringUtils.makeSafe(userInfo.get));
+                        sexTV.setText(userInfo.getSex() == 1 ? "男" : "女");
                         birthdayTV.setText(birthdayFormate(userInfo.getBirthday()));
-//                        constellation.setText(StringUtils.makeSafe(userInfo.getNickname()));
+
+                        int horoscope = userInfo.getHoroscope();
+                        if(horoscope > 0 && horoscope < 13) {
+                            constellationTV.setText(constellations[horoscope - 1]);
+                        }
                         userAvatar.setImageURI(Uri.parse(userInfo.getAvatar()));
                     }
 

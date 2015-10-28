@@ -2,6 +2,7 @@ package com.yeah.android.activity.user;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,17 +13,20 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.TypeReference;
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.loopj.android.http.RequestParams;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yeah.android.R;
 import com.yeah.android.activity.BaseActivity;
 import com.yeah.android.model.common.ResponseData;
 import com.yeah.android.model.user.Photo;
+import com.yeah.android.model.user.UserInfo;
 import com.yeah.android.model.user.UserPhotoResponse;
 import com.yeah.android.net.http.StickerHttpClient;
 import com.yeah.android.net.http.StickerHttpResponseHandler;
 import com.yeah.android.utils.Constants;
 import com.yeah.android.utils.LogUtil;
+import com.yeah.android.utils.StringUtils;
 import com.yeah.android.utils.ToastUtil;
 import com.yeah.android.utils.UserInfoManager;
 import com.yeah.android.view.CommonTitleBar;
@@ -43,7 +47,7 @@ public class UserHomeActivity extends BaseActivity {
     @InjectView(R.id.title_layout)
     CommonTitleBar titleLayout;
     @InjectView(R.id.userAvatar)
-    ImageView userAvatar;
+    SimpleDraweeView userAvatar;
     @InjectView(R.id.userNickName)
     TextView userNickName;
     @InjectView(R.id.user_photos)
@@ -57,6 +61,8 @@ public class UserHomeActivity extends BaseActivity {
 
     private List<Photo> photoList;
     private UserPhotoAdapter photoAdapter;
+
+    private UserInfo mUserInfo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +85,23 @@ public class UserHomeActivity extends BaseActivity {
 
 
         loaduserPhotos(0);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        loadUserInfo();
+    }
+
+    private void loadUserInfo() {
+
+        mUserInfo = UserInfoManager.getUserInfo();
+
+        if (!StringUtils.isEmpty(mUserInfo.getAvatar())) {
+            userAvatar.setImageURI(Uri.parse(mUserInfo.getAvatar()));
+        }
+
+        userNickName.setText(mUserInfo.getNickname());
     }
 
     private void loaduserPhotos(int page) {

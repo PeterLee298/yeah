@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/base_bg"
@@ -21,20 +22,22 @@
             app:rightBtnIcon="@drawable/ic_user_home_info"
             app:titleTxt="个人" />
 
-        <ImageView android:id="@+id/userAvatar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="18dp"
-            android:src="@drawable/ic_default_avatar"/>
+        <com.facebook.drawee.view.SimpleDraweeView
+            android:id="@+id/userAvatar"
+            android:layout_width="72dp"
+            android:layout_height="72dp"
+            android:layout_marginTop="24dp"
+            fresco:roundAsCircle="true"
+            fresco:actualImageScaleType="focusCrop"
+            fresco:placeholderImage="@drawable/ic_default_avatar"/>
 
         <TextView android:id="@+id/userNickName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginBottom="46dp"
+            android:layout_marginBottom="24dp"
             android:textSize="18sp"
-            android:textColor="@color/black"
-            android:text="niuniu"/>
+            android:textColor="@color/black" />
 
     </LinearLayout>
 

@@ -37,6 +37,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.drawee.view.SimpleDraweeView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yeah.android.R;
 import com.yeah.android.YeahApp;
@@ -145,7 +146,7 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
     @InjectView(R.id.userNickName)
     TextView userNickName;
     @InjectView(R.id.userAvatar)
-    ImageView userAvatar;
+    SimpleDraweeView userAvatar;
 
 
     @InjectView(R.id.change_ratio)
@@ -381,7 +382,6 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
         takePhotoPanel.setOnClickListener(v -> {
             //doNothing 防止聚焦框出现在拍照区域
         });
-
     }
 
     private void initData() {
@@ -395,7 +395,7 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
 
             if(userInfo != null) {
                 userNickName.setText(userInfo.getNickname());
-                ImageLoader.getInstance().displayImage(userInfo.getAvatar(), userAvatar);
+                userAvatar.setImageURI(Uri.parse(userInfo.getAvatar()));
             }
         }
     }
