@@ -36,7 +36,9 @@
 
         <ImageView android:id="@+id/splash_arrow_up"
             android:layout_width="48dp"
-            android:layout_height="48dp"/>
+            android:layout_height="48dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/splash_arrow_animation_list"/>
 
 
     </LinearLayout>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animation-list
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:oneshot="false">
+    
+    <item android:drawable="@drawable/splash_arrow_1" android:duration="60"></item>
+    <item android:drawable="@drawable/splash_arrow_2" android:duration="60"></item>
+    <item android:drawable="@drawable/splash_arrow_3" android:duration="60"></item>
+    <item android:drawable="@drawable/splash_arrow_4" android:duration="60"></item>
+    <item android:drawable="@drawable/splash_arrow_5" android:duration="60"></item>
+    <item android:drawable="@drawable/splash_arrow_6" android:duration="60"></item>
+    <item android:drawable="@drawable/splash_arrow_7" android:duration="60"></item>
+    <item android:drawable="@drawable/splash_arrow_8" android:duration="60"></item>
+    <item android:drawable="@drawable/splash_arrow_9" android:duration="60"></item>
+    <item android:drawable="@drawable/splash_arrow_10" android:duration="60"></item>
+    <item android:drawable="@drawable/splash_arrow_11" android:duration="60"></item>
+    <item android:drawable="@drawable/splash_arrow_12" android:duration="60"></item>
+    <item android:drawable="@drawable/splash_arrow_13" android:duration="60"></item>
+    <item android:drawable="@drawable/splash_arrow_14" android:duration="60"></item>
+    <item android:drawable="@drawable/splash_arrow_15" android:duration="60"></item>
+
+</animation-list>
