@@ -135,6 +135,10 @@ public class FileUtils {
         return BASE_PATH + "pictures";
     }
 
+    public String getAvatarSavedPath() {
+        return BASE_PATH + "avatar";
+    }
+
     public String getPhotoTempPath() {
         return BASE_PATH + "temp";
     }

@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
@@ -23,26 +24,33 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.TypeReference;
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.loopj.android.http.RequestParams;
 import com.yeah.android.R;
 import com.yeah.android.activity.BaseActivity;
+import com.yeah.android.activity.camera.CameraManager;
+import com.yeah.android.activity.camera.ui.PhotoStickerActivity;
 import com.yeah.android.model.common.ResponseData;
+import com.yeah.android.model.user.UploadPhotoResponse;
 import com.yeah.android.model.user.UserInfo;
 import com.yeah.android.net.http.StickerHttpClient;
 import com.yeah.android.net.http.StickerHttpResponseHandler;
 import com.yeah.android.utils.Constants;
 import com.yeah.android.utils.DataUtils;
 import com.yeah.android.utils.FileUtils;
+import com.yeah.android.utils.ImageUtils;
 import com.yeah.android.utils.LogUtil;
 import com.yeah.android.utils.PhotoFileUtils;
 import com.yeah.android.utils.StringUtils;
+import com.yeah.android.utils.TimeUtils;
 import com.yeah.android.utils.ToastUtil;
 import com.yeah.android.utils.UserInfoManager;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -84,12 +92,6 @@ public class UserInfoActivity extends BaseActivity {
     RelativeLayout infoConstellationRoot;
 
 
-    private static final int IMAGE_REQUEST_CODE = 0; // 请求码 本地图片
-    private static final int CAMERA_REQUEST_CODE = 1; // 拍照
-    private static final int RESULT_REQUEST_CODE = 2; // 裁剪
-    private static final String SAVE_AVATORNAME = "head.jpeg";// 保存的图片名
-
-
     private final String[] sex = {"男", "女"};
 
     private final String[] constellations = {"白羊座", "金牛座", "双子座",
@@ -127,103 +129,72 @@ public class UserInfoActivity extends BaseActivity {
             switch (requestCode) {
                 case LOCAL_PICTURE:
                     LogUtil.e(TAG, "onActivityResult LOCAL_PICTURE");
-                    try {
-                        if (data != null) {
-                            Uri uri = data.getData();
-                            startPhotoRoom(uri);
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        LogUtil.e(TAG, e.toString());
-                    }
+                    startPhotoZoom(data.getData());
                     break;
                 case CAMERA_PICTURE:
                     LogUtil.e(TAG, "onActivityResult CAMERA_PICTURE");
-                    try {
-                        File userPhotoFile = getUserPhotoFile();
-                        if (userPhotoFile != null && userPhotoFile.isFile()) {
-                            startPhotoRoom(Uri.fromFile(userPhotoFile));
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        LogUtil.e(TAG, e.toString());
-                    }
+                    startPhotoZoom(Uri.fromFile(new File(getUserPhotoFile(), SAVE_AVATAR_NAME)));
                     break;
                 case CUT_PICTURE:
                     LogUtil.e(TAG, "onActivityResult CUT_PICTURE");
-                    try {
-                        if (data != null) {
-                            Bundle extras = data.getExtras();
-                            if (extras != null) {
-                                Bitmap photo = extras.getParcelable("data");
-
-                                // TODO
-                                userAvatar.setImageURI(data.getData());
-                            }
-                        }
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                        LogUtil.e(TAG, e.toString());
+                    if (data != null) {
+                        saveUserPhoto(data);
                     }
                     break;
-
                 default:
                     break;
             }
         }
-
-
     }
 
 
-
-
-
-    private void startPhotoRoom(Uri uri) {
-        Log.i(TAG, "startPhotoZoom()");
-        Log.d("Temp", "startPhotoZoom uri -->> " + uri.toString());
-
-        Intent intent = new Intent("com.android.camera.action.CROP");
-
-        intent.putExtra("aspectX", 1);
-        intent.putExtra("aspectY", 1);
-        intent.putExtra("outputX", 150);
-        intent.putExtra("outputY", 150);
-
-        if (PhotoFileUtils.isDocumentUri(this, uri)) {
-            intent.setDataAndType(PhotoFileUtils.convertUri(this, uri), "image/*");
-        } else {
-            intent.setDataAndType(uri, "image/*");
-        }
-        intent.putExtra("crop", "true");
-//        intent.putExtra("return-data", true);
-        intent.putExtra("return-data", false);
-
-        intent.putExtra(MediaStore.EXTRA_OUTPUT,
-                Uri.fromFile(getUserPhotoFile()));
-
-        intent.putExtra("scale", true);
-        intent.putExtra("scaleUpIfNeeded", true);
-        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
-        startActivityForResult(intent, CUT_PICTURE);
-        Log.i(TAG, "---------------------------->goZoom");
-    }
+//    private void startPhotoRoom(Uri uri) {
+//        Log.i(TAG, "startPhotoZoom()");
+//        Log.d("Temp", "startPhotoZoom uri -->> " + uri.toString());
+//
+//        Intent intent = new Intent("com.android.camera.action.CROP");
+//
+//        intent.putExtra("aspectX", 1);
+//        intent.putExtra("aspectY", 1);
+//        intent.putExtra("outputX", 150);
+//        intent.putExtra("outputY", 150);
+//
+//        if (PhotoFileUtils.isDocumentUri(this, uri)) {
+//            intent.setDataAndType(PhotoFileUtils.convertUri(this, uri), "image/*");
+//        } else {
+//            intent.setDataAndType(uri, "image/*");
+//        }
+//        intent.putExtra("crop", "true");
+////        intent.putExtra("return-data", true);
+//        intent.putExtra("return-data", false);
+//
+//        intent.putExtra(MediaStore.EXTRA_OUTPUT,
+//                Uri.fromFile(getUserPhotoFile()));
+//
+//        intent.putExtra("scale", true);
+//        intent.putExtra("scaleUpIfNeeded", true);
+//        intent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+//        startActivityForResult(intent, CUT_PICTURE);
+//        Log.i(TAG, "---------------------------->goZoom");
+//    }
 
 
     private static final int LOCAL_PICTURE = 101;
     private static final int CAMERA_PICTURE = 102;
     private static final int CUT_PICTURE = 103;
+    private static final String SAVE_AVATAR_NAME = "head.jpeg";// 保存的图片名
+
     @OnClick(R.id.userAvatar)
     public void changeAvatar() {
 
-        if(!FileUtils.isSDCardMounted()) {
+        if (!FileUtils.isSDCardMounted()) {
             ToastUtil.shortToast(UserInfoActivity.this, "请插入SD卡后重试");
             return;
         }
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(UserInfoActivity.this);
 //        dialog.setTitle("上传头像");
-        final String[] items = { "拍照上传", "相册选择"};
+        final String[] items = {"拍照上传", "相册选择"};
 
         dialog.setItems(items, new DialogInterface.OnClickListener() {
 
@@ -255,19 +226,131 @@ public class UserInfoActivity extends BaseActivity {
         dialog.show().setCanceledOnTouchOutside(true);
     }
 
-    public File getUserPhotoFile() {
-        File imageFile = null;
-        try {
-            File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/yeah/userphoto");
-            if (!file.exists()) {
-                file.mkdir();
+    public void startPhotoZoom(Uri uri) {
+        Intent intent = new Intent("com.android.camera.action.CROP");
+        intent.setDataAndType(uri, "image/*");
+        // 设置裁剪
+        intent.putExtra("crop", "true");
+        // aspectX aspectY 是宽高的比例
+        intent.putExtra("aspectX", 1);
+        intent.putExtra("aspectY", 1);
+        // outputX outputY 是裁剪图片宽高
+        intent.putExtra("outputX", 200);
+        intent.putExtra("outputY", 200);
+        intent.putExtra("return-data", true);
+        startActivityForResult(intent, CUT_PICTURE);
+    }
+
+    private void saveUserPhoto(Intent data) {
+        Bundle extras = data.getExtras();
+        if (extras != null) {
+            Bitmap photo = extras.getParcelable("data");
+            if(photo != null) {
+                new SavePicToFileTask().execute(photo);
             }
-            imageFile = new File(file, "/android_user_no_image.jpg");
-            return imageFile;
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return imageFile;
+    }
+
+    private class SavePicToFileTask extends AsyncTask<Bitmap, Void, String> {
+        Bitmap bitmap;
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showProgressDialog("保存图片...");
+        }
+
+        @Override
+        protected String doInBackground(Bitmap... params) {
+            String fileName = null;
+            try {
+                bitmap = params[0];
+
+                fileName = ImageUtils.saveToFile(FileUtils.getInst().getAvatarSavedPath() + "/" + SAVE_AVATAR_NAME, false, bitmap);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                toast("图片处理错误，请重试", Toast.LENGTH_LONG);
+            }
+            return fileName;
+        }
+
+        @Override
+        protected void onPostExecute(String fileName) {
+            super.onPostExecute(fileName);
+            dismissProgressDialog();
+            if (StringUtils.isEmpty(fileName)) {
+                return;
+            }
+
+            Log.d(TAG, "SavePicToFileTask onPostExecute fileName: " + fileName);
+
+            Uri uri = fileName.startsWith("file:") ? Uri.parse(fileName) : Uri.parse("file://" + fileName);
+
+            userAvatar.setImageURI(uri);
+
+            // TODO
+            uploadAvatar(fileName);
+
+        }
+    }
+
+    public File getUserPhotoFile() {
+        return new File(FileUtils.getInst().getAvatarSavedPath(), SAVE_AVATAR_NAME);
+    }
+
+    private void uploadAvatar(String fileName) {
+
+        Uri uri = fileName.startsWith("file:") ? Uri.parse(fileName) : Uri.parse("file://" + fileName);
+
+        File file = new File(uri.getPath());
+
+        if(file == null || !file.exists()) {
+            ToastUtil.longToast(UserInfoActivity.this, "读取图片失败");
+            return;
+        }
+
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("appId", Constants.APP_ID);
+        requestParams.put("appKey", Constants.APP_KEY);
+        requestParams.put("loginId", UserInfoManager.getUserId());
+        requestParams.put("loginToken", UserInfoManager.getToken());
+        requestParams.put("description", "userphoto");
+        try {
+            requestParams.put("upload", file);
+        } catch (FileNotFoundException e) {
+            ToastUtil.longToast(UserInfoActivity.this, "网络初始化失败");
+            return;
+        }
+
+        StickerHttpClient.post("/account/user/photo/upload", requestParams,
+                new TypeReference<ResponseData<UploadPhotoResponse>>() {
+                }.getType(),
+                new StickerHttpResponseHandler<UploadPhotoResponse>() {
+
+                    @Override
+                    public void onStart() {
+                        showProgressDialog("头像上传中...");
+                    }
+
+                    @Override
+                    public void onSuccess(UploadPhotoResponse response) {
+
+                        LogUtil.d(TAG, response.getUrl());
+                    }
+
+                    @Override
+                    public void onFailure(String message) {
+                        LogUtil.e("onFailure", message);
+                        ToastUtil.shortToast(UserInfoActivity.this, "上传失败：" + message
+                                + "\n请稍候重试");
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        dismissProgressDialog();
+                    }
+                });
     }
 
     @OnClick(R.id.info_nickname_root)
@@ -275,11 +358,11 @@ public class UserInfoActivity extends BaseActivity {
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
         dialog.setTitle("编辑昵称");
 
-        LayoutInflater inflater = (LayoutInflater)this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        LinearLayout layout = (LinearLayout)inflater.inflate(R.layout.dialog_nickname, null);
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dialog_nickname, null);
         dialog.setView(layout);
 
-        EditText editText  = (EditText)layout.findViewById(R.id.nickname_input);
+        EditText editText = (EditText) layout.findViewById(R.id.nickname_input);
 
         dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int which) {
@@ -287,7 +370,7 @@ public class UserInfoActivity extends BaseActivity {
 
                 String nickName = StringUtils.makeSafe(editText.getText().toString());
 
-                if(StringUtils.isEmpty(nickName) || nickName.length() < 4) {
+                if (StringUtils.isEmpty(nickName) || nickName.length() < 4) {
                     ToastUtil.shortToast(UserInfoActivity.this, "昵称需至少4个字符");
                     return;
                 }
@@ -344,7 +427,7 @@ public class UserInfoActivity extends BaseActivity {
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
             LogUtil.d("DatePickerDialog", year + "-" + monthOfYear + "-" + dayOfMonth);
 
-            if(pickOk) {
+            if (pickOk) {
                 birthdayTV.setText(birthdayFormate(calendar.getTimeInMillis()));
 
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -389,6 +472,7 @@ public class UserInfoActivity extends BaseActivity {
     }
 
     int constellationId;
+
     @OnClick(R.id.info_constellation_root)
     public void changeConstellation() {
 

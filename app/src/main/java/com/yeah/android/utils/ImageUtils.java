@@ -85,12 +85,12 @@ public class ImageUtils {
         }
         FileOutputStream outputStream = new FileOutputStream(jpgFile); // 文件输出流
 
-        croppedImage.compress(Bitmap.CompressFormat.JPEG, 70, outputStream);
-        IOUtil.closeStream(outputStream);
+        croppedImage.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+        outputStream.flush();
+        outputStream.close();
+//        IOUtil.closeStream(outputStream);
         return jpgFile.getPath();
     }
-
-
 
     //从文件中读取Bitmap
     public static Bitmap decodeBitmapWithOrientation(String pathName, int width, int height) {
