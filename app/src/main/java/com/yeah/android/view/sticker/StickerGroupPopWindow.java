@@ -7,6 +7,7 @@ import android.media.Image;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
@@ -22,6 +23,7 @@ import com.yeah.android.model.sticker.StickerInfo;
 import com.yeah.android.model.sticker.StickerListItem;
 import com.yeah.android.utils.AppUtils;
 import com.yeah.android.utils.ImageLoaderUtils;
+import com.yeah.android.utils.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +39,8 @@ public class StickerGroupPopWindow  extends PopupWindow{
     private ImageView mCoverImg;
     private TextView mTitleTV;
     private TextView mDescriptionTV;
+
+    private boolean mLastItemVisible;
 
 //    private List<StickerInfo> mStickerList;
 //    private StickerAdapter mStickerAdapter;
@@ -96,6 +100,23 @@ public class StickerGroupPopWindow  extends PopupWindow{
         ImageLoader.getInstance().displayImage(group.getIcon(), mCoverImg);
 
         mGridView.setAdapter(new StickerAdapter(mContext, stickerList));
+
+        mGridView.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                mLastItemVisible = (totalItemCount > 0) && (firstVisibleItem + visibleItemCount >= totalItemCount - 1);
+            }
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && mLastItemVisible) {
+                    // load next page
+
+                    LogUtil.d("userPhotosGridView", "scroll end");
+                }
+            }
+        });
     }
 
     public interface StickerGroupClickListener{

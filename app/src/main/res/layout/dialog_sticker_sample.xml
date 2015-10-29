@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="320dp"
+    android:layout_height="500dp"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
+    android:background="@color/base_bg"
+    android:paddingTop="16dp"
+    android:paddingLeft="0dp"
+    android:paddingRight="0dp">
+
+    <LinearLayout android:id="@+id/sticker_sample_title_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="#"
+            android:textSize="16sp"
+            android:textColor="@color/app_base"/>
+
+        <TextView android:id="@+id/sticker_info_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textSize="18sp"
+            android:textColor="@color/black"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="#"
+            android:textSize="16sp"
+            android:textColor="@color/app_base"/>
+
+    </LinearLayout>
+
+    <ImageView android:id="@+id/sticker_sample_imageview"
+        android:layout_width="280dp"
+        android:layout_height="320dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/sticker_sample_title_area"
+        android:scaleType="centerInside"/>
+
+
+
+
+    <TextView android:id="@+id/sticker_sample_description"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/sticker_sample_imageview"
+        android:lines="2"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/text_gray"
+        android:textSize="12sp" />
+
+    <View style="@style/line_horizontal_style"
+        android:layout_below="@id/sticker_sample_description"
+        android:layout_marginTop="8dp"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sticker_sample_description"
+        android:orientation="horizontal"
+        android:layout_marginTop="32dp"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/sticker_sample_use_btn"
+            android:layout_width="84dp"
+            android:layout_height="36dp"
+            android:layout_below="@id/login_input_root"
+            android:background="@drawable/base_btn_bg"
+            android:gravity="center"
+            android:text="使用"
+            android:textColor="@color/black"
+            android:textSize="@dimen/txt_size_xl"
+            android:layout_marginRight="36dp"/>
+
+        <TextView
+            android:id="@+id/sticker_sample_cancel_btn"
+            android:layout_width="84dp"
+            android:layout_height="36dp"
+            android:layout_below="@id/login_input_root"
+            android:background="@drawable/white_btn_bg"
+            android:gravity="center"
+            android:text="取消"
+            android:textColor="@color/black"
+            android:textSize="@dimen/txt_size_xl"
+            android:layout_marginLeft="36dp"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

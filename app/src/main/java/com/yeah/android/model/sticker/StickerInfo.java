@@ -20,6 +20,7 @@ public class StickerInfo {
     private int id;
     private String icon;
     private String title;
+    private String samplePhoto;
     private String description;
     private int groupId;
     private int priority;
@@ -106,5 +107,13 @@ public class StickerInfo {
 
     public void setExtra(ExtraGroup extra) {
         this.extra = extra;
+    }
+
+    public String getSamplePhoto() {
+        return samplePhoto;
+    }
+
+    public void setSamplePhoto(String samplePhoto) {
+        this.samplePhoto = samplePhoto;
     }
 }

@@ -1,6 +1,7 @@
 package com.yeah.android.activity.camera.ui;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -8,11 +9,13 @@ import android.graphics.RectF;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,6 +34,7 @@ import com.yeah.android.activity.camera.adapter.StickerSelectorAdapter;
 import com.yeah.android.activity.camera.adapter.StickerToolAdapter;
 import com.yeah.android.activity.camera.util.EffectUtil;
 import com.yeah.android.activity.user.PhotoPostAvtivity;
+import com.yeah.android.activity.user.UserInfoActivity;
 import com.yeah.android.model.Addon;
 import com.yeah.android.model.common.ResponseData;
 import com.yeah.android.model.sticker.StickerHot;
@@ -549,5 +553,28 @@ public class PhotoStickerActivity extends CameraBaseActivity {
             ImageLoader.getInstance().displayImage(item.getIcon(), holder.photoView);
             return convertView;
         }
+    }
+
+    private void showInfoDialog(StickerInfo info) {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle("编辑昵称");
+
+        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dialog_nickname, null);
+        dialog.setView(layout);
+
+        EditText editText = (EditText) layout.findViewById(R.id.nickname_input);
+
+        dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+
+
+
+
+            }
+        });
+
+        dialog.setNegativeButton("取消", null);
+        dialog.show();
     }
 }

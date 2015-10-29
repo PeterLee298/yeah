@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -53,8 +54,6 @@ public class UserHomeActivity extends BaseActivity {
     @InjectView(R.id.user_photos)
     GridView userPhotosGridView;
 
-    private static final int PAGE_SIZE = 10;
-
     private int currentCount = 0;
     private int total = 0;
     private int currentPage = 0;
@@ -64,6 +63,12 @@ public class UserHomeActivity extends BaseActivity {
 
     private UserInfo mUserInfo;
 
+    private boolean mLastItemVisible;
+
+    private static final int PAGE_SIZE = 10;
+    private int nextPage = 0;
+    private boolean isReachEnd = false;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,11 +76,11 @@ public class UserHomeActivity extends BaseActivity {
         ButterKnife.inject(this);
 
 
-        titleLayout.setLeftBtnOnclickListener( v -> {
+        titleLayout.setLeftBtnOnclickListener(v -> {
             finish();
         });
 
-        titleLayout.setRightBtnOnclickListener( v -> {
+        titleLayout.setRightBtnOnclickListener(v -> {
             UserInfoActivity.launch(this);
         });
 
@@ -83,8 +88,25 @@ public class UserHomeActivity extends BaseActivity {
         photoAdapter = new UserPhotoAdapter(this, photoList);
         userPhotosGridView.setAdapter(photoAdapter);
 
+        userPhotosGridView.setOnScrollListener(new AbsListView.OnScrollListener() {
 
-        loaduserPhotos(0);
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                mLastItemVisible = (totalItemCount > 0) && (firstVisibleItem + visibleItemCount >= totalItemCount - 1);
+            }
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE
+                        && mLastItemVisible && !isReachEnd) {
+                    // load next page
+
+                    LogUtil.d("userPhotosGridView", "scroll end");
+                }
+            }
+        });
+
+        loaduserPhotos(nextPage);
     }
 
     @Override
@@ -126,8 +148,16 @@ public class UserHomeActivity extends BaseActivity {
                     public void onSuccess(UserPhotoResponse response) {
 
                         if (response.getContent() != null) {
+
+                            nextPage++;
+                            if(response.getContent().size() < PAGE_SIZE) {
+                                isReachEnd = true;
+                            }
+
                             photoList.addAll(response.getContent());
                             photoAdapter.notifyDataSetChanged();
+
+
                         }
                     }
 
