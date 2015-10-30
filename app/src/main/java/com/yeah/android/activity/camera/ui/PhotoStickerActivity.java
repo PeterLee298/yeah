@@ -53,6 +53,7 @@ import com.yeah.android.utils.TimeUtils;
 import com.yeah.android.utils.ToastUtil;
 import com.yeah.android.view.MyImageViewDrawableOverlay;
 import com.yeah.android.view.sticker.StickerGroupPopWindow;
+import com.yeah.android.view.sticker.StickerSampleDialog;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -173,11 +174,8 @@ public class PhotoStickerActivity extends CameraBaseActivity {
             public void onStickerCroupItemClicke(int position) {
                 LogUtil.d(TAG, "onStickerCroupItemClicke:" + position);
 
-                showStickerListArea();
-
                 if(stickerInfoList != null && stickerInfoList.size() > position) {
-                    EffectUtil.addStickerImage2(mImageView, PhotoStickerActivity.this,
-                        stickerInfoList.get(position).getIcon());
+                    showInfoDialog(stickerInfoList.get(position));
                 }
             }
         });
@@ -556,25 +554,15 @@ public class PhotoStickerActivity extends CameraBaseActivity {
     }
 
     private void showInfoDialog(StickerInfo info) {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        dialog.setTitle("编辑昵称");
-
-        LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        LinearLayout layout = (LinearLayout) inflater.inflate(R.layout.dialog_nickname, null);
-        dialog.setView(layout);
-
-        EditText editText = (EditText) layout.findViewById(R.id.nickname_input);
-
-        dialog.setPositiveButton("确定", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int which) {
-
-
-
-
+        StickerSampleDialog dialog = new StickerSampleDialog(PhotoStickerActivity.this, info);
+        dialog.setOnUseBtnClickeListener(new StickerSampleDialog.OnUseClickListener() {
+            @Override
+            public void onClick(StickerInfo info) {
+                showStickerListArea();
+                EffectUtil.addStickerImage2(mImageView, PhotoStickerActivity.this,
+                        info.getIcon());
             }
         });
-
-        dialog.setNegativeButton("取消", null);
         dialog.show();
     }
 }

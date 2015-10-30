@@ -47,9 +47,6 @@
         android:layout_below="@id/sticker_sample_title_area"
         android:scaleType="centerInside"/>
 
-
-
-
     <TextView android:id="@+id/sticker_sample_description"
         android:layout_width="280dp"
         android:layout_height="wrap_content"
