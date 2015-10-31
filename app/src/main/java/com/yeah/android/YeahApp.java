@@ -1,6 +1,8 @@
 package com.yeah.android;
 
 import android.app.Application;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.util.DisplayMetrics;
 
 import com.facebook.drawee.backends.pipeline.Fresco;
@@ -110,6 +112,25 @@ public class YeahApp extends Application {
         return getCacheDir().getAbsolutePath();
     }
 
+    public String getVersionName() {
+        try {
+            PackageInfo packageInfo= getPackageManager().getPackageInfo(getPackageName(), 0);
+            return packageInfo.versionName;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return "0.0.0";
+        }
+    }
+
+    public int getVersionCode() {
+        try {
+            PackageInfo packageInfo= getPackageManager().getPackageInfo(getPackageName(), 0);
+            return packageInfo.versionCode;
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+            return 0;
+        }
+    }
 
 
 }

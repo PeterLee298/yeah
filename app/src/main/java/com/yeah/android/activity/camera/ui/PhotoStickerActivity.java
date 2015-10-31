@@ -465,6 +465,7 @@ public class PhotoStickerActivity extends CameraBaseActivity {
 
     private static class ViewHolder {
         ImageView photoView;
+        TextView titleTV;
     }
 
     class HotStickerAdapter extends BaseAdapter {
@@ -498,6 +499,7 @@ public class PhotoStickerActivity extends CameraBaseActivity {
             if (null == convertView) {
                 convertView = LayoutInflater.from(cxt).inflate(R.layout.sticker_photo_item, null);
                 holder = new ViewHolder();
+                holder.titleTV = (TextView) convertView.findViewById(R.id.sticker_title);
                 holder.photoView = (ImageView) convertView.findViewById(R.id.sticker_photo);
                 convertView.setTag(holder);
             } else {
@@ -505,6 +507,7 @@ public class PhotoStickerActivity extends CameraBaseActivity {
             }
 
             StickerHot item = data.get(position);
+            holder.titleTV.setText(item.getExtra().getGroup().getTitle());
             ImageLoader.getInstance().displayImage(item.getExtra().getGroup().getIcon(), holder.photoView);
             return convertView;
         }
@@ -541,6 +544,7 @@ public class PhotoStickerActivity extends CameraBaseActivity {
             if (null == convertView) {
                 convertView = LayoutInflater.from(cxt).inflate(R.layout.sticker_photo_item, null);
                 holder = new ViewHolder();
+                holder.titleTV = (TextView) convertView.findViewById(R.id.sticker_title);
                 holder.photoView = (ImageView) convertView.findViewById(R.id.sticker_photo);
                 convertView.setTag(holder);
             } else {
@@ -548,6 +552,7 @@ public class PhotoStickerActivity extends CameraBaseActivity {
             }
 
             StickerListItem item = data.get(position);
+            holder.titleTV.setText(item.getTitle());
             ImageLoader.getInstance().displayImage(item.getIcon(), holder.photoView);
             return convertView;
         }

@@ -67,6 +67,8 @@
         android:layout_gravity="center"
         android:verticalSpacing="10dp"
         android:horizontalSpacing="10dp"
+        android:paddingLeft="6dp"
+        android:paddingRight="6dp"
         android:visibility="visible"/>
 
 </RelativeLayout>
