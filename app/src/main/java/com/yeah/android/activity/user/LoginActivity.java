@@ -63,8 +63,8 @@ public class LoginActivity extends BaseActivity {
         ButterKnife.inject(this);
 
         // TODO
-        loginInputName.setText("17091088678");
-        loginInputPassword.setText("000321");
+        loginInputName.setText("17000000000");
+        loginInputPassword.setText("000000");
     }
 
     @OnClick(R.id.login_btn_login)

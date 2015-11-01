@@ -98,6 +98,9 @@
         <activity android:name="com.yeah.android.activity.user.SettingActivity"
             android:screenOrientation="portrait"/>
 
+        <activity android:name="com.yeah.android.activity.user.FeedbackActivity"
+            android:screenOrientation="portrait"/>
+
         <!-- umeng -->
         <meta-data
             android:name="UMENG_APPKEY"

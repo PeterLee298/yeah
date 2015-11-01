@@ -3,6 +3,7 @@ package com.yeah.android.activity.user;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import com.yeah.android.R;
@@ -19,8 +20,12 @@ import butterknife.OnClick;
  */
 public class SettingActivity extends BaseActivity {
 
-    @InjectView(R.id.logout)
-    TextView logout;
+
+    @InjectView(R.id.setting_feedback)
+    View feedBack;
+
+    @InjectView(R.id.setting_logout)
+    View logout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +35,12 @@ public class SettingActivity extends BaseActivity {
 
     }
 
-    @OnClick(R.id.logout)
+    @OnClick(R.id.setting_feedback)
+    public void feedBack() {
+        FeedbackActivity.launch(SettingActivity.this);
+    }
+
+    @OnClick(R.id.setting_logout)
     public void logout() {
         UserInfoManager.logout();
         CameraManager.getInst().close();
