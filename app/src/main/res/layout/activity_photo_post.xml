@@ -23,6 +23,7 @@
         android:layout_toRightOf="@id/post_image"
         android:layout_alignTop="@id/post_image"
         android:layout_alignBottom="@id/post_image"
+        android:hint="为图片说点什么吧"
         android:layout_alignParentRight="true"
         android:layout_marginRight="18dp" />
 
@@ -36,7 +37,19 @@
         android:layout_below="@id/post_image"
         android:orientation="horizontal">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="同步到"
+            android:textColor="#e5e5e5"/>
 
+        <CheckBox
+            android:id="@+id/thirdparty_wx_friend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:button="@drawable/selector_post_wx_friend"
+            android:layout_marginLeft="10dp"/>
 
     </LinearLayout>
 

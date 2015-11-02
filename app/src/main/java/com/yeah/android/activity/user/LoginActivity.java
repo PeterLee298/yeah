@@ -11,7 +11,6 @@ import com.alibaba.fastjson.TypeReference;
 import com.loopj.android.http.RequestParams;
 import com.yeah.android.R;
 import com.yeah.android.activity.BaseActivity;
-import com.yeah.android.activity.MainActivity;
 import com.yeah.android.activity.camera.CameraManager;
 import com.yeah.android.model.common.ResponseData;
 import com.yeah.android.model.user.LoginResult;
@@ -24,9 +23,16 @@ import com.yeah.android.utils.StringUtils;
 import com.yeah.android.utils.ToastUtil;
 import com.yeah.android.utils.UserInfoManager;
 
+import java.util.HashMap;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import cn.sharesdk.framework.Platform;
+import cn.sharesdk.framework.PlatformActionListener;
+import cn.sharesdk.framework.PlatformDb;
+import cn.sharesdk.framework.ShareSDK;
+import cn.sharesdk.sina.weibo.SinaWeibo;
 
 /**
  * Created by litingchang on 15-10-6.
@@ -175,6 +181,29 @@ public class LoginActivity extends BaseActivity {
     @OnClick(R.id.bind_weibo)
     public void bindWeiBo() {
 
+        showProgressDialog("");
+        ShareSDK.initSDK(this);
+        Platform weibo = ShareSDK.getPlatform(this, SinaWeibo.NAME);
+
+        weibo.setPlatformActionListener(new PlatformActionListener() {
+            @Override
+            public void onComplete(Platform platform, int i, HashMap<String, Object> stringObjectHashMap) {
+                dismissProgressDialog();
+                initWeiboUser();
+            }
+
+            @Override
+            public void onError(Platform platform, int i, Throwable throwable) {
+                dismissProgressDialog();
+            }
+
+            @Override
+            public void onCancel(Platform platform, int i) {
+                dismissProgressDialog();
+            }
+        });
+        weibo.authorize(new String[]{"follow_app_official_microblog"});
+
     }
     @OnClick(R.id.bind_weixin)
     public void binWeiXin() {
@@ -182,6 +211,81 @@ public class LoginActivity extends BaseActivity {
     }
     @OnClick(R.id.bind_qq)
     public void bindQQ() {
+
+    }
+
+    private void initWeiboUser() {
+        Platform weibo = ShareSDK.getPlatform(this, SinaWeibo.NAME);
+        weibo.setPlatformActionListener(new PlatformActionListener() {
+            @Override
+            public void onComplete(Platform platform, int i, HashMap<String, Object> stringObjectHashMap) {
+                dismissProgressDialog();
+
+                PlatformDb platDB = platform.getDb();
+//                thirdPartLogin("");
+//                postSignup(stringObjectHashMap.get("id").toString(), platDB.getToken(), stringObjectHashMap.get("name").toString(), stringObjectHashMap.get("profile_image_url").toString());
+            }
+
+            @Override
+            public void onError(Platform platform, int i, Throwable throwable) {
+                dismissProgressDialog();
+            }
+
+            @Override
+            public void onCancel(Platform platform, int i) {
+                dismissProgressDialog();
+            }
+        });
+        weibo.showUser(null);
+    }
+
+    public void thirdPartLogin(String oauthId, String oauthType, String oauthToken, String name, String nickname, String avatar, String email, String phone) {
+
+        RequestParams requestParams = new RequestParams();
+        requestParams.put("appId", Constants.APP_ID);
+        requestParams.put("appKey", Constants.APP_KEY);
+        requestParams.put("oauthId", oauthId);
+        requestParams.put("oauthType", oauthType);
+        requestParams.put("oauthToken", oauthToken);
+        requestParams.put("name", name);
+        requestParams.put("nickname", nickname);
+        requestParams.put("avatar", avatar);
+        requestParams.put("email", email);
+        requestParams.put("phone", phone);
+        StickerHttpClient.post("/account/user/sso/login", requestParams,
+                new TypeReference<ResponseData<LoginResult>>() {
+                }.getType(),
+                new StickerHttpResponseHandler<LoginResult>() {
+
+                    @Override
+                    public void onStart() {
+                        showProgressDialog("登录中...");
+                    }
+
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+//                        UserInfoManager.savePassword(password);
+
+                        UserInfoManager.login(loginResult);
+
+                        //  登录成功后的处理
+                        ToastUtil.shortToast(LoginActivity.this, "登录成功");
+                        CameraManager.getInst().openCamera(LoginActivity.this);
+                        dismissProgressDialog();
+                        LoginActivity.this.finish();
+                    }
+
+                    @Override
+                    public void onFailure(String message) {
+                        dismissProgressDialog();
+                        ToastUtil.shortToast(LoginActivity.this, "登录失败：" + message);
+                    }
+
+                    @Override
+                    public void onFinish() {
+                        dismissProgressDialog();
+                    }
+                });
 
     }
 

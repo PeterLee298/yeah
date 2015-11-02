@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.TextUtils;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -15,14 +15,11 @@ import com.loopj.android.http.RequestParams;
 import com.yeah.android.R;
 import com.yeah.android.activity.BaseActivity;
 import com.yeah.android.activity.camera.CameraManager;
-import com.yeah.android.activity.camera.ui.PhotoStickerActivity;
 import com.yeah.android.model.common.ResponseData;
 import com.yeah.android.model.user.UploadPhotoResponse;
-import com.yeah.android.model.user.VerifyResponse;
 import com.yeah.android.net.http.StickerHttpClient;
 import com.yeah.android.net.http.StickerHttpResponseHandler;
 import com.yeah.android.utils.Constants;
-import com.yeah.android.utils.FileUtils;
 import com.yeah.android.utils.ImageUtils;
 import com.yeah.android.utils.LogUtil;
 import com.yeah.android.utils.StringUtils;
@@ -49,6 +46,8 @@ public class PhotoPostAvtivity extends BaseActivity {
     EditText postContent;
     @InjectView(R.id.post_btn)
     TextView postBtn;
+    @InjectView(R.id.thirdparty_wx_friend)
+    CheckBox mThirdPartyWxFriend;
 
     private Uri imgUri;
 
@@ -67,6 +66,7 @@ public class PhotoPostAvtivity extends BaseActivity {
             }
         });
     }
+
 
     @OnClick(R.id.post_btn)
     public void postPhoto() {
