@@ -68,6 +68,7 @@ public class UserHomeActivity extends BaseActivity {
     private static final int PAGE_SIZE = 10;
     private int nextPage = 0;
     private boolean isReachEnd = false;
+    private boolean isLoading = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,11 +98,12 @@ public class UserHomeActivity extends BaseActivity {
 
             @Override
             public void onScrollStateChanged(AbsListView view, int scrollState) {
-                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE
-                        && mLastItemVisible && !isReachEnd) {
-                    // load next page
+                LogUtil.d("userPhotosGridView", "onScrollStateChanged");
 
-                    LogUtil.d("userPhotosGridView", "scroll end");
+                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE
+                        && mLastItemVisible && !isReachEnd && !isLoading) {
+                    LogUtil.d("userPhotosGridView", "loadmore " + nextPage);
+                    loaduserPhotos(nextPage);
                 }
             }
         });
@@ -133,6 +135,8 @@ public class UserHomeActivity extends BaseActivity {
         requestParams.put("appKey", Constants.APP_KEY);
         requestParams.put("loginId", UserInfoManager.getUserId());
         requestParams.put("loginToken", UserInfoManager.getToken());
+        requestParams.put("pageSize", PAGE_SIZE);
+        requestParams.put("pageNumber", page);
 
         StickerHttpClient.post("/account/user/photo/list", requestParams,
                 new TypeReference<ResponseData<UserPhotoResponse>>() {
@@ -142,23 +146,24 @@ public class UserHomeActivity extends BaseActivity {
                     @Override
                     public void onStart() {
                         showProgressDialog("获取照片列表...");
+                        isLoading = true;
                     }
 
                     @Override
                     public void onSuccess(UserPhotoResponse response) {
-
-                        if (response.getContent() != null) {
-
-                            nextPage++;
-                            if(response.getContent().size() < PAGE_SIZE) {
-                                isReachEnd = true;
-                            }
-
-                            photoList.addAll(response.getContent());
-                            photoAdapter.notifyDataSetChanged();
-
-
+                        if(response.getContent() == null) {
+                            isReachEnd = true;
+                            return;
                         }
+
+                        nextPage++;
+                        if(photoList.size() + response.getContent().size() >=
+                                response.getTotal()) {
+                            isReachEnd = true;
+                        }
+
+                        photoList.addAll(response.getContent());
+                        photoAdapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -171,6 +176,7 @@ public class UserHomeActivity extends BaseActivity {
                     @Override
                     public void onFinish() {
                         dismissProgressDialog();
+                        isLoading = false;
                     }
                 });
 

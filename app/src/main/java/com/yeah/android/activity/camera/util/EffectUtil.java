@@ -39,16 +39,16 @@ public class EffectUtil {
     public static List<Addon> addonList                 = new ArrayList<Addon>();
     private static List<MyHighlightView> hightlistViews = new CopyOnWriteArrayList<MyHighlightView>();
 
-    static {
-        addonList.add(new Addon(R.drawable.sticker1));
-        addonList.add(new Addon(R.drawable.sticker2));
-        addonList.add(new Addon(R.drawable.sticker3));
-        addonList.add(new Addon(R.drawable.sticker4));
-        addonList.add(new Addon(R.drawable.sticker5));
-        addonList.add(new Addon(R.drawable.sticker6));
-        addonList.add(new Addon(R.drawable.sticker7));
-        addonList.add(new Addon(R.drawable.sticker8));
-    }
+//    static {
+//        addonList.add(new Addon(R.drawable.sticker1));
+//        addonList.add(new Addon(R.drawable.sticker2));
+//        addonList.add(new Addon(R.drawable.sticker3));
+//        addonList.add(new Addon(R.drawable.sticker4));
+//        addonList.add(new Addon(R.drawable.sticker5));
+//        addonList.add(new Addon(R.drawable.sticker6));
+//        addonList.add(new Addon(R.drawable.sticker7));
+//        addonList.add(new Addon(R.drawable.sticker8));
+//    }
 
     public static void clear() {
         hightlistViews.clear();
