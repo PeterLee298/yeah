@@ -19,17 +19,61 @@ android {
         versionCode 1
         versionName "1.0"
     }
+
+    signingConfigs {
+        debug {
+            storeFile file("debug.keystore")
+        }
+
+        release {
+            storeFile file("sign-000321.jks")
+            storePassword "000321"
+            keyAlias "yeah"
+            keyPassword "000321"
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+
+        debug {
+            signingConfig signingConfigs.release
         }
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
-    }
+//
+//    compileOptions {
+//        sourceCompatibility JavaVersion.VERSION_1_8
+//        targetCompatibility JavaVersion.VERSION_1_8
+//    }
     productFlavors {
+        Testing{}
+//        Official {}
+    }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            output.processManifest.doLast {
+                def manifestFile = "${buildDir}/intermediates/manifests/full/${variant.dirName}/AndroidManifest.xml"
+                def updatedContent = new File(manifestFile).getText('UTF-8').replaceAll("UMENG_CHANNEL_VALUE", "${variant.productFlavors[0].name}")
+                new File(manifestFile).write(updatedContent, 'UTF-8')
+            }
+
+//            def alignedOutputFile = output.outputFile
+//            def unalignedOutputFile = output.packageApplication.outputFile
+//
+//            if (variant.buildType.zipAlignEnabled) {
+//                output.outputFile = new File(alignedOutputFile.parent, alignedOutputFile.name.replace(".apk", "-" + defaultConfig.versionName + ".apk"))
+//            }
+//            output.packageApplication.outputFile = new File(unalignedOutputFile.parent, unalignedOutputFile.name.replace(".apk", "-" + defaultConfig.versionName + ".apk"))
+        }
+    }
+
+    lintOptions {
+        abortOnError false
     }
 }
 

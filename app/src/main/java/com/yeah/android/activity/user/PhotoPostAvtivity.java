@@ -67,7 +67,6 @@ public class PhotoPostAvtivity extends BaseActivity {
         });
     }
 
-
     @OnClick(R.id.post_btn)
     public void postPhoto() {
 
