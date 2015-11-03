@@ -151,7 +151,7 @@ public class UserHomeActivity extends BaseActivity {
 
                     @Override
                     public void onSuccess(UserPhotoResponse response) {
-                        if(response.getContent() == null) {
+                        if(response.getContent() == null  || response.getContent().isEmpty()) {
                             isReachEnd = true;
                             return;
                         }

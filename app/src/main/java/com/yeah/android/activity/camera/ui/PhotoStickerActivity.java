@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.GridView;
@@ -102,6 +103,18 @@ public class PhotoStickerActivity extends CameraBaseActivity {
     @InjectView(R.id.sticker_hot)
     GridView stickerHot;
 
+    private boolean mThemeLastItemVisible;
+    private int themeNextPage = 0;
+    private boolean isThemeReachEnd = false;
+    private boolean isThemeLoading = false;
+
+    private boolean mHotLastItemVisible;
+    private int hotNextPage = 0;
+    private boolean isHotReachEnd = false;
+    private boolean isHotLoading = false;
+
+
+
     private MyImageViewDrawableOverlay mImageView;
 
     //当前图片
@@ -122,6 +135,8 @@ public class PhotoStickerActivity extends CameraBaseActivity {
     private int stickerRequestCount = 0;
 
     private StickerGroupPopWindow stickerGroupPopWindow;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -294,6 +309,24 @@ public class PhotoStickerActivity extends CameraBaseActivity {
             }
         });
 
+        stickerTheme.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                mThemeLastItemVisible = (totalItemCount > 0) && (firstVisibleItem + visibleItemCount >= totalItemCount - 1);
+            }
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                LogUtil.d("userPhotosGridView", "onScrollStateChanged");
+
+                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE
+                        && mThemeLastItemVisible && !isThemeReachEnd && !isThemeLoading) {
+                    getStickerThemeList(themeNextPage);
+                }
+            }
+        });
+
 
         stickerHotList = new ArrayList<>();
         hotStickerAdapter = new HotStickerAdapter(PhotoStickerActivity.this, stickerHotList);
@@ -305,6 +338,24 @@ public class PhotoStickerActivity extends CameraBaseActivity {
                 getStickerList(0, stickerHotList.get(position).getGroupId());
             }
         });
+        stickerHot.setOnScrollListener(new AbsListView.OnScrollListener() {
+
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+                mHotLastItemVisible = (totalItemCount > 0) && (firstVisibleItem + visibleItemCount >= totalItemCount - 1);
+            }
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+                LogUtil.d("userPhotosGridView", "onScrollStateChanged");
+
+                if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE
+                        && mHotLastItemVisible && !isHotReachEnd && !isHotLoading) {
+                    getStickerHotList(hotNextPage);
+                }
+            }
+        });
+
 
 
         getStickerHotList(0);
@@ -340,16 +391,25 @@ public class PhotoStickerActivity extends CameraBaseActivity {
                         if(stickerRequestCount == 1) {
                             showProgressDialog("贴纸标签加载中");
                         }
+                        isHotLoading = true;
                     }
 
                     @Override
                     public void onSuccess(StickerHotResponse response) {
-                        if (response.getContent() != null  && !response.getContent().isEmpty()) {
-                            stickerHotList.addAll(response.getContent());
-                            hotStickerAdapter.notifyDataSetChanged();
-                        } else {
-                            ToastUtil.shortToast(PhotoStickerActivity.this, "获取热门贴纸列表为空");
+
+                        if(response.getContent() == null  || response.getContent().isEmpty()) {
+                            isHotReachEnd = true;
+                            return;
                         }
+
+                        hotNextPage++;
+                        if(stickerHotList.size() + response.getContent().size() >=
+                                response.getTotal()) {
+                            isHotReachEnd = true;
+                        }
+
+                        stickerHotList.addAll(response.getContent());
+                        hotStickerAdapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -363,6 +423,7 @@ public class PhotoStickerActivity extends CameraBaseActivity {
                         if(stickerRequestCount <= 0) {
                             dismissProgressDialog();
                         }
+                        isHotLoading = false;
                     }
                 });
     }
@@ -382,16 +443,24 @@ public class PhotoStickerActivity extends CameraBaseActivity {
                         if(stickerRequestCount == 1) {
                             showProgressDialog("贴纸标签加载中");
                         }
+                        isThemeLoading = true;
                     }
 
                     @Override
                     public void onSuccess(StickerListResponse response) {
-                        if(response.getContent() != null && !response.getContent().isEmpty()) {
-                            stickerThemeList.addAll(response.getContent());
-                            themeStickerAdapter.notifyDataSetChanged();
-                        } else {
-                            ToastUtil.shortToast(PhotoStickerActivity.this, "获取主题贴纸列表为空");
+                        if(response.getContent() == null || response.getContent().isEmpty()) {
+                            isThemeReachEnd = true;
+                            return;
                         }
+
+                        themeNextPage++;
+                        if(stickerThemeList.size() + response.getContent().size() >=
+                                response.getTotal()) {
+                            isThemeReachEnd = true;
+                        }
+
+                        stickerThemeList.addAll(response.getContent());
+                        themeStickerAdapter.notifyDataSetChanged();
                     }
 
                     @Override
@@ -405,6 +474,7 @@ public class PhotoStickerActivity extends CameraBaseActivity {
                         if(stickerRequestCount <= 0) {
                             dismissProgressDialog();
                         }
+                        isThemeLoading = false;
                     }
                 });
     }
