@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/base_bg"
+    android:orientation="vertical">
+
+
+    <com.yeah.android.view.CommonTitleBar
+        android:id="@+id/title_layout"
+        style="@style/head_default"
+        app:bgColor="@color/base_bg"
+        app:leftBtnIcon="@drawable/ic_back_black"
+        app:titleTxt="关于Yeah"
+        app:titleTxtColor="@color/black"/>
+
+    <View style="@style/line_horizontal_style" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView android:id="@+id/about_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_splash_btn"
+            android:layout_marginTop="48dp"/>
+
+        <TextView android:id="@+id/about_version_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/about_icon"
+            android:layout_marginTop="4dp"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/text_gray"
+            android:textSize="16sp"
+            android:text="V1.1.1."/>
+
+        <TextView
+            android:layout_width="320dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/about_version_name"
+            android:layout_marginTop="24dp"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/text_gray"
+            android:textSize="16sp"
+            android:text="@string/about_description"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="18dp"
+            android:textColor="@color/text_gray"
+            android:textSize="18sp"
+            android:text="@string/about_company"/>
+
+
+
+    </RelativeLayout>
+</LinearLayout>

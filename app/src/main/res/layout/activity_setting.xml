@@ -39,8 +39,32 @@
                     android:text="意见反馈"/>
 
                 <ImageView
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:layout_width="16dp"
+                    android:layout_height="18dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="18dp"
+                    android:src="@drawable/ic_userinfo_arrow"/>
+
+            </RelativeLayout>
+
+            <View style="@style/line_horizontal_style"/>
+
+            <RelativeLayout android:id="@+id/setting_about"
+                android:layout_width="match_parent"
+                android:layout_height="52dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="18dp"
+                    android:textSize="18sp"
+                    android:text="关于Yeah"/>
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="18dp"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="18dp"

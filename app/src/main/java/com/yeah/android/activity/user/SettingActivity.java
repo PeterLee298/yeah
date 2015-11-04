@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
 
 import com.yeah.android.R;
 import com.yeah.android.activity.BaseActivity;
@@ -26,6 +26,8 @@ public class SettingActivity extends BaseActivity {
 
     @InjectView(R.id.setting_logout)
     View logout;
+    @InjectView(R.id.setting_about)
+    RelativeLayout settingAbout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +48,11 @@ public class SettingActivity extends BaseActivity {
         CameraManager.getInst().close();
         SettingActivity.this.finish();
         LoginActivity.launch(SettingActivity.this);
+    }
+
+    @OnClick(R.id.setting_about)
+    public void about() {
+        AboutActivity.launch(SettingActivity.this);
     }
 
     public static void launch(Context context) {

@@ -14,9 +14,10 @@
         app:titleTxt="意见反馈" />
 
     <EditText android:id="@+id/feedback_content"
-        android:layout_width="360dp"
+        android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:minHeight="160dp"
+        android:padding="6dp"
         android:maxLines="6"
         android:maxEms="450"
         android:layout_marginTop="24dp"
@@ -24,7 +25,8 @@
         android:textSize="16sp"
         android:textColor="@color/black"
         android:gravity="top"
-        android:hint="请输入您的反馈内容"/>
+        android:hint="请输入您给我们的评价并提交！"
+        android:background="@drawable/feedback__input_bg"/>
 
     <TextView
         android:id="@+id/feedback_btn"
@@ -34,7 +36,7 @@
         android:background="@drawable/base_btn_bg"
         android:layout_gravity="center_horizontal"
         android:gravity="center"
-        android:text="发送反馈"
+        android:text="提交"
         android:textColor="@color/white"
         android:textSize="@dimen/txt_size_xl" />
 

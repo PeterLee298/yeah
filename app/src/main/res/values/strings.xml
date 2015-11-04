@@ -10,4 +10,9 @@
 
     <string name="login_forget_password"><u>忘记密码</u></string>
 
+    <string name="about_version_name">V%1$s</string>
+    <string name="about_description">&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;Yeah是一款基于年轻女性的时尚社区移动端，
+        以全新的高质提贴纸还原您的生活态度，让一切变得有趣。\n&#160;&#160;&#160;&#160;&#160;&#160;&#160;&#160;这就是我想要的生活，Yeah！</string>
+    <string name="about_company">嗨翻科技（北京）有限公司</string>
+
 </resources>
