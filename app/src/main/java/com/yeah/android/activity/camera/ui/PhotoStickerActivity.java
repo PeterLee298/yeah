@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.RectF;
 import android.net.Uri;
@@ -241,6 +242,17 @@ public class PhotoStickerActivity extends CameraBaseActivity {
         }
         //加贴纸水印
         EffectUtil.applyOnSave(cv, mImageView);
+
+        //添加Yeah水印
+
+        try {
+            Bitmap water = BitmapFactory.decodeResource(getResources(), R.drawable.skyblue_logo_evernote);
+            cv.drawBitmap(water, 20, 20, null);
+            cv.save(Canvas.ALL_SAVE_FLAG);
+            cv.restore();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         new SavePicToFileTask().execute(newBitmap);
     }
