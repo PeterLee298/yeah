@@ -246,8 +246,12 @@ public class PhotoStickerActivity extends CameraBaseActivity {
         //添加Yeah水印
 
         try {
-            Bitmap water = BitmapFactory.decodeResource(getResources(), R.drawable.skyblue_logo_evernote);
-            cv.drawBitmap(water, 20, 20, null);
+            Bitmap water = BitmapFactory.decodeResource(getResources(), R.drawable.ic_watermark);
+            int w = water.getWidth();
+            int h = water.getHeight();
+
+            cv.drawBitmap(water, mImageView.getWidth() - w - 12,
+                    mImageView.getHeight() - h - 12, null);
             cv.save(Canvas.ALL_SAVE_FLAG);
             cv.restore();
         } catch (Exception e) {
