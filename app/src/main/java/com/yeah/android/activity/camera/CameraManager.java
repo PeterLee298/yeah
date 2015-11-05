@@ -40,16 +40,6 @@ public class CameraManager {
     public void processPhotoItem(Activity activity, PhotoItem photo) {
         Uri uri = photo.getImageUri().startsWith("file:") ? Uri.parse(photo
                 .getImageUri()) : Uri.parse("file://" + photo.getImageUri());
-//        if (ImageUtils.isSquare(photo.getImageUri())) {
-//            Intent newIntent = new Intent(activity, PhotoProcessActivity.class);
-//            newIntent.setData(uri);
-//            activity.startActivity(newIntent);
-//        } else {
-//            Intent i = new Intent(activity, CropPhotoActivity.class);
-//            i.setData(uri);
-//            //TODO稍后添加
-//            activity.startActivityForResult(i, Constants.REQUEST_CROP);
-//        }
 
         // 直接进行贴图
         Intent newIntent = new Intent(activity, PhotoStickerActivity.class);

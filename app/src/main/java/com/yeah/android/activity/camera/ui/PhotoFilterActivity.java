@@ -1,15 +1,11 @@
 package com.yeah.android.activity.camera.ui;
 
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.RectF;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,21 +17,12 @@ import com.yeah.android.activity.camera.CameraManager;
 import com.yeah.android.activity.camera.EffectService;
 import com.yeah.android.activity.camera.adapter.FilterAdapter;
 import com.yeah.android.activity.camera.effect.FilterEffect;
-import com.yeah.android.activity.camera.util.EffectUtil;
 import com.yeah.android.activity.camera.util.GPUImageFilterTools;
 import com.yeah.android.model.PhotoItem;
-import com.yeah.android.model.TagItem;
-import com.yeah.android.utils.Constants;
 import com.yeah.android.utils.FileUtils;
 import com.yeah.android.utils.ImageUtils;
 import com.yeah.android.utils.StringUtils;
 import com.yeah.android.utils.TimeUtils;
-import com.yeah.android.view.LabelSelector;
-import com.yeah.android.view.LabelView;
-import com.yeah.android.view.MyHighlightView;
-import com.yeah.android.view.MyImageViewDrawableOverlay;
-
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -53,9 +40,6 @@ public class PhotoFilterActivity extends CameraBaseActivity {
     //滤镜图片
     @InjectView(R.id.gpuimage)
     GPUImageView mGPUImageView;
-    //绘图区域
-    @InjectView(R.id.drawing_view_container)
-    ViewGroup drawArea;
     //底部按钮
     @InjectView(R.id.filter_next)
     TextView filterNextBtn;
@@ -73,7 +57,6 @@ public class PhotoFilterActivity extends CameraBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo_filter);
         ButterKnife.inject(this);
-        EffectUtil.clear();
         initView();
         initEvent();
 
@@ -95,41 +78,14 @@ public class PhotoFilterActivity extends CameraBaseActivity {
 
     }
     private void initView() {
-        //添加贴纸水印的画布
-//        View overlay = LayoutInflater.from(PhotoFilterActivity.this).inflate(
-//                R.layout.view_drawable_overlay, null);
-//        mImageView = (MyImageViewDrawableOverlay) overlay.findViewById(R.id.drawable_overlay);
-//        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(YeahApp.getApp().getScreenWidth(),
-//                YeahApp.getApp().getScreenWidth());
-//        mImageView.setLayoutParams(params);
-//        overlay.setLayoutParams(params);
-//        drawArea.addView(overlay);
         RelativeLayout.LayoutParams rparams = new RelativeLayout.LayoutParams(YeahApp.getApp().getScreenWidth(), YeahApp.getApp().getScreenWidth());
-
-        //初始化滤镜图片
         mGPUImageView.setLayoutParams(rparams);
-
-
-        //初始化空白标签
-//        emptyLabelView = new LabelView(this);
-//        emptyLabelView.setEmpty();
-//        EffectUtil.addLabelEditable(mImageView, drawArea, emptyLabelView,
-//                mImageView.getWidth() / 2, mImageView.getWidth() / 2);
-//        emptyLabelView.setVisibility(View.INVISIBLE);
-
-        //初始化推荐标签栏
-//        commonLabelArea = LayoutInflater.from(PhotoFilterActivity.this).inflate(
-//                R.layout.view_label_bottom,null);
-//        commonLabelArea.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-//                ViewGroup.LayoutParams.MATCH_PARENT));
-//        toolArea.addView(commonLabelArea);
-//        commonLabelArea.setVisibility(View.GONE);
     }
 
     private void initEvent() {
         bottomToolBar.setVisibility(View.VISIBLE);
 
-        filterNextBtn.setOnClickListener( v -> {
+        filterNextBtn.setOnClickListener(v -> {
             savePicture();
         });
     }
@@ -166,7 +122,7 @@ public class PhotoFilterActivity extends CameraBaseActivity {
                 bitmap = params[0];
 
                 String picName = TimeUtils.dtFormat(new Date(), "yyyyMMddHHmmss");
-                 fileName = ImageUtils.saveToFile(FileUtils.getInst().getPhotoSavedPath() + "/"+ picName, false, bitmap);
+                fileName = ImageUtils.saveToFile(FileUtils.getInst().getPhotoSavedPath() + "/"+ picName, false, bitmap);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -211,5 +167,4 @@ public class PhotoFilterActivity extends CameraBaseActivity {
             }
         });
     }
-
 }
