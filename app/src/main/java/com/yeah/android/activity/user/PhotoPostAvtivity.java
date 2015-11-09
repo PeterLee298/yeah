@@ -48,6 +48,10 @@ public class PhotoPostAvtivity extends BaseActivity {
     TextView postBtn;
     @InjectView(R.id.thirdparty_wx_friend)
     CheckBox mThirdPartyWxFriend;
+    @InjectView(R.id.thirdparty_wx)
+    CheckBox mThirdPartyWx;
+    @InjectView(R.id.thirdparty_weibo)
+    CheckBox mThirdPartyWeibo;
 
     private Uri imgUri;
 
@@ -114,6 +118,8 @@ public class PhotoPostAvtivity extends BaseActivity {
 
                         CameraManager.getInst().openCamera(PhotoPostAvtivity.this);
 
+                        thirdPartyPublish();
+
                         LogUtil.d(TAG, response.getUrl());
                     }
 
@@ -129,6 +135,12 @@ public class PhotoPostAvtivity extends BaseActivity {
                         dismissProgressDialog();
                     }
                 });
+    }
+
+    private void thirdPartyPublish(){
+        if(mThirdPartyWxFriend.isChecked()){
+
+        }
     }
 
     public static void launch(Context context, Uri uri) {

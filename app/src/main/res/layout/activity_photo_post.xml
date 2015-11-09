@@ -51,6 +51,22 @@
             android:button="@drawable/selector_post_wx_friend"
             android:layout_marginLeft="10dp"/>
 
+        <CheckBox
+            android:id="@+id/thirdparty_wx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:button="@drawable/selector_post_wx"
+            android:layout_marginLeft="10dp"/>
+
+        <CheckBox
+            android:id="@+id/thirdparty_weibo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:button="@drawable/selector_post_weibo"
+            android:layout_marginLeft="10dp"/>
+
     </LinearLayout>
 
 

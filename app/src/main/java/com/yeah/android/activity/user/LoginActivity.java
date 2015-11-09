@@ -33,11 +33,13 @@ import cn.sharesdk.framework.PlatformActionListener;
 import cn.sharesdk.framework.PlatformDb;
 import cn.sharesdk.framework.ShareSDK;
 import cn.sharesdk.sina.weibo.SinaWeibo;
+import cn.sharesdk.tencent.qq.QQ;
+import cn.sharesdk.wechat.friends.Wechat;
 
 /**
  * Created by litingchang on 15-10-6.
  */
-public class LoginActivity extends BaseActivity {
+public class LoginActivity extends BaseActivity implements PlatformActionListener{
 
 
 
@@ -59,8 +61,9 @@ public class LoginActivity extends BaseActivity {
     @InjectView(R.id.bind_qq)
     ImageView bindQq;
 
-
     private VerifyResponse mVerifyResponse;
+
+    private String mCurrentOauthPlatform;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +74,7 @@ public class LoginActivity extends BaseActivity {
         // TODO
         loginInputName.setText("17000000001");
         loginInputPassword.setText("000000");
+        ShareSDK.initSDK(this);
     }
 
     @OnClick(R.id.login_btn_login)
@@ -182,36 +186,51 @@ public class LoginActivity extends BaseActivity {
     public void bindWeiBo() {
 
         showProgressDialog("");
-        ShareSDK.initSDK(this);
         Platform weibo = ShareSDK.getPlatform(this, SinaWeibo.NAME);
-
-        weibo.setPlatformActionListener(new PlatformActionListener() {
-            @Override
-            public void onComplete(Platform platform, int i, HashMap<String, Object> stringObjectHashMap) {
-                dismissProgressDialog();
-                initWeiboUser();
-            }
-
-            @Override
-            public void onError(Platform platform, int i, Throwable throwable) {
-                dismissProgressDialog();
-            }
-
-            @Override
-            public void onCancel(Platform platform, int i) {
-                dismissProgressDialog();
-            }
-        });
-        weibo.authorize(new String[]{"follow_app_official_microblog"});
+        mCurrentOauthPlatform = "weibo";
+        weibo.setPlatformActionListener(this);
+        weibo.authorize();
 
     }
     @OnClick(R.id.bind_weixin)
     public void binWeiXin() {
 
+        showProgressDialog("");
+        Platform weibo = ShareSDK.getPlatform(this, Wechat.NAME);
+        mCurrentOauthPlatform = "wechat";
+        weibo.setPlatformActionListener(this);
+        weibo.authorize();
+
     }
     @OnClick(R.id.bind_qq)
     public void bindQQ() {
 
+        showProgressDialog("");
+        Platform weibo = ShareSDK.getPlatform(this, QQ.NAME);
+        mCurrentOauthPlatform = "qq";
+        weibo.setPlatformActionListener(this);
+        weibo.authorize();
+
+    }
+
+
+    @Override
+    public void onComplete(Platform platform, int i, HashMap<String, Object> stringObjectHashMap) {
+        dismissProgressDialog();
+
+        PlatformDb platDB = platform.getDb();
+        thirdPartLogin(stringObjectHashMap.get("id").toString(), "weibo", platDB.getToken(), stringObjectHashMap.get("name").toString(),
+                stringObjectHashMap.get("name").toString(), stringObjectHashMap.get("profile_image_url").toString(), "", "");
+    }
+
+    @Override
+    public void onError(Platform platform, int i, Throwable throwable) {
+        dismissProgressDialog();
+    }
+
+    @Override
+    public void onCancel(Platform platform, int i) {
+        dismissProgressDialog();
     }
 
     private void initWeiboUser() {
@@ -222,8 +241,8 @@ public class LoginActivity extends BaseActivity {
                 dismissProgressDialog();
 
                 PlatformDb platDB = platform.getDb();
-//                thirdPartLogin("");
-//                postSignup(stringObjectHashMap.get("id").toString(), platDB.getToken(), stringObjectHashMap.get("name").toString(), stringObjectHashMap.get("profile_image_url").toString());
+                thirdPartLogin(stringObjectHashMap.get("id").toString(), "weibo", platDB.getToken(), stringObjectHashMap.get("name").toString(),
+                        stringObjectHashMap.get("name").toString(), stringObjectHashMap.get("profile_image_url").toString(), "", "");
             }
 
             @Override
