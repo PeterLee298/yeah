@@ -27,6 +27,8 @@ public class YeahApp extends Application {
     protected static YeahApp mInstance;
     private DisplayMetrics     displayMetrics = null;
 
+    private boolean isMainActivityLaunched;
+
     public YeahApp(){
         mInstance = this;
     }
@@ -136,6 +138,14 @@ public class YeahApp extends Application {
             e.printStackTrace();
             return 0;
         }
+    }
+
+    public void setMainActivityLaunched(boolean b) {
+        isMainActivityLaunched = b;
+    }
+
+    public boolean isMainActivityLaunched() {
+        return isMainActivityLaunched;
     }
 
 

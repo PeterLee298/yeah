@@ -179,6 +179,14 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
         initView();
         initEvent();
         initData();
+
+        YeahApp.getApp().setMainActivityLaunched(true);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        YeahApp.getApp().setMainActivityLaunched(false);
     }
 
     private void initView() {

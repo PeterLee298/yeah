@@ -120,6 +120,9 @@
         <activity android:name="com.yeah.android.activity.user.UserInfoActivity"
             android:screenOrientation="portrait"/>
 
+        <activity android:name="com.yeah.android.activity.user.MessageListActivity"
+            android:screenOrientation="portrait"/>
+
         <activity android:name="com.yeah.android.activity.user.SettingActivity"
             android:screenOrientation="portrait"/>
 
@@ -186,7 +189,7 @@
             android:exported="true">
             <intent-filter >
                 <action android:name="cn.jpush.android.intent.DaemonService" />
-                <category android:name="您应用的包名"/>
+                <category android:name="com.yeah.android"/>
             </intent-filter>
         </service>
 
@@ -218,6 +221,19 @@
         <!-- Required  . Enable it you can get statistics data with channel -->
         <meta-data android:name="JPUSH_CHANNEL" android:value="developer-default"/>
         <meta-data android:name="JPUSH_APPKEY" android:value="8e78551a6e4b3e8783af34d6" />
+
+        <!-- 自定义Receivre -->
+        <receiver
+            android:name="com.yeah.android.jpush.JPushReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTRATION" />
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
+                <category android:name="com.yeah.android" />
+            </intent-filter>
+        </receiver>
         <!-- end  -->
 
         <!-- umeng -->
