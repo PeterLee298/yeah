@@ -17,6 +17,8 @@ import com.nostra13.universalimageloader.core.assist.QueueProcessingType;
 import com.nostra13.universalimageloader.utils.StorageUtils;
 import com.yeah.android.utils.Constants;
 
+import cn.jpush.android.api.JPushInterface;
+
 /**
  * on 2015/7/6.
  */
@@ -44,6 +46,10 @@ public class YeahApp extends Application {
         super.onCreate();
         initImageLoader();
         Fresco.initialize(this);
+
+        JPushInterface.setDebugMode(true);
+        JPushInterface.init(this);
+
         mInstance = this;
     }
 
