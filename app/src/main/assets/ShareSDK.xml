@@ -53,15 +53,15 @@
     -->
     
     <ShareSDK 
-        AppKey = "b82cdabe1a40"/> <!-- 修改成你在sharesdk后台注册的应用的appkey"-->
+        AppKey = "c2529671ce03"/> <!-- 修改成你在sharesdk后台注册的应用的appkey"-->
     
     <!-- ShareByAppClient标识是否使用微博客户端分享，默认是false -->
     <SinaWeibo
         Id="1"
         SortId="1"
-        AppKey="568898243"
-        AppSecret="38a4f8204cc784f81f9f0daaf31e02e3"
-        RedirectUrl="http://www.sharesdk.cn"
+        AppKey="2003901444"
+        AppSecret="2dcd5c76740f248bf7138820276e4a71"
+        RedirectUrl="http://www.youryeah@havefunbj.com"
         ShareByAppClient="false"
         Enable="true" />
 
@@ -81,16 +81,16 @@
     <Wechat
         Id="2"
         SortId="2"
-        AppId="wx4868b35061f87885"
-        AppSecret="64020361b8ec4c99936c0e3999a9f249"
+        AppId="wx5e462eeac313e96f"
+        AppSecret="d4624c36b6795d1d99dcf0547af5443d"
         BypassApproval="false"
         Enable="true" />
     
     <WechatMoments
         Id="3"
         SortId="3"
-        AppId="wx4868b35061f87885"
-        AppSecret="64020361b8ec4c99936c0e3999a9f249"
+        AppId="wx5e462eeac313e96f"
+        AppSecret="d4624c36b6795d1d99dcf0547af5443d"
         BypassApproval="false"
         Enable="true" />
     
@@ -98,8 +98,8 @@
 	<QQ
         Id="4"
         SortId="4"
-        AppId="100371282"
-        AppKey="aed9b0303e3ed1e27bae87c33761161d"
+        AppId="1104934576"
+        AppKey="ORmB7u3YV89bZ843"
         ShareByAppClient="true"
         Enable="true" />
     

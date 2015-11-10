@@ -226,39 +226,43 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
     @Override
     public void onError(Platform platform, int i, Throwable throwable) {
         dismissProgressDialog();
+        System.out.println("thirdPartLogin--->onError-->");
     }
 
     @Override
     public void onCancel(Platform platform, int i) {
         dismissProgressDialog();
+        System.out.println("thirdPartLogin--->onCancel-->");
     }
-
-    private void initWeiboUser() {
-        Platform weibo = ShareSDK.getPlatform(this, SinaWeibo.NAME);
-        weibo.setPlatformActionListener(new PlatformActionListener() {
-            @Override
-            public void onComplete(Platform platform, int i, HashMap<String, Object> stringObjectHashMap) {
-                dismissProgressDialog();
-
-                PlatformDb platDB = platform.getDb();
-                thirdPartLogin(stringObjectHashMap.get("id").toString(), "weibo", platDB.getToken(), stringObjectHashMap.get("name").toString(),
-                        stringObjectHashMap.get("name").toString(), stringObjectHashMap.get("profile_image_url").toString(), "", "");
-            }
-
-            @Override
-            public void onError(Platform platform, int i, Throwable throwable) {
-                dismissProgressDialog();
-            }
-
-            @Override
-            public void onCancel(Platform platform, int i) {
-                dismissProgressDialog();
-            }
-        });
-        weibo.showUser(null);
-    }
+//
+//    private void initWeiboUser() {
+//        Platform weibo = ShareSDK.getPlatform(this, SinaWeibo.NAME);
+//        weibo.setPlatformActionListener(new PlatformActionListener() {
+//            @Override
+//            public void onComplete(Platform platform, int i, HashMap<String, Object> stringObjectHashMap) {
+//                dismissProgressDialog();
+//
+//                PlatformDb platDB = platform.getDb();
+//                thirdPartLogin(stringObjectHashMap.get("id").toString(), "weibo", platDB.getToken(), stringObjectHashMap.get("name").toString(),
+//                        stringObjectHashMap.get("name").toString(), stringObjectHashMap.get("profile_image_url").toString(), "", "");
+//            }
+//
+//            @Override
+//            public void onError(Platform platform, int i, Throwable throwable) {
+//                dismissProgressDialog();
+//            }
+//
+//            @Override
+//            public void onCancel(Platform platform, int i) {
+//                dismissProgressDialog();
+//            }
+//        });
+//        weibo.showUser(null);
+//    }
 
     public void thirdPartLogin(String oauthId, String oauthType, String oauthToken, String name, String nickname, String avatar, String email, String phone) {
+
+        System.out.println("thirdPartLogin--->oauthToken-->" + oauthToken + "name-->" + name);
 
         RequestParams requestParams = new RequestParams();
         requestParams.put("appId", Constants.APP_ID);
