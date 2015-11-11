@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.yeah.android.YeahApp;
+import com.yeah.android.activity.user.MessageListActivity;
+import com.yeah.android.model.user.Message;
+import com.yeah.android.utils.DBUtil;
 import com.yeah.android.utils.LogUtil;
 
 import cn.jpush.android.api.JPushInterface;
@@ -37,12 +40,17 @@ public class JPushReceiver extends BroadcastReceiver {
             String content = bundle.getString(JPushInterface.EXTRA_ALERT);
 
             //
+            Message message = new Message();
+            message.setTitle(title);
+            message.setContent(content);
+            DBUtil.getInstance(context).storeMessage(message);
 
             LogUtil.d(TAG, "app is launched:" + YeahApp.getApp().isMainActivityLaunched());
 
         } else if (JPushInterface.ACTION_NOTIFICATION_OPENED.equals(intent.getAction())) {
 //            System.out.println("用户点击打开了通知");
             // 在这里可以自己写代码去定义用户点击后的行为
+            MessageListActivity.launch(context);
         } else {
             Log.d(TAG, "Unhandled intent - " + intent.getAction());
         }

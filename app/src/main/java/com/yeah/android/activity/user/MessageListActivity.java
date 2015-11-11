@@ -1,5 +1,6 @@
 package com.yeah.android.activity.user;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,7 +15,9 @@ import android.widget.TextView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.yeah.android.R;
 import com.yeah.android.activity.BaseActivity;
+import com.yeah.android.model.user.Message;
 import com.yeah.android.model.user.Photo;
+import com.yeah.android.utils.DBUtil;
 import com.yeah.android.view.CommonTitleBar;
 
 import java.util.List;
@@ -39,6 +42,9 @@ public class MessageListActivity extends BaseActivity {
 
         ButterKnife.inject(this);
 
+        List<Message> messageList = DBUtil.getInstance(this).getMessageList();
+
+        messageListView.setAdapter(new MessageAdapter(this, messageList));
     }
 
     private static class ViewHolder{
@@ -49,10 +55,10 @@ public class MessageListActivity extends BaseActivity {
 
     class MessageAdapter extends BaseAdapter {
 
-        private List<String> data;
+        private List<Message> data;
         private Context cxt;
 
-        public MessageAdapter(Context cxt, List<String> data) {
+        public MessageAdapter(Context cxt, List<Message> data) {
             this.data = data;
             this.cxt = cxt;
         }
@@ -85,6 +91,9 @@ public class MessageListActivity extends BaseActivity {
                 holder = (ViewHolder) convertView.getTag();
             }
 
+            Message message = data.get(position);
+            holder.title.setText(message.getTitle());
+            holder.content.setText(message.getContent());
 
             return convertView;
         }
@@ -93,6 +102,7 @@ public class MessageListActivity extends BaseActivity {
 
     public static void launch(Context context) {
         Intent intent = new Intent(context, MessageListActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
     }
 }
