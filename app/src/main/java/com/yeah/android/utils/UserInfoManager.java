@@ -59,7 +59,7 @@ public class UserInfoManager {
 
     public static boolean isLogin() {
 
-        if(mLoginResult != null && StringUtils.isEmpty(mLoginResult.getTokenKey())) {
+        if(mLoginResult != null && StringUtils.isEmpty(mLoginResult.getToken())) {
             return true;
         }
 
@@ -68,7 +68,7 @@ public class UserInfoManager {
             return false;
         }
 
-        if(StringUtils.isEmpty(mLoginResult.getTokenKey())) {
+        if(StringUtils.isEmpty(mLoginResult.getToken())) {
             return false;
         }
 
@@ -122,7 +122,7 @@ public class UserInfoManager {
 
     public static String getToken() {
         if(isLogin()) {
-            return mLoginResult.getTokenKey();
+            return mLoginResult.getToken();
         }
 
         return null;

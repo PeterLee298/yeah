@@ -56,7 +56,7 @@ public class FeedbackActivity extends BaseActivity {
         RequestParams requestParams = new RequestParams();
         requestParams.put("appId", Constants.APP_ID);
         requestParams.put("appKey", Constants.APP_KEY);
-        requestParams.put("loginId", UserInfoManager.getUserId());
+        requestParams.put("loginId", UserInfoManager.getId());
         requestParams.put("loginToken", UserInfoManager.getToken());
         requestParams.put("content", content);
         StickerHttpClient.post("/account/user/feedback/create", requestParams,

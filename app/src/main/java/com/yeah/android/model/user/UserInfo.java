@@ -5,24 +5,26 @@ package com.yeah.android.model.user;
  * 用户信息
  */
 public class UserInfo {
+
     /**
-     * id : 20111106
-     * phone : 15615236548
+     * id : 20111164
+     * accountId : 20111171
+     * phone : 15615236547
      * email : 11111111
-     * password : 79d886010186eb60e3611cd4a5d0bcae
+     * password : ab730a067e7cf0536eb5703e029c2d30
      * name : 1111111
      * nickname : 1111111111
      * avatar : 1111111
-     * sex : 1
+     * sex : 2
      * birthday : 1440465912000
      * horoscope : 23
-     * ownerId : 5
      * state : 0
-     * createdAt : 1442845040000
-     * updatedAt : 1444827158000
+     * createdAt : 1447245189000
+     * updatedAt : 1447253960000
      */
 
     private int id;
+    private int accountId;
     private String phone;
     private String email;
     private String password;
@@ -32,13 +34,17 @@ public class UserInfo {
     private int sex;
     private long birthday;
     private int horoscope;
-    private int ownerId;
     private int state;
     private long createdAt;
     private long updatedAt;
 
+
     public void setId(int id) {
         this.id = id;
+    }
+
+    public void setAccountId(int accountId) {
+        this.accountId = accountId;
     }
 
     public void setPhone(String phone) {
@@ -77,10 +83,6 @@ public class UserInfo {
         this.horoscope = horoscope;
     }
 
-    public void setOwnerId(int ownerId) {
-        this.ownerId = ownerId;
-    }
-
     public void setState(int state) {
         this.state = state;
     }
@@ -95,6 +97,10 @@ public class UserInfo {
 
     public int getId() {
         return id;
+    }
+
+    public int getAccountId() {
+        return accountId;
     }
 
     public String getPhone() {
@@ -131,10 +137,6 @@ public class UserInfo {
 
     public int getHoroscope() {
         return horoscope;
-    }
-
-    public int getOwnerId() {
-        return ownerId;
     }
 
     public int getState() {

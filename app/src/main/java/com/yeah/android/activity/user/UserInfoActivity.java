@@ -312,7 +312,7 @@ public class UserInfoActivity extends BaseActivity {
         RequestParams requestParams = new RequestParams();
         requestParams.put("appId", Constants.APP_ID);
         requestParams.put("appKey", Constants.APP_KEY);
-        requestParams.put("loginId", UserInfoManager.getUserId());
+        requestParams.put("loginId", UserInfoManager.getId());
         requestParams.put("loginToken", UserInfoManager.getToken());
         requestParams.put("description", "userphoto");
         try {
@@ -533,7 +533,7 @@ public class UserInfoActivity extends BaseActivity {
             return;
         }
 
-        int loginId = UserInfoManager.getUserId();
+        int loginId = UserInfoManager.getId();
         String token = UserInfoManager.getToken();
 
         RequestParams requestParams = new RequestParams();
@@ -588,7 +588,7 @@ public class UserInfoActivity extends BaseActivity {
             return;
         }
 
-        int loginId = UserInfoManager.getUserId();
+        int loginId = UserInfoManager.getId();
         String token = UserInfoManager.getToken();
 
         RequestParams requestParams = new RequestParams();

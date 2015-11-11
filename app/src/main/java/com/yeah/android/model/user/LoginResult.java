@@ -18,8 +18,8 @@ public class LoginResult {
      */
 
     private int id;
-    private String tokenKey;
-    private int userId;
+    private String token;
+    private int accountId;
     private int appId;
     private int state;
     private long createdAt;
@@ -30,12 +30,12 @@ public class LoginResult {
         this.id = id;
     }
 
-    public void setTokenKey(String tokenKey) {
-        this.tokenKey = tokenKey;
+    public void setToken(String token) {
+        this.token = token;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setAccountId(int userId) {
+        this.accountId = userId;
     }
 
     public void setAppId(int appId) {
@@ -58,15 +58,15 @@ public class LoginResult {
         return id;
     }
 
-    public String getTokenKey() {
-        return tokenKey;
+    public String getToken() {
+        return token;
     }
 
     public int getUserId() {
-        return userId;
+        return accountId;
     }
 
-    public int getAppId() {
+    public int getAccountId() {
         return appId;
     }
 

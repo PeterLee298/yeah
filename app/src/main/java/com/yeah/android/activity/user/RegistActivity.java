@@ -47,6 +47,8 @@ public class RegistActivity extends BaseActivity {
 
     private VerifyResponse mVerifyResponse;
 
+    private String checkedPhoneNumber;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,8 @@ public class RegistActivity extends BaseActivity {
             ToastUtil.shortToast(this, "请输入手机号，不可包含空格");
             return;
         }
+
+        checkedPhoneNumber = phoneNumber;
 
         RequestParams requestParams = new RequestParams();
         requestParams.put("appId", Constants.APP_ID);
@@ -100,24 +104,31 @@ public class RegistActivity extends BaseActivity {
     }
 
     @OnClick(R.id.register_btn_register)
-    public void register() {
+    public void checkVerify() {
+
+        // TODO
+
+//        String verifyCode = StringUtils.deleteWhitespace(registerInputVerify.getText().toString());
+//        if (StringUtils.isEmpty(verifyCode)) {
+//            ToastUtil.shortToast(this, "请输入验证码，不可包含空格");
+//            return;
+//        }
+
+        register();
+
+    }
+
+    private void register() {
         String phoneNumber = StringUtils.deleteWhitespace(registerInputName.getText().toString());
         if (StringUtils.isEmpty(phoneNumber)) {
             ToastUtil.shortToast(this, "请输入手机号，不可包含空格");
             return;
         }
 
-        if(mVerifyResponse == null) {
-            ToastUtil.shortToast(this, "尚未进行手机验证，请点击获取验证码");
+        if(!phoneNumber.equals(checkedPhoneNumber)) {
+            ToastUtil.shortToast(this, "手机号码改变，请重新验证");
             return;
         }
-
-        String verifyCode = StringUtils.deleteWhitespace(registerInputVerify.getText().toString());
-        if (StringUtils.isEmpty(verifyCode)) {
-            ToastUtil.shortToast(this, "请输入验证码，不可包含空格");
-            return;
-        }
-
 
 
         String password = StringUtils.deleteWhitespace(registerInputPassword.getText().toString());
@@ -144,8 +155,6 @@ public class RegistActivity extends BaseActivity {
         requestParams.put("phone", phoneNumber);
         requestParams.put("password", password);
         requestParams.put("confirmPassword", passwordConfirm);
-        requestParams.put("verifyCode", verifyCode);
-        requestParams.put("verifyId", mVerifyResponse.getId());
 
         StickerHttpClient.post("/account/user/register", requestParams,
                 new TypeReference<ResponseData<LoginResult>>() {
