@@ -49,6 +49,8 @@ public class RegistActivity extends BaseActivity {
 
     private String checkedPhoneNumber;
 
+    private boolean isCheckedPhoneNumber;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,39 +69,39 @@ public class RegistActivity extends BaseActivity {
 
         checkedPhoneNumber = phoneNumber;
 
-        RequestParams requestParams = new RequestParams();
-        requestParams.put("appId", Constants.APP_ID);
-        requestParams.put("appKey", Constants.APP_KEY);
-        requestParams.put("phone", phoneNumber);
-        StickerHttpClient.post("/account/verify/request/register", requestParams,
-                new TypeReference<ResponseData<VerifyResponse>>() {
-                }.getType(),
-                new StickerHttpResponseHandler<VerifyResponse>() {
-
-                    @Override
-                    public void onStart() {
-                        showProgressDialog("验证码发送中...");
-                    }
-
-                    @Override
-                    public void onSuccess(VerifyResponse verifyResponse) {
-                        // TODO 验证码
-                        mVerifyResponse = verifyResponse;
-                        ToastUtil.longToast(RegistActivity.this, "验证码发送成功:" + verifyResponse.getCode());
-                    }
-
-                    @Override
-                    public void onFailure(String message) {
-                        LogUtil.e("onFailure", message);
-                        ToastUtil.shortToast(RegistActivity.this, "验证码发送失败：" + message
-                                + "\n请稍候重试");
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        dismissProgressDialog();
-                    }
-                });
+//        RequestParams requestParams = new RequestParams();
+//        requestParams.put("appId", Constants.APP_ID);
+//        requestParams.put("appKey", Constants.APP_KEY);
+//        requestParams.put("phone", phoneNumber);
+//        StickerHttpClient.post("/account/verify/request/register", requestParams,
+//                new TypeReference<ResponseData<VerifyResponse>>() {
+//                }.getType(),
+//                new StickerHttpResponseHandler<VerifyResponse>() {
+//
+//                    @Override
+//                    public void onStart() {
+//                        showProgressDialog("验证码发送中...");
+//                    }
+//
+//                    @Override
+//                    public void onSuccess(VerifyResponse verifyResponse) {
+//                        // TODO 验证码
+//                        mVerifyResponse = verifyResponse;
+//                        ToastUtil.longToast(RegistActivity.this, "验证码发送成功:" + verifyResponse.getCode());
+//                    }
+//
+//                    @Override
+//                    public void onFailure(String message) {
+//                        LogUtil.e("onFailure", message);
+//                        ToastUtil.shortToast(RegistActivity.this, "验证码发送失败：" + message
+//                                + "\n请稍候重试");
+//                    }
+//
+//                    @Override
+//                    public void onFinish() {
+//                        dismissProgressDialog();
+//                    }
+//                });
 
     }
 
@@ -114,14 +116,23 @@ public class RegistActivity extends BaseActivity {
 //            return;
 //        }
 
+
+        isCheckedPhoneNumber = true;
+
         register();
 
     }
 
     private void register() {
+
         String phoneNumber = StringUtils.deleteWhitespace(registerInputName.getText().toString());
         if (StringUtils.isEmpty(phoneNumber)) {
             ToastUtil.shortToast(this, "请输入手机号，不可包含空格");
+            return;
+        }
+
+        if(!isCheckedPhoneNumber) {
+            ToastUtil.shortToast(this, "手机未验证成功，请重新验证");
             return;
         }
 

@@ -40,7 +40,7 @@ public class DBUtil extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        createTableFavoriteAction(db);
+        createMessageTabel(db);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class DBUtil extends SQLiteOpenHelper {
         public static final String CONTENT = "content";
     }
 
-    private void createTableFavoriteAction(SQLiteDatabase db) {
+    private void createMessageTabel(SQLiteDatabase db) {
         String createFavoriteActionTable = "CREATE TABLE " + MESSAGE_TABLE_NAME + " ("
                 + MessageColumnKey.ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
                 + MessageColumnKey.TITLE + " TEXT, "
@@ -103,4 +103,16 @@ public class DBUtil extends SQLiteOpenHelper {
         mDatabase.insert(MESSAGE_TABLE_NAME, null, contentValues);
         mDatabase.close();
     }
+
+    public void cleanMessageTable() {
+
+        String sql = "DELETE FROM " + MESSAGE_TABLE_NAME +";";
+
+        mDatabase = dbUtil.getWritableDatabase();
+
+        mDatabase.execSQL(sql);
+        mDatabase.close();
+    }
+
+
 }

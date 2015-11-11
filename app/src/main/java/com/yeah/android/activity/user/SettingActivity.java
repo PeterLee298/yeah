@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import com.yeah.android.R;
 import com.yeah.android.activity.BaseActivity;
 import com.yeah.android.activity.camera.CameraManager;
+import com.yeah.android.utils.DBUtil;
 import com.yeah.android.utils.UserInfoManager;
 
 import butterknife.ButterKnife;
@@ -48,6 +49,8 @@ public class SettingActivity extends BaseActivity {
         CameraManager.getInst().close();
         SettingActivity.this.finish();
         LoginActivity.launch(SettingActivity.this);
+
+        DBUtil.getInstance(SettingActivity.this).cleanMessageTable();
     }
 
     @OnClick(R.id.setting_about)
