@@ -140,42 +140,44 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
             ToastUtil.shortToast(this, "请输入用户名，不可包含空格");
             return;
         }
+//
+//        RequestParams requestParams = new RequestParams();
+//        requestParams.put("appId", Constants.APP_ID);
+//        requestParams.put("appKey", Constants.APP_KEY);
+//        requestParams.put("phone", phoneNumber);
+//        StickerHttpClient.post("/account/verify/request", requestParams,
+//                new TypeReference<ResponseData<VerifyResponse>>() {
+//                }.getType(),
+//                new StickerHttpResponseHandler<VerifyResponse>() {
+//
+//                    @Override
+//                    public void onStart() {
+//                        showProgressDialog("验证码发送中...");
+//                    }
+//
+//                    @Override
+//                    public void onSuccess(VerifyResponse verifyResponse) {
+//                        // TODO 验证码
+//                        mVerifyResponse = verifyResponse;
+//                        ToastUtil.longToast(LoginActivity.this, "验证码发送成功:" + verifyResponse.getCode());
+//
+//                        VerifyActivity.launch(LoginActivity.this, phoneNumber, mVerifyResponse);
+//                    }
+//
+//                    @Override
+//                    public void onFailure(String message) {
+//                        LogUtil.e("onFailure", message);
+//                        ToastUtil.shortToast(LoginActivity.this, "验证码发送失败：" + message
+//                                + "\n请稍候重试");
+//                    }
+//
+//                    @Override
+//                    public void onFinish() {
+//                        dismissProgressDialog();
+//                    }
+//                });
 
-        RequestParams requestParams = new RequestParams();
-        requestParams.put("appId", Constants.APP_ID);
-        requestParams.put("appKey", Constants.APP_KEY);
-        requestParams.put("phone", phoneNumber);
-        StickerHttpClient.post("/account/verify/request", requestParams,
-                new TypeReference<ResponseData<VerifyResponse>>() {
-                }.getType(),
-                new StickerHttpResponseHandler<VerifyResponse>() {
-
-                    @Override
-                    public void onStart() {
-                        showProgressDialog("验证码发送中...");
-                    }
-
-                    @Override
-                    public void onSuccess(VerifyResponse verifyResponse) {
-                        // TODO 验证码
-                        mVerifyResponse = verifyResponse;
-                        ToastUtil.longToast(LoginActivity.this, "验证码发送成功:" + verifyResponse.getCode());
-
-                        VerifyActivity.launch(LoginActivity.this, phoneNumber, mVerifyResponse);
-                    }
-
-                    @Override
-                    public void onFailure(String message) {
-                        LogUtil.e("onFailure", message);
-                        ToastUtil.shortToast(LoginActivity.this, "验证码发送失败：" + message
-                                + "\n请稍候重试");
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        dismissProgressDialog();
-                    }
-                });
+        VerifyActivity.launch(LoginActivity.this, phoneNumber);
     }
 
     @OnClick(R.id.login_register)

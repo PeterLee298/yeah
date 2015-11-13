@@ -3,11 +3,16 @@ package com.yeah.android.activity.user;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.TypeReference;
 import com.yeah.android.model.user.VerifyConfirmResponse;
+import com.yeah.android.smsverify.MobConst;
 import com.yeah.android.utils.LogUtil;
 import com.yeah.android.utils.StringUtils;
 import com.yeah.android.utils.ToastUtil;
@@ -23,6 +28,8 @@ import com.yeah.android.R;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import cn.smssdk.EventHandler;
+import cn.smssdk.SMSSDK;
 
 /**
  * Created by litingchang on 15-10-7.
@@ -32,7 +39,7 @@ public class VerifyActivity extends BaseActivity {
     private static final String PHONE = "verify_phone";
     private static final String VERIFY_INFO = "verify_info";
     private String mPhoneNumber;
-    private VerifyResponse mVerifyResponse;
+//    private VerifyResponse mVerifyResponse;
 
     @InjectView(R.id.verify_phone_number)
     TextView verifyPhoneNumber;
@@ -43,6 +50,36 @@ public class VerifyActivity extends BaseActivity {
     @InjectView(R.id.verify_btn_next)
     TextView verifyBtnNext;
 
+    Handler handler=new Handler(){
+
+        @Override
+        public void handleMessage(Message msg) {
+            // TODO Auto-generated method stub
+            super.handleMessage(msg);
+            int event = msg.arg1;
+            int result = msg.arg2;
+            Object data = msg.obj;
+            Log.e("event", "event=" + event);
+            if (result == SMSSDK.RESULT_COMPLETE) {
+                //短信注册成功后，返回MainActivity,然后提示新好友
+                if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {//提交验证码成功
+                    dismissProgressDialog();
+                    ResetPasswordActivity.launch(VerifyActivity.this,
+                            mPhoneNumber);
+                } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE){
+                    dismissProgressDialog();
+                    Toast.makeText(getApplicationContext(), "验证码已经发送", Toast.LENGTH_SHORT).show();
+                }else if (event ==SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES){//返回支持发送验证码的国家列表
+                    Toast.makeText(getApplicationContext(), "获取国家列表成功", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                ((Throwable) data).printStackTrace();
+                dismissProgressDialog();
+                Toast.makeText(getApplicationContext(), "验证码错误", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+    };
 
 
     @Override
@@ -53,10 +90,34 @@ public class VerifyActivity extends BaseActivity {
 
         Intent intent = getIntent();
         mPhoneNumber = intent.getStringExtra(PHONE);
-        mVerifyResponse = (VerifyResponse)intent.getSerializableExtra(VERIFY_INFO);
 
         verifyPhoneNumber.setText(StringUtils.makeSafe(mPhoneNumber));
 
+        SMSSDK.initSDK(this, MobConst.APP_KEY, MobConst.APP_SECREt);
+        EventHandler eh=new EventHandler(){
+
+            @Override
+            public void afterEvent(int event, int result, Object data) {
+
+                Message msg = new Message();
+                msg.arg1 = event;
+                msg.arg2 = result;
+                msg.obj = data;
+                handler.sendMessage(msg);
+            }
+
+        };
+        SMSSDK.registerEventHandler(eh);
+
+        showProgressDialog("验证码发送中。。。");
+        SMSSDK.getVerificationCode("86", mPhoneNumber);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SMSSDK.unregisterAllEventHandler();
     }
 
     // 获取验证码
@@ -67,39 +128,8 @@ public class VerifyActivity extends BaseActivity {
             return;
         }
 
-        RequestParams requestParams = new RequestParams();
-        requestParams.put("appId", Constants.APP_ID);
-        requestParams.put("appKey", Constants.APP_KEY);
-        requestParams.put("phone", mPhoneNumber);
-        StickerHttpClient.post("/account/verify/request", requestParams,
-                new TypeReference<ResponseData<VerifyResponse>>() {
-                }.getType(),
-                new StickerHttpResponseHandler<VerifyResponse>() {
-
-                    @Override
-                    public void onStart() {
-                        showProgressDialog("验证码发送中...");
-                    }
-
-                    @Override
-                    public void onSuccess(VerifyResponse verifyResponse) {
-                        // TODO 验证码
-                        mVerifyResponse = verifyResponse;
-                        ToastUtil.longToast(VerifyActivity.this, "验证码发送成功:" + verifyResponse.getCode());
-                    }
-
-                    @Override
-                    public void onFailure(String message) {
-                        LogUtil.e("onFailure", message);
-                        ToastUtil.shortToast(VerifyActivity.this, "验证码发送失败：" + message
-                                + "\n请稍候重试");
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        dismissProgressDialog();
-                    }
-                });
+        showProgressDialog("验证码发送中。。。");
+        SMSSDK.getVerificationCode("86", mPhoneNumber);
 
     }
 
@@ -114,52 +144,16 @@ public class VerifyActivity extends BaseActivity {
             return;
         }
 
-        if(mVerifyResponse == null) {
-            ToastUtil.shortToast(VerifyActivity.this, "尚未发送验证信息 请点击重新发送");
-            return;
-        }
+        showProgressDialog("验证中...");
 
-        RequestParams requestParams = new RequestParams();
-        requestParams.put("appId", Constants.APP_ID);
-        requestParams.put("appKey", Constants.APP_KEY);
-        requestParams.put("verifyId", mVerifyResponse.getId());
-        requestParams.put("verifyCode", verifyCode);
-        StickerHttpClient.post("/account/verify/confirm", requestParams,
-                new TypeReference<ResponseData<VerifyConfirmResponse>>() {
-                }.getType(),
-                new StickerHttpResponseHandler<VerifyConfirmResponse>() {
-
-                    @Override
-                    public void onStart() {
-                        showProgressDialog("验证码校验中...");
-                    }
-
-                    @Override
-                    public void onSuccess(VerifyConfirmResponse verifyConfirmResponse) {
-                        ResetPasswordActivity.launch(VerifyActivity.this,
-                                mPhoneNumber, mVerifyResponse.getId(), verifyCode);
-                    }
-
-                    @Override
-                    public void onFailure(String message) {
-                        LogUtil.e("onFailure", message);
-                        ToastUtil.shortToast(VerifyActivity.this, "验证码校验失败：" + message
-                                + "\n请稍候重试");
-                    }
-
-                    @Override
-                    public void onFinish() {
-                        dismissProgressDialog();
-                    }
-                });
+        SMSSDK.submitVerificationCode("86", mPhoneNumber, verifyCode);
 
 
     }
 
-    public static void launch(Context context, String phoneNumber, VerifyResponse verifyResponse) {
+    public static void launch(Context context, String phoneNumber) {
         Intent intent = new Intent(context, VerifyActivity.class);
         intent.putExtra(PHONE, phoneNumber);
-        intent.putExtra(VERIFY_INFO, verifyResponse);
         context.startActivity(intent);
     }
 

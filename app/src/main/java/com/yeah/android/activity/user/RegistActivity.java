@@ -3,11 +3,16 @@ package com.yeah.android.activity.user;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alibaba.fastjson.TypeReference;
 import com.yeah.android.activity.camera.CameraManager;
+import com.yeah.android.smsverify.MobConst;
 import com.yeah.android.utils.LogUtil;
 import com.yeah.android.utils.StringUtils;
 import com.yeah.android.utils.ToastUtil;
@@ -19,13 +24,14 @@ import com.yeah.android.utils.UserInfoManager;
 import com.yeah.android.model.common.ResponseData;
 import com.yeah.android.model.user.LoginResult;
 import com.yeah.android.model.user.VerifyResponse;
-import com.yeah.android.activity.MainActivity;
 import com.yeah.android.activity.BaseActivity;
 import com.yeah.android.R;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import cn.smssdk.EventHandler;
+import cn.smssdk.SMSSDK;
 
 /**
  * Created by litingchang on 15-10-7.
@@ -52,11 +58,63 @@ public class RegistActivity extends BaseActivity {
     private boolean isCheckedPhoneNumber;
 
 
+    Handler handler=new Handler(){
+
+        @Override
+        public void handleMessage(Message msg) {
+            // TODO Auto-generated method stub
+            super.handleMessage(msg);
+            int event = msg.arg1;
+            int result = msg.arg2;
+            Object data = msg.obj;
+            Log.e("event", "event=" + event);
+            if (result == SMSSDK.RESULT_COMPLETE) {
+                //短信注册成功后，返回MainActivity,然后提示新好友
+                if (event == SMSSDK.EVENT_SUBMIT_VERIFICATION_CODE) {//提交验证码成功
+                    register();
+                } else if (event == SMSSDK.EVENT_GET_VERIFICATION_CODE){
+                    dismissProgressDialog();
+                    Toast.makeText(getApplicationContext(), "验证码已经发送", Toast.LENGTH_SHORT).show();
+                }else if (event ==SMSSDK.EVENT_GET_SUPPORTED_COUNTRIES){//返回支持发送验证码的国家列表
+                    Toast.makeText(getApplicationContext(), "获取国家列表成功", Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                ((Throwable) data).printStackTrace();
+                dismissProgressDialog();
+                Toast.makeText(getApplicationContext(), "验证码错误", Toast.LENGTH_SHORT).show();
+            }
+        }
+
+    };
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_regist);
         ButterKnife.inject(this);
+
+        SMSSDK.initSDK(this, MobConst.APP_KEY, MobConst.APP_SECREt);
+        EventHandler eh=new EventHandler(){
+
+            @Override
+            public void afterEvent(int event, int result, Object data) {
+
+                Message msg = new Message();
+                msg.arg1 = event;
+                msg.arg2 = result;
+                msg.obj = data;
+                handler.sendMessage(msg);
+            }
+
+        };
+        SMSSDK.registerEventHandler(eh);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SMSSDK.unregisterAllEventHandler();
     }
 
     @OnClick(R.id.register_btn_verify)
@@ -69,59 +127,26 @@ public class RegistActivity extends BaseActivity {
 
         checkedPhoneNumber = phoneNumber;
 
-//        RequestParams requestParams = new RequestParams();
-//        requestParams.put("appId", Constants.APP_ID);
-//        requestParams.put("appKey", Constants.APP_KEY);
-//        requestParams.put("phone", phoneNumber);
-//        StickerHttpClient.post("/account/verify/request/register", requestParams,
-//                new TypeReference<ResponseData<VerifyResponse>>() {
-//                }.getType(),
-//                new StickerHttpResponseHandler<VerifyResponse>() {
-//
-//                    @Override
-//                    public void onStart() {
-//                        showProgressDialog("验证码发送中...");
-//                    }
-//
-//                    @Override
-//                    public void onSuccess(VerifyResponse verifyResponse) {
-//                        // TODO 验证码
-//                        mVerifyResponse = verifyResponse;
-//                        ToastUtil.longToast(RegistActivity.this, "验证码发送成功:" + verifyResponse.getCode());
-//                    }
-//
-//                    @Override
-//                    public void onFailure(String message) {
-//                        LogUtil.e("onFailure", message);
-//                        ToastUtil.shortToast(RegistActivity.this, "验证码发送失败：" + message
-//                                + "\n请稍候重试");
-//                    }
-//
-//                    @Override
-//                    public void onFinish() {
-//                        dismissProgressDialog();
-//                    }
-//                });
-
+        SMSSDK.getVerificationCode("86", phoneNumber);
     }
 
     @OnClick(R.id.register_btn_register)
     public void checkVerify() {
 
-        // TODO
+        String verifyCode = StringUtils.deleteWhitespace(registerInputVerify.getText().toString());
+        if (StringUtils.isEmpty(verifyCode)) {
+            ToastUtil.shortToast(this, "请输入验证码，不可包含空格");
+            return;
+        }
 
-//        String verifyCode = StringUtils.deleteWhitespace(registerInputVerify.getText().toString());
-//        if (StringUtils.isEmpty(verifyCode)) {
-//            ToastUtil.shortToast(this, "请输入验证码，不可包含空格");
-//            return;
-//        }
+        showProgressDialog("注册中...");
 
+        SMSSDK.submitVerificationCode("86", checkedPhoneNumber, verifyCode);
 
         isCheckedPhoneNumber = true;
-
-        register();
-
     }
+
+
 
     private void register() {
 
@@ -174,7 +199,7 @@ public class RegistActivity extends BaseActivity {
 
                     @Override
                     public void onStart() {
-                        showProgressDialog("注册中...");
+//                        showProgressDialog("注册中...");
                     }
 
                     @Override

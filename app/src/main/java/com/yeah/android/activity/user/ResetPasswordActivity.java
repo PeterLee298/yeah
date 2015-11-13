@@ -38,8 +38,6 @@ public class ResetPasswordActivity extends BaseActivity {
     public static final String VERIFY_CODE = "verify_code";
 
     private String mPhone;
-    private int mVerifyId;
-    private String mVerifyCode;
 
     @InjectView(R.id.reset_input_password)
     EditText resetInputPassword;
@@ -56,8 +54,6 @@ public class ResetPasswordActivity extends BaseActivity {
 
         Intent intent = getIntent();
         mPhone = intent.getStringExtra(VERIFY_PHONE);
-        mVerifyId = intent.getIntExtra(VERIFY_ID, 0);
-        mVerifyCode = intent.getStringExtra(VERIFY_CODE);
     }
 
 
@@ -86,8 +82,6 @@ public class ResetPasswordActivity extends BaseActivity {
         requestParams.put("appKey", Constants.APP_KEY);
         requestParams.put("password", password);
         requestParams.put("phone", mPhone);
-        requestParams.put("verifyId", mVerifyId);
-        requestParams.put("verifyCode", mVerifyCode);
 
         StickerHttpClient.post("/account/user/password/reset", requestParams,
                 new TypeReference<ResponseData<LoginResult>>() {
@@ -123,11 +117,9 @@ public class ResetPasswordActivity extends BaseActivity {
                 });
     }
 
-    public static void launch(Context context, String phone, int verifyId, String verifyCode) {
+    public static void launch(Context context, String phone) {
         Intent intent = new Intent(context, ResetPasswordActivity.class);
         intent.putExtra(VERIFY_PHONE, phone);
-        intent.putExtra(VERIFY_ID, verifyId);
-        intent.putExtra(VERIFY_CODE, verifyCode);
         context.startActivity(intent);
     }
 
