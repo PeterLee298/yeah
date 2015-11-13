@@ -62,7 +62,7 @@
         AppKey="2003901444"
         AppSecret="2dcd5c76740f248bf7138820276e4a71"
         RedirectUrl="http://www.youryeah@havefunbj.com"
-        ShareByAppClient="false"
+        ShareByAppClient="true"
         Enable="true" />
 
 
@@ -93,8 +93,6 @@
         AppSecret="d4624c36b6795d1d99dcf0547af5443d"
         BypassApproval="false"
         Enable="true" />
-    
-	<!-- ShareByAppClient标识是否使用微博客户端分享，默认是false -->
 	<QQ
         Id="4"
         SortId="4"

@@ -222,13 +222,18 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
 
     @Override
     public void onComplete(Platform platform, int i, HashMap<String, Object> stringObjectHashMap) {
+        System.out.println("thirdPartLogin--->onComplete-->");
         dismissProgressDialog();
 
         PlatformDb platDB = platform.getDb();
-        System.out.println("platDB== null?" + (platDB == null));
-        System.out.println("stringObjectHashMap== null?" + (stringObjectHashMap == null));
-        thirdPartLogin(stringObjectHashMap.get("id").toString(), "weibo", platDB.getToken(), stringObjectHashMap.get("name").toString(),
-                stringObjectHashMap.get("name").toString(), stringObjectHashMap.get("profile_image_url").toString(), "", "");
+        if(mCurrentOauthPlatform.equals("weibo")){
+            thirdPartLogin(stringObjectHashMap.get("id").toString(), mCurrentOauthPlatform, platDB.getToken(), stringObjectHashMap.get("name").toString(),
+                    stringObjectHashMap.get("name").toString(), stringObjectHashMap.get("profile_image_url").toString(), "", "");
+        }else if(mCurrentOauthPlatform.equals("wechat")){
+            thirdPartLogin(stringObjectHashMap.get("openid").toString(), mCurrentOauthPlatform, platDB.getToken(), stringObjectHashMap.get("nickname").toString(),
+                    stringObjectHashMap.get("nickname").toString(), stringObjectHashMap.get("headimgurl").toString(), "", "");
+        }
+
     }
 
     @Override
