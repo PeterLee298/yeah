@@ -39,6 +39,7 @@ import android.widget.Toast;
 
 import com.facebook.drawee.view.SimpleDraweeView;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.umeng.update.UmengUpdateAgent;
 import com.yeah.android.R;
 import com.yeah.android.YeahApp;
 import com.yeah.android.activity.camera.CameraBaseActivity;
@@ -182,6 +183,8 @@ public class Camera2Activity extends CameraBaseActivity implements View.OnClickL
         initData();
 
         YeahApp.getApp().setMainActivityLaunched(true);
+
+        UmengUpdateAgent.update(this);
     }
 
     @Override
