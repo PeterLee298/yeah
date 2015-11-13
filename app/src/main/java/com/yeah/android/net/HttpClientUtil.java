@@ -1,6 +1,7 @@
 package com.yeah.android.net;
 
 import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.SyncHttpClient;
 
 /**
  * Created by litingchang on 15-9-25.
@@ -8,6 +9,8 @@ import com.loopj.android.http.AsyncHttpClient;
 public class HttpClientUtil {
 
     private static AsyncHttpClient asyncHttpClient;
+
+    private static SyncHttpClient syncHttpClient;
 
     public static AsyncHttpClient getHttpClient() {
         if(asyncHttpClient == null) {
@@ -20,5 +23,18 @@ public class HttpClientUtil {
         }
 
         return asyncHttpClient;
+    }
+
+    public static SyncHttpClient getSyncHttpClient() {
+        if(syncHttpClient == null) {
+            synchronized (HttpClientUtil.class) {
+                if (syncHttpClient == null) {
+                    syncHttpClient = new SyncHttpClient();
+                    syncHttpClient.setTimeout(30000);
+                }
+            }
+        }
+
+        return syncHttpClient;
     }
 }

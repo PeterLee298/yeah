@@ -189,27 +189,33 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
         Platform weibo = ShareSDK.getPlatform(this, SinaWeibo.NAME);
         mCurrentOauthPlatform = "weibo";
         weibo.setPlatformActionListener(this);
-        weibo.authorize();
+        weibo.SSOSetting(true);
+        //获取用户资料
+        weibo.showUser(null);
 
     }
     @OnClick(R.id.bind_weixin)
     public void binWeiXin() {
 
         showProgressDialog("");
-        Platform weibo = ShareSDK.getPlatform(this, Wechat.NAME);
+        Platform weixin = ShareSDK.getPlatform(this, Wechat.NAME);
         mCurrentOauthPlatform = "wechat";
-        weibo.setPlatformActionListener(this);
-        weibo.authorize();
+        weixin.setPlatformActionListener(this);
+        weixin.SSOSetting(true);
+        //获取用户资料
+        weixin.showUser(null);
 
     }
     @OnClick(R.id.bind_qq)
     public void bindQQ() {
 
         showProgressDialog("");
-        Platform weibo = ShareSDK.getPlatform(this, QQ.NAME);
+        Platform qq = ShareSDK.getPlatform(this, QQ.NAME);
         mCurrentOauthPlatform = "qq";
-        weibo.setPlatformActionListener(this);
-        weibo.authorize();
+        qq.setPlatformActionListener(this);
+        qq.SSOSetting(true);
+        //获取用户资料
+        qq.showUser(null);
 
     }
 
@@ -219,6 +225,8 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
         dismissProgressDialog();
 
         PlatformDb platDB = platform.getDb();
+        System.out.println("platDB== null?" + (platDB == null));
+        System.out.println("stringObjectHashMap== null?" + (stringObjectHashMap == null));
         thirdPartLogin(stringObjectHashMap.get("id").toString(), "weibo", platDB.getToken(), stringObjectHashMap.get("name").toString(),
                 stringObjectHashMap.get("name").toString(), stringObjectHashMap.get("profile_image_url").toString(), "", "");
     }
@@ -226,7 +234,8 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
     @Override
     public void onError(Platform platform, int i, Throwable throwable) {
         dismissProgressDialog();
-        System.out.println("thirdPartLogin--->onError-->");
+        throwable.printStackTrace();
+        System.out.println("thirdPartLogin--->onError-->" );
     }
 
     @Override
@@ -234,35 +243,10 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
         dismissProgressDialog();
         System.out.println("thirdPartLogin--->onCancel-->");
     }
-//
-//    private void initWeiboUser() {
-//        Platform weibo = ShareSDK.getPlatform(this, SinaWeibo.NAME);
-//        weibo.setPlatformActionListener(new PlatformActionListener() {
-//            @Override
-//            public void onComplete(Platform platform, int i, HashMap<String, Object> stringObjectHashMap) {
-//                dismissProgressDialog();
-//
-//                PlatformDb platDB = platform.getDb();
-//                thirdPartLogin(stringObjectHashMap.get("id").toString(), "weibo", platDB.getToken(), stringObjectHashMap.get("name").toString(),
-//                        stringObjectHashMap.get("name").toString(), stringObjectHashMap.get("profile_image_url").toString(), "", "");
-//            }
-//
-//            @Override
-//            public void onError(Platform platform, int i, Throwable throwable) {
-//                dismissProgressDialog();
-//            }
-//
-//            @Override
-//            public void onCancel(Platform platform, int i) {
-//                dismissProgressDialog();
-//            }
-//        });
-//        weibo.showUser(null);
-//    }
 
     public void thirdPartLogin(String oauthId, String oauthType, String oauthToken, String name, String nickname, String avatar, String email, String phone) {
 
-        System.out.println("thirdPartLogin--->oauthToken-->" + oauthToken + "name-->" + name);
+        System.out.println("thirdPartLogin--->name-->" + name);
 
         RequestParams requestParams = new RequestParams();
         requestParams.put("appId", Constants.APP_ID);
@@ -275,7 +259,7 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
         requestParams.put("avatar", avatar);
         requestParams.put("email", email);
         requestParams.put("phone", phone);
-        StickerHttpClient.post("/account/user/sso/login", requestParams,
+        StickerHttpClient.postSync("/account/user/sso/login", requestParams,
                 new TypeReference<ResponseData<LoginResult>>() {
                 }.getType(),
                 new StickerHttpResponseHandler<LoginResult>() {
