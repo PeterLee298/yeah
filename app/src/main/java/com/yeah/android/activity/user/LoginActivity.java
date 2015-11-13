@@ -226,13 +226,16 @@ public class LoginActivity extends BaseActivity implements PlatformActionListene
         dismissProgressDialog();
 
         PlatformDb platDB = platform.getDb();
-        if(mCurrentOauthPlatform.equals("weibo")){
-            thirdPartLogin(stringObjectHashMap.get("id").toString(), mCurrentOauthPlatform, platDB.getToken(), stringObjectHashMap.get("name").toString(),
-                    stringObjectHashMap.get("name").toString(), stringObjectHashMap.get("profile_image_url").toString(), "", "");
-        }else if(mCurrentOauthPlatform.equals("wechat")){
-            thirdPartLogin(stringObjectHashMap.get("openid").toString(), mCurrentOauthPlatform, platDB.getToken(), stringObjectHashMap.get("nickname").toString(),
-                    stringObjectHashMap.get("nickname").toString(), stringObjectHashMap.get("headimgurl").toString(), "", "");
-        }
+        thirdPartLogin(platDB.getUserId(), mCurrentOauthPlatform, platDB.getToken(), platDB.getUserName(),
+                platDB.getPlatformNname(), platDB.getUserIcon(), "", "");
+//
+//        if(mCurrentOauthPlatform.equals("weibo")){
+//            thirdPartLogin(stringObjectHashMap.get("id").toString(), mCurrentOauthPlatform, platDB.getToken(), stringObjectHashMap.get("name").toString(),
+//                    stringObjectHashMap.get("name").toString(), stringObjectHashMap.get("profile_image_url").toString(), "", "");
+//        }else if(mCurrentOauthPlatform.equals("wechat")){
+//            thirdPartLogin(stringObjectHashMap.get("openid").toString(), mCurrentOauthPlatform, platDB.getToken(), stringObjectHashMap.get("nickname").toString(),
+//                    stringObjectHashMap.get("nickname").toString(), stringObjectHashMap.get("headimgurl").toString(), "", "");
+//        }
 
     }
 
