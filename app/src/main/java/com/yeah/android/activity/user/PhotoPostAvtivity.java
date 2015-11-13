@@ -137,7 +137,7 @@ public class PhotoPostAvtivity extends BaseActivity implements PlatformActionLis
                         // TODO 验证码
                         ToastUtil.longToast(PhotoPostAvtivity.this, "发布成功");
 
-                        thirdPartyPublish(response.getUrl());
+                        thirdPartyPublish(contentStr, response.getUrl());
 
                         LogUtil.d(TAG, response.getUrl());
                     }
@@ -156,12 +156,12 @@ public class PhotoPostAvtivity extends BaseActivity implements PlatformActionLis
                 });
     }
 
-    private void thirdPartyPublish(String url){
+    private void thirdPartyPublish(String text, String url){
         System.out.println("thirdPartyPublish--->");
         if(mThirdPartyWeibo.isChecked()){
             mThirdPartyPublishNum ++;
             SinaWeibo.ShareParams sp = new SinaWeibo.ShareParams();
-            sp.text = "Yeah 分享";
+            sp.text = text;
             sp.imageUrl = url;
 
             //初始化新浪分享平台
@@ -174,7 +174,7 @@ public class PhotoPostAvtivity extends BaseActivity implements PlatformActionLis
         if(mThirdPartyWx.isChecked()){
             mThirdPartyPublishNum ++;
             Wechat.ShareParams sp = new Wechat.ShareParams();
-            sp.text = "Yeah 分享";
+            sp.text = text;
             sp.imageUrl = url;
             sp.shareType = Platform.SHARE_IMAGE;
             Platform pf = ShareSDK.getPlatform(PhotoPostAvtivity.this, Wechat.NAME);
@@ -184,7 +184,7 @@ public class PhotoPostAvtivity extends BaseActivity implements PlatformActionLis
         if(mThirdPartyWxFriend.isChecked()){
             mThirdPartyPublishNum ++;
             WechatMoments.ShareParams sp = new WechatMoments.ShareParams();
-            sp.text = "Yeah 分享";
+            sp.text = text;
             sp.imageUrl = url;
             sp.shareType = Platform.SHARE_IMAGE;
             Platform pf = ShareSDK.getPlatform(PhotoPostAvtivity.this, WechatMoments.NAME);
